@@ -1,4 +1,4 @@
-cd /home/ubuntu/git/Senior-Project/Server-Side-Scripts
+cd /home/ubuntu/git/Senior-Project/Server/python
 git pull
 rm ~/cgi-bin/*.py
 cp *.py ~/cgi-bin/
