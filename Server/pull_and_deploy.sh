@@ -1,6 +1,7 @@
-cd /home/ubuntu/git/Senior-Project/Server/python/cgi-bin/
+cd /home/ubuntu/git/Senior-Project/
 git pull
-rm ~/cgi-bin/*.py
-cp *.py ~/cgi-bin/
-chmod 777 ~/cgi-bin/*.py
+cd Server/python/cgi-bin/
+rm /home/ubuntu/cgi-bin/*.py
+cp *.py /home/ubuntu/cgi-bin/
+chmod 777 /home/ubuntu/cgi-bin/*.py
 sudo apachectl restart
