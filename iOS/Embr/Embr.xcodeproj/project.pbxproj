@@ -14,6 +14,7 @@
 		664BE7A71BA758AE00FA7EA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 664BE7A61BA758AE00FA7EA5 /* Main.storyboard */; };
 		664BE7A91BA760B900FA7EA5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7A81BA760B900FA7EA5 /* ProfileViewController.swift */; };
 		664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7AE1BA76C5700FA7EA5 /* User.swift */; };
+		664BE7B11BA7857400FA7EA5 /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7B01BA7857400FA7EA5 /* MediaItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		664BE7A61BA758AE00FA7EA5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		664BE7A81BA760B900FA7EA5 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		664BE7AE1BA76C5700FA7EA5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		664BE7B01BA7857400FA7EA5 /* MediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				664BE7AE1BA76C5700FA7EA5 /* User.swift */,
+				664BE7B01BA7857400FA7EA5 /* MediaItem.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				664BE7A91BA760B900FA7EA5 /* ProfileViewController.swift in Sources */,
+				664BE7B11BA7857400FA7EA5 /* MediaItem.swift in Sources */,
 				664BE7871BA757F400FA7EA5 /* AppDelegate.swift in Sources */,
 				664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */,
 			);
@@ -432,6 +436,7 @@
 				664BE7A21BA757F500FA7EA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		664BE7A31BA757F500FA7EA5 /* Build configuration list for PBXNativeTarget "EmbrTests" */ = {
 			isa = XCConfigurationList;
@@ -440,6 +445,7 @@
 				664BE7A51BA757F500FA7EA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
