@@ -18,15 +18,12 @@ class User {
     }
     
     func addFriend(friend: User) {
-        var alreadyAFriend = false
         for user in friends {
             if user.equals(friend) {
-                alreadyAFriend = true
+                return
             }
         }
-        if !alreadyAFriend {
-            friends.append(friend)
-        }
+        friends.append(friend)
     }
     
     func removeFriend(friendUsername: String) {
