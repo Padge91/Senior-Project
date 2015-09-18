@@ -1,3 +1,4 @@
+--root user password is 'team2isthebest1!'
 --create database
 create database EMBR;
 --create user
