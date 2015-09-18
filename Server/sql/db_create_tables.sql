@@ -1,7 +1,7 @@
 --this file creates all tables with their appropriate types and constraints
 create table users (
     id int not null auto_increment,
-    email varchar(100) not null,
+    email varchar(100) not null unique,
     password varchar(100) not null,
     image blob not null,
     primary key(id)
@@ -17,7 +17,7 @@ create table items (
 
 create table genres (
     id int not null auto_increment,
-    name varchar(15),
+    name varchar(15) unique,
     primary key(id)
 );
 
@@ -132,7 +132,9 @@ create table user_sessions (
 create table user_friends (
     id int not null auto_increment,
     user_id int not null,
+    friend_id int not null,
     primary key(id),
+    foreign key(user_id) references users(id),
     foreign key(user_id) references users(id)
 );
 
@@ -144,4 +146,13 @@ create table user_parental_controls (
     primary key(id),
     foreign key(user_id) references users(id),
     foreign key(genre_id) references genres(id)
+);
+
+create table item_children (
+    id int not null auto_increment,
+    parent_item_id int not null,
+    child_item_id int not null,
+    primary key(id),
+    foreign key(parent_item_id) references items(id),
+    foreign key(child_item_id) references items(id)
 );

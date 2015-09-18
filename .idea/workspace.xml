@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/sql/db_drop_tables.sql" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/sql/db_create_constraints.sql" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/sql/db_create_tables.sql" afterPath="$PROJECT_DIR$/Server/sql/db_create_tables.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Senior-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,21 +46,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="false">
+      <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1554" max-vertical-offset="2295">
-              <caret line="129" column="2" selection-start-line="129" selection-start-column="2" selection-end-line="129" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.5951417" vertical-offset="1704" max-vertical-offset="2460">
+              <caret line="143" column="23" selection-start-line="143" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_drop_tables.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="db_drop_tables.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/sql/db_drop_tables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34412956" vertical-offset="0" max-vertical-offset="741">
-              <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+              <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -93,8 +90,8 @@
         <option value="$PROJECT_DIR$/Server/pull_and_deploy.sh" />
         <option value="$PROJECT_DIR$/Server/sql/DatabaseSetup.sql" />
         <option value="$PROJECT_DIR$/Server/sql/db_create_constraints.sql" />
-        <option value="$PROJECT_DIR$/Server/sql/db_create_tables.sql" />
         <option value="$PROJECT_DIR$/Server/sql/db_drop_tables.sql" />
+        <option value="$PROJECT_DIR$/Server/sql/db_create_tables.sql" />
       </list>
     </option>
   </component>
@@ -397,18 +394,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+    <entry file="file://$PROJECT_DIR$/Server/sql/db_drop_tables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2295">
-          <caret line="129" column="2" selection-start-line="129" selection-start-column="2" selection-end-line="129" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/sql/db_drop_tables.sql">
+    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34412956" vertical-offset="0" max-vertical-offset="741">
-          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.5951417" vertical-offset="1704" max-vertical-offset="2460">
+          <caret line="143" column="23" selection-start-line="143" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
           <folding />
         </state>
       </provider>
