@@ -12,9 +12,12 @@
 		664BE7911BA757F500FA7EA5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 664BE78F1BA757F500FA7EA5 /* LaunchScreen.xib */; };
 		664BE79D1BA757F500FA7EA5 /* EmbrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE79C1BA757F500FA7EA5 /* EmbrTests.swift */; };
 		664BE7A71BA758AE00FA7EA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 664BE7A61BA758AE00FA7EA5 /* Main.storyboard */; };
-		664BE7A91BA760B900FA7EA5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7A81BA760B900FA7EA5 /* ProfileViewController.swift */; };
 		664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7AE1BA76C5700FA7EA5 /* User.swift */; };
 		664BE7B11BA7857400FA7EA5 /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7B01BA7857400FA7EA5 /* MediaItem.swift */; };
+		665399D71BAB43490055899B /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665399D61BAB43490055899B /* Comment.swift */; settings = {ASSET_TAGS = (); }; };
+		665399D91BAC97B30055899B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665399D81BAC97B30055899B /* SearchViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		66873A0C1BA9CD2500A71432 /* ItemDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66873A0B1BA9CD2500A71432 /* ItemDetailModel.swift */; };
+		66873A0E1BA9CED600A71432 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,9 +40,12 @@
 		664BE79B1BA757F500FA7EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		664BE79C1BA757F500FA7EA5 /* EmbrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbrTests.swift; sourceTree = "<group>"; };
 		664BE7A61BA758AE00FA7EA5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		664BE7A81BA760B900FA7EA5 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		664BE7AE1BA76C5700FA7EA5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		664BE7B01BA7857400FA7EA5 /* MediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
+		665399D61BAB43490055899B /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		665399D81BAC97B30055899B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		66873A0B1BA9CD2500A71432 /* ItemDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailModel.swift; sourceTree = "<group>"; };
+		66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +126,8 @@
 		664BE7AA1BA76A5800FA7EA5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				664BE7A81BA760B900FA7EA5 /* ProfileViewController.swift */,
+				66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */,
+				665399D81BAC97B30055899B /* SearchViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -130,6 +137,8 @@
 			children = (
 				664BE7AE1BA76C5700FA7EA5 /* User.swift */,
 				664BE7B01BA7857400FA7EA5 /* MediaItem.swift */,
+				66873A0B1BA9CD2500A71432 /* ItemDetailModel.swift */,
+				665399D61BAB43490055899B /* Comment.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -187,11 +196,13 @@
 		664BE7791BA757F400FA7EA5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = SeniorProject;
 				TargetAttributes = {
 					664BE7801BA757F400FA7EA5 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 7YM9BDZXCM;
 					};
 					664BE7951BA757F500FA7EA5 = {
 						CreatedOnToolsVersion = 6.4;
@@ -243,7 +254,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				664BE7A91BA760B900FA7EA5 /* ProfileViewController.swift in Sources */,
+				66873A0C1BA9CD2500A71432 /* ItemDetailModel.swift in Sources */,
+				665399D91BAC97B30055899B /* SearchViewController.swift in Sources */,
+				665399D71BAB43490055899B /* Comment.swift in Sources */,
+				66873A0E1BA9CED600A71432 /* ItemDetailsViewController.swift in Sources */,
 				664BE7B11BA7857400FA7EA5 /* MediaItem.swift in Sources */,
 				664BE7871BA757F400FA7EA5 /* AppDelegate.swift in Sources */,
 				664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */,
@@ -297,10 +311,12 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -342,6 +358,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -367,9 +384,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Embr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mnrta.seniorproject4850.embr.Embr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -377,9 +398,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Embr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mnrta.seniorproject4850.embr.Embr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -397,6 +422,7 @@
 				);
 				INFOPLIST_FILE = EmbrTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mnrta.seniorproject.embr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Embr.app/Embr";
 			};
@@ -412,6 +438,7 @@
 				);
 				INFOPLIST_FILE = EmbrTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mnrta.seniorproject.embr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Embr.app/Embr";
 			};

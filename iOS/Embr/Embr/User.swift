@@ -1,16 +1,14 @@
 import Foundation
 
 class User {
-    var id: String = "\(rand())"
-    var username: String? = nil
-    var friends: [User] = []
-    var parentalControls: ParentalControls?
+    private(set) var id: String = "\(rand())"
+    private(set) var username: String = "Username"
+    private(set) var friends: [User] = []
+    private(set) var parentalControls: ParentalControls?
     
-    init() {
-        id = "\(rand())"
-    }
+    init() { }
     
-    init(id: String, username: String, friends: [User], parentalControls: ParentalControls) {
+    init(id: String, username: String, parentalControls: ParentalControls?, friends: [User] = []) {
         self.id = id
         self.username = username
         self.friends = friends
