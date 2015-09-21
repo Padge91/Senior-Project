@@ -1,6 +1,7 @@
 --this file creates all tables with their appropriate types and constraints
 create table users (
     id int not null auto_increment,
+    username varchar(50) not null unique,
     email varchar(100) not null unique,
     password varchar(100) not null,
     image blob not null,
