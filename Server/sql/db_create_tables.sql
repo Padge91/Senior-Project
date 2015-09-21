@@ -4,7 +4,7 @@ create table users (
     username varchar(50) not null unique,
     email varchar(100) not null unique,
     password varchar(100) not null,
-    image blob not null,
+    image blob null,
     primary key(id)
 );
 

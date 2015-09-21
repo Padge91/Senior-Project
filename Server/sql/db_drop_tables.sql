@@ -1,6 +1,7 @@
 --this sql will drop all tables (essentially reset database to clean slate)
-drop table users cascade;
+--needs to be done in reverse order
 drop table items cascade;
+drop table users cascade;
 drop table genres cascade;
 drop table comments cascade;
 drop table comment_parents cascade;

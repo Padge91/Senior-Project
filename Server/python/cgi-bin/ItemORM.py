@@ -16,7 +16,7 @@ class ItemORM(object):
 
         #add comments to the object
         comment_orm = CommentORM()
-        response_object.comments = comment_orm.get_comments_on_item(response_object.id)
+        response_object.comments = comment_orm.get_comments_on_item({"item_id":response_object.id})
 
         return response_object
 

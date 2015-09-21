@@ -6,7 +6,10 @@ import json
 def success_response(response):
     print("Content-type:application/json")
     print("")
-    print json.dumps([object.__dict__ for object in response])
+    if not isinstance(response, list):
+        print response.jsonify()
+    else:
+        print json.dumps([object.jsonify() for object in response])
 
 #failure response
 def failure_response(response):
