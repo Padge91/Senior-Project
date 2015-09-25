@@ -6,6 +6,7 @@ from Utilities import *
 from ItemORM import *
 
 required_params = ["title"]
+optional_params = ["genre"]
 
 def main():
     try:

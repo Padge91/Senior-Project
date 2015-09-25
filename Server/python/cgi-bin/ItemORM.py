@@ -16,7 +16,17 @@ class ItemORM(object):
 
         #add comments to the object
         comment_orm = CommentORM()
+        response_object.genres = self.get_item_genres(response_object.id)
         response_object.comments = comment_orm.get_comments_on_item({"item_id":response_object.id})
+
+        return response_object
+
+    def get_item_genres(self, id):
+        query = "select name from genres where id in (select genre_id from item_genres where item_id={0})".format(id)
+        response_object = []
+        rows = select_query(query)
+        for i in range(0, len(rows)):
+            response_object.append(rows[i][0])
 
         return response_object
 
@@ -32,6 +42,7 @@ class ItemORM(object):
         response_objects = []
         for i in range(0,len(rows)):
             response_objects.append(SimpleItem(rows[i]))
+            response_objects[i].genres = self.get_item_genres(response_objects[i].id)
 
         return response_objects
 

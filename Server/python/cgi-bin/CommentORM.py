@@ -3,9 +3,6 @@ __author__ = 'nicholaspadgett'
 from DataSource import *
 from CommentClass import *
 
-#issues
-#test user review
-
 class CommentORM(object):
 
     def get_comments_on_item(self,params):
