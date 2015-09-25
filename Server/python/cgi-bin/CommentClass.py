@@ -29,3 +29,6 @@ class FullComment(object):
             obj["child_comments"] = [object.jsonify() for object in self.child_comments]
 
         return obj
+
+    def persist(self):
+        return "sql";
