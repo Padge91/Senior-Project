@@ -1,0 +1,81 @@
+//
+//  SearchViewController.swift
+//  Embr
+//
+//  Created by Alex Ronquillo on 9/18/15.
+//  Copyright © 2015 SeniorProject. All rights reserved.
+//
+
+import UIKit
+
+class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
+    
+    let itemDetailSegueIdentifier = "searchToItemDetailSegue"
+    var model = ItemDetailModel.getModel()
+    var searchResults = [MediaItem]()
+    var searchController = UISearchController(searchResultsController: nil)
+    @IBOutlet weak var searchResultsTableView: UITableView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSearchController()
+        setupSearchResultsTableView()
+    }
+    
+    func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.sizeToFit()
+        searchResultsTableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func setupSearchResultsTableView() {
+        searchResultsTableView.delegate = self
+        searchResultsTableView.dataSource = self
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier(itemDetailSegueIdentifier, sender: indexPath)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if sender is NSIndexPath && segue.identifier == itemDetailSegueIdentifier {
+            let destination = segue.destinationViewController as! ItemDetailsViewController
+            destination.setMediaItem(searchResults[(sender as! NSIndexPath).row])
+        }
+    }
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        searchResults = model.searchForItems(self.searchController.searchBar.text!)
+        self.searchResultsTableView.reloadData()
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cellIdentifier = "cellId"
+        var cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
+        
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
+        }
+        
+        let mediaItem = searchResults[indexPath.row]
+        cell!.textLabel!.text = mediaItem.title
+        
+        if mediaItem is Book {
+            cell!.detailTextLabel!.text = (mediaItem as! Book).author
+        } else if mediaItem is Movie {
+            cell!.detailTextLabel!.text = (mediaItem as! Movie).director
+        }
+        
+        if let imageName = mediaItem.imageName {
+            cell!.imageView?.image = UIImage(named: imageName)
+        }
+        
+        return cell!
+    }
+    
+}
