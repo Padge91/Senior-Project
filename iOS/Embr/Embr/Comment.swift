@@ -1,11 +1,3 @@
-//
-//  Comment.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 9/17/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import Foundation
 
 class Comment {
@@ -16,8 +8,9 @@ class Comment {
     private(set) var flagged: Bool
     private(set) var parent: Comment?
     private(set) var rating: Int
+    private(set) var children: [Comment]
     
-    init(id: String, userWhoWroteTheComment author: User, subject: String, body: String, isFlaggedAsInappropriate flagged: Bool = false, parentComment parent: Comment?, rating: Int = 0) {
+    init(id: String, userWhoWroteTheComment author: User, subject: String, body: String, isFlaggedAsInappropriate flagged: Bool = false, parentComment parent: Comment?, rating: Int = 0, children: [Comment] = [Comment]()) {
         self.id = id
         self.author = author
         self.subject = subject
@@ -25,6 +18,11 @@ class Comment {
         self.flagged = flagged
         self.parent = parent
         self.rating = rating
+        self.children = children
+    }
+    
+    func addChild(newComment: Comment) {
+        children.append(newComment)
     }
     
     func toString() -> String {
