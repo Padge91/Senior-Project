@@ -3,15 +3,14 @@ __author__ = 'nicholaspadgett'
 
 import cgi
 from Utilities import *
-from ItemORM import *
+from userUtils import *
 
-required_params = ["title", "genre"]
+required_params = ["username","email","password","passwordConfirm"]
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = ItemORM()
-        response = orm.search_items(form)
+        response = create_account(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)
