@@ -5,7 +5,7 @@ import cgi
 from Utilities import *
 from ItemORM import *
 
-required_params = ["title", "genre"]
+required_params = ["title"]
 
 def main():
     try:

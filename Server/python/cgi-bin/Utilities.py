@@ -25,6 +25,8 @@ def get_required_parameters(request, required_params):
 
     response = dict()
     for param in required_params:
+        if param not in form:
+            raise Exception(param +" is required")
         response[param] = form[param].value
 
     return response
