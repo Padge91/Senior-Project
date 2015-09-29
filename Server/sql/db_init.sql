@@ -1,4 +1,6 @@
+--root user password is 'team2isthebest1!'
 --create database
 create database EMBR;
 --create user
-create user db_user identified by 'group2isthebest1!';
+create user 'db_user'@'localhost' identified by 'group2isthebest1!';
+GRANT ALL PRIVILEGES ON * . * TO 'db_user'@'localhost';

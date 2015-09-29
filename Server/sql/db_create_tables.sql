@@ -1,14 +1,17 @@
 --this file creates all tables with their appropriate types and constraints
 create table users (
     id int not null auto_increment,
+    username varchar(50) not null unique,
     email varchar(100) not null unique,
-    password varchar(100) not null,
-    image blob not null,
+    password varchar(150) not null,
+    salt char(50) not null,
+    image blob null,
     primary key(id)
 );
 
 create table items (
     id int not null auto_increment,
+    type varchar(15) not null,
     title varchar(50) not null,
     description text not null,
     creator varchar(50) not null,
@@ -124,7 +127,7 @@ create table user_sessions (
     id int not null auto_increment,
     user_id int not null,
     session_id varchar(100),
-    session_exp datetime not null,
+    session_exp datetime null,
     primary key(id),
     foreign key(user_id) references users(id)
 );
