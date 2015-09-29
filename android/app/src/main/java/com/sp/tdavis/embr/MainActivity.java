@@ -13,8 +13,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -25,16 +25,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        ActionBar actionBar = getSupportActionBar();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        // Handle action bar item clicks here
 
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                openSearch();
+                return true;
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void openSearch() {
+
+    }
+
+    public void openSettings() {
+
     }
 }
