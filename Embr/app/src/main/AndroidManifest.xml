@@ -24,6 +24,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.afe.pc.embr.HomeActivity" />
         </activity>
+        <activity
+            android:name=".Search_for_Items"
+            android:label="@string/title_activity_search_for__items" >
+        </activity>
+        <activity
+            android:name=".SearchResults"
+            android:label="@string/title_activity_search_results" >
+        </activity>
     </application>
 
 </manifest>
