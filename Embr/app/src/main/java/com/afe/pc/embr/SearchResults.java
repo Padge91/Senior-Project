@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class SearchResults extends AppCompatActivity {
+public class SearchResults extends AppCompatActivity implements View.OnClickListener{
 
 
     @Override
@@ -38,6 +38,22 @@ public class SearchResults extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void viewItemDetails(){
+        startActivity(new Intent("SearchResults"));
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.relativeLayout2:
+                viewItemDetails();
+                break;
+
+        }
+
     }
 
 }
