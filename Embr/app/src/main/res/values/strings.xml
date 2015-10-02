@@ -5,8 +5,9 @@
     <string name="button_send">Send</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
-    <string name="something">Something</string>
-    <string name="something_else">Somthing Else</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_search_for__items">Search_for_Items</string>
+    <string name="title_activity_search_results">SearchResults</string>
+    <string name="Search_Results_Item_Information">115dp</string>
     <string name="title_activity_item_view">ItemView</string>
 </resources>
