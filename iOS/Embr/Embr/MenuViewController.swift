@@ -3,6 +3,11 @@ import UIKit
 class MenuViewController: UITableViewController {
     var menu = ["Login", "Logout", "Settings"]
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.tableHeaderView = nil
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellId = "cellId"
         var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellId)

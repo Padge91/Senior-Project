@@ -2,7 +2,8 @@ import UIKit
 
 class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
     
-    private let itemDetailSegueIdentifier = "searchToItemDetailSegue"
+    private let itemDetailSegueIdentifier = "segueToItemDetails"
+    private let menuSegueIdentifier = "segueToMenu"
     private var model = ItemDataSource.getModel()
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
@@ -11,7 +12,13 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearchController()
+        definesPresentationContext = true
         setupSearchResultsTableView()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+    }
+    
+    func goToMenu() {
+        performSegueWithIdentifier(menuSegueIdentifier, sender: nil)
     }
     
     private func setupSearchController() {

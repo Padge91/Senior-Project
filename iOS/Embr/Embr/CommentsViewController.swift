@@ -1,12 +1,18 @@
 import UIKit
 
 class CommentsViewController: UITableViewController {
+    let menuSegueIdentifier = "segueToMenu"
     var comments = [Comment]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 100.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+    }
+    
+    func goToMenu() {
+        performSegueWithIdentifier(menuSegueIdentifier, sender: nil)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

@@ -2,7 +2,8 @@ import UIKit
 
 class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private let commentsSegueIdentifier = "commentsSegue"
+    private let commentsSegueIdentifier = "segueToComments"
+    private let menuSegueIdentifier = "segueToMenu"
     private let sectionHeadings = ["Reviews", "Blurb", "Comments"]
     private let reviewsSection = 0, blurbSection = 1, commentsSection = 2
     private var mediaItem: MediaItem? = nil
@@ -21,6 +22,11 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         loadTopAttribute()
         loadBottomAttribute()
         setupItemDetailsTable()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+    }
+    
+    func goToMenu() {
+        performSegueWithIdentifier(menuSegueIdentifier, sender: nil)
     }
     
     private func setupItemDetailsTable() {
@@ -28,6 +34,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         itemDetailsTableView.delegate = self
         itemDetailsTableView.estimatedRowHeight = 100.0
         itemDetailsTableView.rowHeight = UITableViewAutomaticDimension
+        itemDetailsTableView.backgroundColor = UIColor.whiteColor()
     }
     
     private func loadTitleAndImage() {
