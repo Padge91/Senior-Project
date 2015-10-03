@@ -124,6 +124,19 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    @IBAction func addToLibrary(sender: UIButton) {
+        let libraryActionSheet = UIAlertController(title: "Add to Library", message: nil, preferredStyle: .ActionSheet)
+        let viewedAction = UIAlertAction(title: "Viewed", style: .Default, handler: nil)
+        let ownedAction = UIAlertAction(title: "Owned", style: .Default, handler: nil)
+        let wishlistAction = UIAlertAction(title: "Wishlist", style: .Default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        libraryActionSheet.addAction(viewedAction)
+        libraryActionSheet.addAction(ownedAction)
+        libraryActionSheet.addAction(wishlistAction)
+        libraryActionSheet.addAction(cancelAction)
+        presentViewController(libraryActionSheet, animated: true, completion: nil)
+    }
+    
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionHeadings[section]
     }

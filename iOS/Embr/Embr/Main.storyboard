@@ -72,10 +72,10 @@
             </objects>
             <point key="canvasLocation" x="2137" y="1373"/>
         </scene>
-        <!--Main Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="QN7-cD-uSv">
             <objects>
-                <navigationController id="gJJ-Ik-rHQ" customClass="MainNavigationController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController id="gJJ-Ik-rHQ" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1DZ-zg-MGl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -237,6 +237,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvu-0L-9zU">
                                 <rect key="frame" x="118" y="152" width="97" height="30"/>
                                 <state key="normal" title="Add to Library"/>
+                                <connections>
+                                    <action selector="addToLibrary:" destination="brd-f3-Oiw" eventType="touchUpInside" id="dJ8-X4-ETP"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
