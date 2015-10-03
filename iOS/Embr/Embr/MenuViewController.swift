@@ -17,6 +17,7 @@ class MenuViewController: UITableViewController {
         }
         
         cell!.textLabel!.text = menu[indexPath.row]
+        cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell!
     }

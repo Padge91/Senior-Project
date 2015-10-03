@@ -6,6 +6,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let menuSegueIdentifier = "segueToMenu"
     private let sectionHeadings = ["Reviews", "Blurb", "Comments"]
     private let reviewsSection = 0, blurbSection = 1, commentsSection = 2
+    
     private var mediaItem: MediaItem? = nil
     private var itemDetails = [String: [AnyObject]]()
     @IBOutlet weak var titleLabel: UILabel!

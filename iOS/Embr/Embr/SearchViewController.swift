@@ -12,8 +12,8 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearchController()
-        definesPresentationContext = true
         setupSearchResultsTableView()
+        definesPresentationContext = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
     }
     
