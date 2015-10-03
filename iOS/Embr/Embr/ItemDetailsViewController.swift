@@ -3,6 +3,7 @@ import UIKit
 class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let commentsSegueIdentifier = "segueToComments"
+    private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let menuSegueIdentifier = "segueToMenu"
     private let sectionHeadings = ["Reviews", "Blurb", "Comments"]
     private let reviewsSection = 0, blurbSection = 1, commentsSection = 2
@@ -102,13 +103,15 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         assert(mediaItem != nil)
-        if sender is NSIndexPath && segue.identifier == commentsSegueIdentifier {
+        if segue.identifier == commentsSegueIdentifier && sender is NSIndexPath {
             let destination = segue.destinationViewController as! CommentsViewController
             let indexPath = sender as! NSIndexPath
             destination.comments.removeAll()
             let selectedComment = mediaItem!.comments[indexPath.row]
             destination.comments.append(selectedComment)
             destination.comments.appendContentsOf(selectedComment.children)
+        } else if segue.identifier == commentCreatorSegueIdentifier {
+            // Send media item
         }
     }
     
@@ -135,6 +138,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         libraryActionSheet.addAction(wishlistAction)
         libraryActionSheet.addAction(cancelAction)
         presentViewController(libraryActionSheet, animated: true, completion: nil)
+    }
+    
+    @IBAction func commentOnItem(sender: UIButton) {
+        performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

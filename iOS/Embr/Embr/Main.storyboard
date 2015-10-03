@@ -134,6 +134,59 @@
             </objects>
             <point key="canvasLocation" x="1429" y="625"/>
         </scene>
+        <!--Comment-->
+        <scene sceneID="iWK-QG-k6j">
+            <objects>
+                <viewController title="Comment" id="ceU-Vv-Qdj" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DqI-de-lEj"/>
+                        <viewControllerLayoutGuide type="bottom" id="Scj-AW-BV4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZdV-lE-0fU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Subject" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="n9r-zd-DJh">
+                                <rect key="frame" x="20" y="101" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzC-Rj-XvR">
+                                <rect key="frame" x="283" y="72" width="34" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W96-JZ-ENf">
+                                <rect key="frame" x="276" y="550" width="49" height="30"/>
+                                <state key="normal" title="Submit"/>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Body" translatesAutoresizingMaskIntoConstraints="NO" id="re9-LI-ZWm">
+                                <rect key="frame" x="20" y="139" width="560" height="403"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="trailing" secondItem="n9r-zd-DJh" secondAttribute="trailing" id="2d4-bG-3CP"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="top" secondItem="n9r-zd-DJh" secondAttribute="bottom" constant="8" symbolic="YES" id="4ev-B6-koS"/>
+                            <constraint firstItem="mzC-Rj-XvR" firstAttribute="top" secondItem="DqI-de-lEj" secondAttribute="bottom" constant="8" symbolic="YES" id="5X4-2L-ntC"/>
+                            <constraint firstItem="n9r-zd-DJh" firstAttribute="leading" secondItem="ZdV-lE-0fU" secondAttribute="leadingMargin" id="AB9-Cl-Hkp"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="centerX" secondItem="W96-JZ-ENf" secondAttribute="centerX" id="Eke-Gk-9nC"/>
+                            <constraint firstItem="n9r-zd-DJh" firstAttribute="trailing" secondItem="ZdV-lE-0fU" secondAttribute="trailingMargin" id="aor-V7-QIq"/>
+                            <constraint firstItem="W96-JZ-ENf" firstAttribute="top" secondItem="re9-LI-ZWm" secondAttribute="bottom" constant="8" symbolic="YES" id="bnX-6W-GOf"/>
+                            <constraint firstAttribute="bottom" secondItem="W96-JZ-ENf" secondAttribute="bottom" constant="20" symbolic="YES" id="gaz-Cc-U0Z"/>
+                            <constraint firstItem="mzC-Rj-XvR" firstAttribute="centerX" secondItem="n9r-zd-DJh" secondAttribute="centerX" id="qEP-DV-xiL"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="leading" secondItem="n9r-zd-DJh" secondAttribute="leading" id="s3D-dq-dxm"/>
+                            <constraint firstItem="n9r-zd-DJh" firstAttribute="top" secondItem="mzC-Rj-XvR" secondAttribute="bottom" constant="8" symbolic="YES" id="ylr-4g-luZ"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D02-a6-KkO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2137" y="-56"/>
+        </scene>
         <!--Item Details-->
         <scene sceneID="8RO-21-alE">
             <objects>
@@ -147,7 +200,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="dao-rG-Iet">
-                                <rect key="frame" x="0.0" y="254" width="600" height="346"/>
+                                <rect key="frame" x="0.0" y="266" width="600" height="334"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2i-RW-ewI">
@@ -184,7 +237,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v4D-ED-6Fk">
-                                <rect key="frame" x="107" y="216" width="30" height="30"/>
+                                <rect key="frame" x="107" y="228" width="30" height="30"/>
                                 <state key="normal" title="★">
                                     <color key="titleColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -193,7 +246,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDE-fd-8kc">
-                                <rect key="frame" x="145" y="216" width="30" height="30"/>
+                                <rect key="frame" x="145" y="228" width="30" height="30"/>
                                 <state key="normal" title="★">
                                     <color key="titleColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -202,7 +255,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdp-pj-U5o">
-                                <rect key="frame" x="183" y="216" width="30" height="30"/>
+                                <rect key="frame" x="183" y="228" width="30" height="30"/>
                                 <state key="normal" title="★">
                                     <color key="titleColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -211,7 +264,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWu-sf-hQl">
-                                <rect key="frame" x="221" y="216" width="30" height="30"/>
+                                <rect key="frame" x="221" y="228" width="30" height="30"/>
                                 <state key="normal" title="★">
                                     <color key="titleColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -220,7 +273,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="864-WK-GvZ">
-                                <rect key="frame" x="259" y="216" width="30" height="30"/>
+                                <rect key="frame" x="259" y="228" width="30" height="30"/>
                                 <state key="normal" title="★">
                                     <color key="titleColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -229,16 +282,24 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="My review:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYV-ba-g1H">
-                                <rect key="frame" x="16" y="220" width="83" height="21"/>
+                                <rect key="frame" x="16" y="232" width="83" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvu-0L-9zU">
                                 <rect key="frame" x="118" y="152" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Add to Library"/>
                                 <connections>
                                     <action selector="addToLibrary:" destination="brd-f3-Oiw" eventType="touchUpInside" id="dJ8-X4-ETP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GBf-Z9-1Qm">
+                                <rect key="frame" x="118" y="190" width="67" height="30"/>
+                                <state key="normal" title="Comment"/>
+                                <connections>
+                                    <action selector="commentOnItem:" destination="brd-f3-Oiw" eventType="touchUpInside" id="T3X-Jk-8Fj"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -287,6 +348,7 @@
                         <outletCollection property="reviewCollection" destination="864-WK-GvZ" collectionClass="NSMutableArray" id="FkX-QR-LeU"/>
                         <segue destination="t4i-hn-Qek" kind="show" identifier="segueToComments" id="3Pt-md-Sbl"/>
                         <segue destination="aSC-40-bIC" kind="show" identifier="segueToMenu" id="beZ-fF-TWw"/>
+                        <segue destination="ceU-Vv-Qdj" kind="show" identifier="segueToCommentCreator" id="Hl1-VX-9yS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-58-1Vr" userLabel="First Responder" sceneMemberID="firstResponder"/>
