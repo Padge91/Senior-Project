@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6637245E1BC082CC00BEA831 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6637245D1BC082CC00BEA831 /* LoginViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		664BE7871BA757F400FA7EA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7861BA757F400FA7EA5 /* AppDelegate.swift */; };
 		664BE78E1BA757F500FA7EA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 664BE78D1BA757F500FA7EA5 /* Images.xcassets */; };
 		664BE7911BA757F500FA7EA5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 664BE78F1BA757F500FA7EA5 /* LaunchScreen.xib */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6637245D1BC082CC00BEA831 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		664BE7811BA757F400FA7EA5 /* Embr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Embr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		664BE7851BA757F400FA7EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		664BE7861BA757F400FA7EA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				665399D81BAC97B30055899B /* SearchViewController.swift */,
 				66CA4B311BB5DE17000B1C76 /* MenuViewController.swift */,
 				66CA4B331BB5E7D0000B1C76 /* CommentsViewController.swift */,
+				6637245D1BC082CC00BEA831 /* LoginViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */,
 				66CA4B321BB5DE17000B1C76 /* MenuViewController.swift in Sources */,
 				66CA4B341BB5E7D0000B1C76 /* CommentsViewController.swift in Sources */,
+				6637245E1BC082CC00BEA831 /* LoginViewController.swift in Sources */,
 				666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

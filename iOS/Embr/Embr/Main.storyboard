@@ -36,6 +36,9 @@
                             <outlet property="delegate" destination="aSC-40-bIC" id="7CW-IQ-Hfd"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="UGJ-Fb-ILS" kind="show" identifier="segueToLogin" id="bxD-Cw-Ux9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c36-if-Tbk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -354,6 +357,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-58-1Vr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2137" y="625"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="wla-TY-7W8">
+            <objects>
+                <viewController title="Login" id="UGJ-Fb-ILS" customClass="LoginViewController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qhq-Et-kme"/>
+                        <viewControllerLayoutGuide type="bottom" id="rHn-lC-GDg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JIR-2K-g8F">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SSB-vq-Mcm">
+                                <rect key="frame" x="20" y="72" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hpN-Ds-7c8">
+                                <rect key="frame" x="20" y="110" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SSB-vq-Mcm" firstAttribute="top" secondItem="Qhq-Et-kme" secondAttribute="bottom" constant="8" symbolic="YES" id="85j-IV-N23"/>
+                            <constraint firstItem="hpN-Ds-7c8" firstAttribute="top" secondItem="SSB-vq-Mcm" secondAttribute="bottom" constant="8" symbolic="YES" id="8GM-4E-1TR"/>
+                            <constraint firstItem="SSB-vq-Mcm" firstAttribute="leading" secondItem="JIR-2K-g8F" secondAttribute="leadingMargin" id="NqJ-ru-VzI"/>
+                            <constraint firstItem="hpN-Ds-7c8" firstAttribute="trailing" secondItem="SSB-vq-Mcm" secondAttribute="trailing" id="Wdc-wx-qVC"/>
+                            <constraint firstItem="SSB-vq-Mcm" firstAttribute="trailing" secondItem="JIR-2K-g8F" secondAttribute="trailingMargin" id="frs-ek-w38"/>
+                            <constraint firstItem="hpN-Ds-7c8" firstAttribute="leading" secondItem="SSB-vq-Mcm" secondAttribute="leading" id="lP5-bO-TPG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="passwordTextField" destination="hpN-Ds-7c8" id="fPZ-ZY-bwS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aj9-vH-yCl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1429" y="2111"/>
         </scene>
     </scenes>
     <resources>

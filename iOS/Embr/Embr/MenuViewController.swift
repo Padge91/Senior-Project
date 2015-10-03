@@ -1,6 +1,7 @@
 import UIKit
 
 class MenuViewController: UITableViewController {
+    private let loginSegueIdentifier = "segueToLogin"
     var menu = ["Login", "Logout", "Settings"]
     
     override func viewDidLoad() {
@@ -20,6 +21,23 @@ class MenuViewController: UITableViewController {
         cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell!
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == menu.indexOf("Login") {
+            performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
+        } else if indexPath.row == menu.indexOf("Logout") {
+            let logoutConfirmationAlert = UIAlertController(title: "Logout", message: "Are you sure you want to log out?", preferredStyle: .Alert)
+            let yesAction = UIAlertAction(title: "Yes", style: .Default, handler: logout)
+            let noAction = UIAlertAction(title: "No", style: .Default, handler: nil)
+            logoutConfirmationAlert.addAction(yesAction)
+            logoutConfirmationAlert.addAction(noAction)
+            presentViewController(logoutConfirmationAlert, animated: true, completion: nil)
+        }
+    }
+    
+    func logout(action: UIAlertAction) {
+        // Perform logout
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
