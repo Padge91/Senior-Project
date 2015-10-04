@@ -1,5 +1,6 @@
 package com.afe.pc.embr;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.ImageButton;
 
 public class ItemView extends AppCompatActivity {
+
+    //variables for the details needed to add whatever item is being viewed to the library
 
     ImageButton star_1_1;
     ImageButton star_1_2;
@@ -51,6 +54,11 @@ public class ItemView extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addToLibrariesButton(View view) {
+        Intent intent = new Intent(this, Library.class);
+        startActivity(intent);
     }
 
     public void addListenerOnButton_1_1() {

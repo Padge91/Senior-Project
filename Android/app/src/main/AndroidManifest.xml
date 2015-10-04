@@ -17,14 +17,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName=".HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.afe.pc.embr.HomeActivity" />
-        </activity>
-        <activity
             android:name=".Search_for_Items"
             android:label="@string/title_activity_search_for__items" >
         </activity>
@@ -35,6 +27,14 @@
         <activity
             android:name=".ItemView"
             android:label="@string/title_activity_item_view" >
+        </activity>
+        <activity
+            android:name=".Library"
+            android:label="@string/title_activity_library" >
+        </activity>
+        <activity
+            android:name=".RecommendedItems"
+            android:label="@string/title_activity_recommended_items" >
         </activity>
     </application>
 
