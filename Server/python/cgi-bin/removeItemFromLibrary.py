@@ -13,8 +13,8 @@ def main():
     try:
         form = get_required_parameters(cgi, required_params)
         form["user_id"] = get_user_id_from_session(form)
-        item_orm = ItemORM()
-        response = item_orm.remove_item_from_library(form)
+        library_orm = LibraryORM()
+        response = library_orm.remove_item_from_library(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)

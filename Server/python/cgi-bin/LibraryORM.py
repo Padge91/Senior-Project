@@ -59,4 +59,19 @@ class LibraryORM(object):
         return results
 
     def remove_item_from_library(self, form):
-        print "yes"
+        item_id = form["item_id"]
+        library_id = form["library_id"]
+        user_id = form["user_id"]
+
+        #make sure user owns library
+        query = "select id, user_id from libraries where id={0} and user_id={1}".format(library_id, user_id)
+        results = select_query(query)
+        if len(results) == 0:
+            raise Exception("You do not have access to modify this library")
+
+        #remove item form library
+        args = {"library_id":library_id,"item_id":item_id}
+        query = "delete from library_items where library_id=%(library_id)s and item_id=%(item_id)s"
+        insert_query(query, args)
+
+        return True
