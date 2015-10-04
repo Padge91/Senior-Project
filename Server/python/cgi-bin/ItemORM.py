@@ -31,8 +31,11 @@ class ItemORM(object):
         return response_object
 
     #returns array of basic item information
-    def search_items(self, query_params):
-        query = self.build_query(query_params)
+    def search_items(self, query_params, option=None):
+        if option is None:
+            query = self.build_query(query_params)
+        else:
+            query = self.build_query_or(query_params)
         rows = select_query(query)
         response_objects = self.convert_rows_to_SimpleItem(rows)
         return response_objects
@@ -68,5 +71,19 @@ class ItemORM(object):
                 query += " and "
 
             query += " {0} like '%{1}%'".format(item, query_params[item])
+
+        return query
+
+    #build query
+    def build_query_or(self, query_params):
+        query = "select id, title, description, creator from items where "
+        iterator = 0
+        for i in query_params:
+
+            iterator += 1
+            if iterator > 1:
+                query += " or "
+
+            query += " {0} like '{1}'".format("id", i["id"])
 
         return query
