@@ -10,4 +10,6 @@
     <string name="title_activity_search_results">SearchResults</string>
     <string name="Search_Results_Item_Information">115dp</string>
     <string name="title_activity_item_view">ItemView</string>
+    <string name="title_activity_library">Library</string>
+    <string name="title_activity_recommended_items">RecommendedItems</string>
 </resources>
