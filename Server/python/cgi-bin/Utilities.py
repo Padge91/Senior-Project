@@ -7,11 +7,11 @@ def success_response(response):
     print("Content-type:application/json")
     print("")
     if isinstance(response, dict):
-        print json.dumps(response)
+        print json.dumps({"success":response})
     elif not isinstance(response, list):
-        print response.jsonify()
+        print {"success":response.jsonify()}
     else:
-        print json.dumps([object.jsonify() for object in response])
+        print {"success":json.dumps([object.jsonify() for object in response])}
 
 #failure response
 def failure_response(response):

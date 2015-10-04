@@ -56,6 +56,7 @@ create table libraries (
     id int not null auto_increment,
     user_id int not null,
     library_name varchar(30),
+    visible boolean default true not null,
     primary key(id),
     foreign key(user_id) references users(id)
 );

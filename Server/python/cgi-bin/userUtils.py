@@ -8,9 +8,11 @@ from datetime import *
 
 def get_user_id_from_session(params):
     session = params["session"]
-    query = "select user_id from user_sessions where session_id=%(session)s"
+    query = "select user_id from user_sessions where session_id={0}".format(session)
     args = {"session":session}
     response = select_query(query)
+    if len(response) == 0:
+        raise Exception("No session found")
     return response[0][0]
 
 def logout(params):
