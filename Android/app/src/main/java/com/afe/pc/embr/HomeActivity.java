@@ -38,8 +38,18 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void changeActivity(View view) {
+    public void changeToItemView(View view) {
         Intent intent = new Intent(this, ItemView.class);
+        startActivity(intent);
+    }
+
+    public void changeToLibraryView(View view) {
+        Intent intent = new Intent(this, Library.class);
+        startActivity(intent);
+    }
+
+    public void changeToSearchResultsView(View view) {
+        Intent intent = new Intent(this, SearchResults.class);
         startActivity(intent);
     }
 }
