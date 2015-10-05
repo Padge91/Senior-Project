@@ -7,7 +7,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_send"
-        android:onClick="changeActivity" />
+        android:text="@string/button_send1"
+        android:onClick="changeToItemView" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_send2"
+        android:onClick="changeToLibraryView" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_send3"
+        android:onClick="changeToSearchResultsView" />
 </LinearLayout>
