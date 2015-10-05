@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,24 +19,31 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                openSearch();
+                return true;
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+    }
+    public void openSearch() {
+
+    }
+
+    public void openSettings() {
+
     }
 
     public void changeToItemView(View view) {
@@ -52,4 +60,15 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SearchResults.class);
         startActivity(intent);
     }
+
+    public void changeToProfileView(View view) {
+        Intent intent = new Intent(this, Profile.class);
+        startActivity(intent);
+    }
+
+    public void changeToRecommendedItemsView(View view) {
+        Intent intent = new Intent(this, RecommendedItems.class);
+        startActivity(intent);
+    }
+
 }

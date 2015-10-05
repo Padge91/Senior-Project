@@ -5,6 +5,8 @@
     <string name="button_send1">Item View</string>
     <string name="button_send2">Library</string>
     <string name="button_send3">Search Results</string>
+    <string name="button_send4">Profile</string>
+    <string name="button_send5">Recommended Items</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="hello_world">Hello world!</string>
@@ -16,4 +18,5 @@
     <string name="title_activity_recommended_items">RecommendedItems</string>
     <string name="Genra">Genra:</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="action_search">Search</string>
 </resources>
