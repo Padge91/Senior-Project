@@ -21,12 +21,14 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Genra:"
+                android:text="@string/Genra"
                 android:id="@+id/checkBox"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:checked="false" />
+                android:checked="false"
+                android:nestedScrollingEnabled="false"
+                android:clickable="true" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -96,7 +98,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/relativeLayout2">
+                android:id="@+id/relativeLayout2"
+                android:clickable="true"
+                android:onClick="changeActivity">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -107,60 +111,63 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:layout_toStartOf="@+id/relativeLayout4"
-                    android:layout_toLeftOf="@+id/relativeLayout4" />
+                    android:layout_toLeftOf="@+id/relativeLayout4"
+                    android:src="@drawable/fellowship_of_the_ring" />
 
                 <RelativeLayout
                     android:layout_width="245dp"
                     android:layout_height="match_parent"
                     android:id="@+id/relativeLayout4"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="false"
                     android:layout_alignParentEnd="true">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Title | Director"
+                        android:text="The Lord of the Rings: The Fellowship of the Ring"
                         android:id="@+id/textView2"
+                        android:textColor="#fc010001"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginStart="32dp"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_alignParentStart="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Actor 1, Actor 2"
+                        android:text="Elijah Wood, Ian Mckellen"
                         android:id="@+id/textView3"
                         android:layout_below="@+id/textView2"
                         android:layout_alignLeft="@+id/textView2"
-                        android:layout_alignStart="@+id/textView2" />
+                        android:layout_alignStart="@+id/textView2"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Runtime"
+                        android:text="Runtime: 178 min"
                         android:id="@+id/textView4"
                         android:layout_below="@+id/textView3"
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="false"
-                        android:layout_alignStart="@+id/textView3"
-                        android:layout_alignLeft="@+id/textView3" />
+                        android:layout_alignStart="@+id/textView2"
+                        android:layout_alignLeft="@+id/textView2"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Last Watched:"
+                        android:text="Last Watched: Dec, 2005"
                         android:id="@+id/textView5"
                         android:layout_centerVertical="true"
-                        android:layout_alignLeft="@+id/textView4"
-                        android:layout_alignStart="@+id/textView4" />
+                        android:layout_alignStart="@+id/textView2"
+                        android:textColor="#010101"
+                        android:layout_below="@+id/textView4"
+                        android:layout_alignLeft="@+id/textView2" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,8 +176,74 @@
                         android:text="Average Rating:"
                         android:id="@+id/textView6"
                         android:layout_below="@+id/textView5"
-                        android:layout_alignLeft="@+id/textView5"
-                        android:layout_alignStart="@+id/textView5" />
+                        android:layout_alignLeft="@+id/textView2"
+                        android:layout_alignStart="@+id/textView5"
+                        android:textColor="#010101" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/textView4"
+                        android:layout_toEndOf="@+id/textView4" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton2"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/imageButton"
+                        android:layout_toEndOf="@+id/imageButton" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton3"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/imageButton2"
+                        android:layout_toEndOf="@+id/imageButton2" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton4"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/imageButton3"
+                        android:layout_toEndOf="@+id/imageButton3" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton5"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/imageButton4"
+                        android:layout_toEndOf="@+id/imageButton4" />
 
                 </RelativeLayout>
 
@@ -182,7 +255,11 @@
                 android:id="@+id/relativeLayout3"
                 android:layout_below="@+id/relativeLayout2"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:clickable="true"
+                android:onClick="changeActivity"
+                android:textAlignment="center"
+                android:visibility="visible">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -201,7 +278,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/relativeLayout6" >
+                    android:id="@+id/relativeLayout6"
+                    android:focusable="false">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -209,11 +287,10 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Title | Director"
                         android:id="@+id/textView12"
+                        android:textColor="#010101"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginStart="32dp" />
+                        android:layout_alignParentStart="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -223,7 +300,8 @@
                         android:id="@+id/textView13"
                         android:layout_below="@+id/textView12"
                         android:layout_alignLeft="@+id/textView12"
-                        android:layout_alignStart="@+id/textView12" />
+                        android:layout_alignStart="@+id/textView12"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -234,8 +312,9 @@
                         android:layout_below="@+id/textView13"
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="false"
-                        android:layout_alignStart="@+id/textView13"
-                        android:layout_alignLeft="@+id/textView13" />
+                        android:layout_alignStart="@+id/textView12"
+                        android:layout_alignLeft="@+id/textView12"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,8 +323,10 @@
                         android:text="Last Watched:"
                         android:id="@+id/textView15"
                         android:layout_centerVertical="true"
-                        android:layout_alignLeft="@+id/textView14"
-                        android:layout_alignStart="@+id/textView14" />
+                        android:layout_alignLeft="@+id/textView12"
+                        android:layout_alignStart="@+id/textView12"
+                        android:textColor="#010101"
+                        android:layout_below="@+id/textView14" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -254,8 +335,75 @@
                         android:text="Average Rating:"
                         android:id="@+id/textView16"
                         android:layout_below="@+id/textView15"
-                        android:layout_alignLeft="@+id/textView15"
-                        android:layout_alignStart="@+id/textView15" />
+                        android:layout_alignLeft="@+id/textView12"
+                        android:layout_alignStart="@+id/textView12"
+                        android:textColor="#010101" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton6"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/textView16"
+                        android:layout_toEndOf="@+id/textView16" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton7"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignBottom="@+id/imageButton6"
+                        android:layout_toRightOf="@+id/imageButton6"
+                        android:layout_toEndOf="@+id/imageButton6" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton8"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignBottom="@+id/imageButton7"
+                        android:layout_toRightOf="@+id/imageButton7"
+                        android:layout_toEndOf="@+id/imageButton7" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton9"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignTop="@+id/imageButton8"
+                        android:layout_toRightOf="@+id/imageButton8"
+                        android:layout_toEndOf="@+id/imageButton8" />
+
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/imageButton10"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/star_empty"
+                        android:background="#ffffff"
+                        android:longClickable="false"
+                        android:layout_alignTop="@+id/imageButton9"
+                        android:layout_toRightOf="@+id/imageButton9"
+                        android:layout_toEndOf="@+id/imageButton9" />
+
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -263,7 +411,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
                 android:layout_below="@+id/relativeLayout3"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:clickable="true"
+                android:layoutMode="opticalBounds"
+                android:onClick="changeActivity">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -290,11 +441,10 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Title | Director"
                         android:id="@+id/textView7"
+                        android:textColor="#010101"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginStart="32dp" />
+                        android:layout_alignParentStart="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -304,7 +454,8 @@
                         android:id="@+id/textView8"
                         android:layout_below="@+id/textView7"
                         android:layout_alignLeft="@+id/textView7"
-                        android:layout_alignStart="@+id/textView7" />
+                        android:layout_alignStart="@+id/textView7"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -315,8 +466,9 @@
                         android:layout_below="@+id/textView8"
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="false"
-                        android:layout_alignStart="@+id/textView8"
-                        android:layout_alignLeft="@+id/textView8" />
+                        android:layout_alignStart="@+id/textView7"
+                        android:layout_alignLeft="@+id/textView7"
+                        android:textColor="#010101" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -325,8 +477,10 @@
                         android:text="Last Watched:"
                         android:id="@+id/textView10"
                         android:layout_centerVertical="true"
-                        android:layout_alignLeft="@+id/textView9"
-                        android:layout_alignStart="@+id/textView9" />
+                        android:layout_alignLeft="@+id/textView7"
+                        android:layout_alignStart="@+id/textView7"
+                        android:textColor="#010101"
+                        android:layout_below="@+id/textView9" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -335,8 +489,18 @@
                         android:text="Average Rating"
                         android:id="@+id/textView11"
                         android:layout_below="@+id/textView10"
-                        android:layout_alignLeft="@+id/textView10"
-                        android:layout_alignStart="@+id/textView10" />
+                        android:layout_alignLeft="@+id/textView7"
+                        android:layout_alignStart="@+id/textView7"
+                        android:textColor="#010101" />
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ratingBar"
+                        android:layout_alignTop="@+id/textView11"
+                        android:layout_toRightOf="@+id/textView11"
+                        android:numStars="@integer/abc_config_activityShortDur"
+                        android:onClick="setContentView" />
                 </RelativeLayout>
             </RelativeLayout>
 

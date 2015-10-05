@@ -1,21 +1,36 @@
 package com.afe.pc.embr;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.preference.CheckBoxPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 public class SearchResults extends AppCompatActivity implements View.OnClickListener{
 
+    PopupWindow popUp;
+    LinearLayout layout;
+    TextView tv;
+    ViewGroup.LayoutParams params;
+    LinearLayout mainLayout;
+    CheckBoxPreference check;
+    boolean click = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+
     }
 
     @Override
@@ -41,14 +56,20 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     }
 
     private void viewItemDetails(){
-        startActivity(new Intent("SearchResults"));
-
+        Intent intent = new Intent(this, ItemView.class);
+        startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.relativeLayout2:
+                viewItemDetails();
+                break;
+            case R.id.relativeLayout3:
+                viewItemDetails();
+                break;
+            case R.id.relativeLayout:
                 viewItemDetails();
                 break;
 

@@ -36,6 +36,10 @@
             android:name=".RecommendedItems"
             android:label="@string/title_activity_recommended_items" >
         </activity>
+        <activity
+            android:name=".Profile"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>
