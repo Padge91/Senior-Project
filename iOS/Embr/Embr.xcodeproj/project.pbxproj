@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66209A1E1BC2FA3600902B02 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66209A1D1BC2FA3600902B02 /* CommentsDataSource.swift */; settings = {ASSET_TAGS = (); }; };
+		66209A201BC2FB5C00902B02 /* UserDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66209A1F1BC2FB5C00902B02 /* UserDataSource.swift */; settings = {ASSET_TAGS = (); }; };
 		6637245E1BC082CC00BEA831 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6637245D1BC082CC00BEA831 /* LoginViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		664BE7871BA757F400FA7EA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664BE7861BA757F400FA7EA5 /* AppDelegate.swift */; };
 		664BE78E1BA757F500FA7EA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 664BE78D1BA757F500FA7EA5 /* Images.xcassets */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		66209A1D1BC2FA3600902B02 /* CommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
+		66209A1F1BC2FB5C00902B02 /* UserDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataSource.swift; sourceTree = "<group>"; };
 		6637245D1BC082CC00BEA831 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		664BE7811BA757F400FA7EA5 /* Embr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Embr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		664BE7851BA757F400FA7EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 				664BE7B01BA7857400FA7EA5 /* MediaItem.swift */,
 				665399D61BAB43490055899B /* Comment.swift */,
 				666796971BB6BD2A00643098 /* ItemDataSource.swift */,
+				66209A1D1BC2FA3600902B02 /* CommentsDataSource.swift */,
+				66209A1F1BC2FB5C00902B02 /* UserDataSource.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -268,9 +274,11 @@
 				66873A0E1BA9CED600A71432 /* ItemDetailsViewController.swift in Sources */,
 				664BE7B11BA7857400FA7EA5 /* MediaItem.swift in Sources */,
 				664BE7871BA757F400FA7EA5 /* AppDelegate.swift in Sources */,
+				66209A201BC2FB5C00902B02 /* UserDataSource.swift in Sources */,
 				664BE7AF1BA76C5700FA7EA5 /* User.swift in Sources */,
 				66CA4B321BB5DE17000B1C76 /* MenuViewController.swift in Sources */,
 				66CA4B341BB5E7D0000B1C76 /* CommentsViewController.swift in Sources */,
+				66209A1E1BC2FA3600902B02 /* CommentsDataSource.swift in Sources */,
 				6637245E1BC082CC00BEA831 /* LoginViewController.swift in Sources */,
 				666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */,
 			);

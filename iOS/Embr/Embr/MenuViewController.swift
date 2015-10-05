@@ -2,7 +2,9 @@ import UIKit
 
 class MenuViewController: UITableViewController {
     private let loginSegueIdentifier = "segueToLogin"
-    var menu = ["Login", "Logout", "Settings"]
+    private let signUpSegueIdentifier = "segueToSignUp"
+    private let settingsSegueIdentifier = "segueToSettings"
+    var menu = ["Login", "Logout", "Sign Up", "Settings"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,16 +26,27 @@ class MenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == menu.indexOf("Login") {
+        switch indexPath.row {
+        case menu.indexOf("Login")!:
             performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
-        } else if indexPath.row == menu.indexOf("Logout") {
-            let logoutConfirmationAlert = UIAlertController(title: "Logout", message: "Are you sure you want to log out?", preferredStyle: .Alert)
-            let yesAction = UIAlertAction(title: "Yes", style: .Default, handler: logout)
-            let noAction = UIAlertAction(title: "No", style: .Default, handler: nil)
-            logoutConfirmationAlert.addAction(yesAction)
-            logoutConfirmationAlert.addAction(noAction)
-            presentViewController(logoutConfirmationAlert, animated: true, completion: nil)
+        case menu.indexOf("Logout")!:
+            confirmLogout()
+        case menu.indexOf("Sign Up")!:
+            performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
+        case menu.indexOf("Settings")!:
+            performSegueWithIdentifier(settingsSegueIdentifier, sender: nil)
+        default:
+            break;
         }
+    }
+    
+    func confirmLogout() {
+        let logoutConfirmationAlert = UIAlertController(title: "Logout", message: "Are you sure you want to log out?", preferredStyle: .Alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .Default, handler: logout)
+        let noAction = UIAlertAction(title: "No", style: .Default, handler: nil)
+        logoutConfirmationAlert.addAction(yesAction)
+        logoutConfirmationAlert.addAction(noAction)
+        presentViewController(logoutConfirmationAlert, animated: true, completion: nil)
     }
     
     func logout(action: UIAlertAction) {

@@ -4,7 +4,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     private let menuSegueIdentifier = "segueToMenu"
-    private var model = ItemDataSource.getModel()
+    private var model = ItemDataSource.getInstance()
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!

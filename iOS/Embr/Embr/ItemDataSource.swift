@@ -4,7 +4,7 @@ class ItemDataSource {
     
     private static var instance: ItemDataSource?
     
-    static func getModel() -> ItemDataSource {
+    static func getInstance() -> ItemDataSource {
         if instance == nil {
             instance = ItemDataSource()
         }
