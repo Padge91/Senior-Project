@@ -1,19 +1,11 @@
-//
-//  SearchViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 9/18/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
     
-    let itemDetailSegueIdentifier = "searchToItemDetailSegue"
-    var model = ItemDetailModel.getModel()
-    var searchResults = [MediaItem]()
-    var searchController = UISearchController(searchResultsController: nil)
+    private let itemDetailSegueIdentifier = "searchToItemDetailSegue"
+    private var model = ItemDataSource.getModel()
+    private var searchResults = [MediaItem]()
+    private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!
     
     override func viewDidLoad() {
@@ -22,16 +14,16 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         setupSearchResultsTableView()
     }
     
-    func setupSearchController() {
+    private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.sizeToFit()
-        searchResultsTableView.tableHeaderView = searchController.searchBar
     }
     
-    func setupSearchResultsTableView() {
+    private func setupSearchResultsTableView() {
         searchResultsTableView.delegate = self
         searchResultsTableView.dataSource = self
+        searchResultsTableView.tableHeaderView = searchController.searchBar
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -41,13 +33,14 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender is NSIndexPath && segue.identifier == itemDetailSegueIdentifier {
             let destination = segue.destinationViewController as! ItemDetailsViewController
-            destination.setMediaItem(searchResults[(sender as! NSIndexPath).row])
+            let mediaItem = searchResults[(sender as! NSIndexPath).row]
+            destination.setMediaItem(mediaItem)
         }
     }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        searchResults = model.searchForItems(self.searchController.searchBar.text!)
-        self.searchResultsTableView.reloadData()
+        searchResults = model.getItemsBySearchCriteria(self.searchController.searchBar.text!)
+        searchResultsTableView.reloadData()
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,9 +59,9 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         cell!.textLabel!.text = mediaItem.title
         
         if mediaItem is Book {
-            cell!.detailTextLabel!.text = (mediaItem as! Book).author
+            cell!.detailTextLabel?.text = (mediaItem as! Book).author
         } else if mediaItem is Movie {
-            cell!.detailTextLabel!.text = (mediaItem as! Movie).director
+            cell!.detailTextLabel?.text = (mediaItem as! Movie).director
         }
         
         if let imageName = mediaItem.imageName {

@@ -50,6 +50,13 @@ class ItemORM(object):
     def convert_row_to_FullItem(self,rows):
         return FullItem(rows[0])
 
+    def build_search_query(self, params, genres):
+        query = "select id, title, description, creator from items where "
+        # copy the title into creator also
+        #do 'or' on title and creator
+        #get id's on each item and get their genres
+        #filter on genres
+
     #build query
     def build_query(self, query_params):
         query = "select id, title, description, creator from items where "

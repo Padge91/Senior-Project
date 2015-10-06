@@ -2,7 +2,7 @@ __author__ = 'nicholaspadgett'
 
 import pymysql
 
-host = '52.88.5.108'
+host = 'localhost'
 port=3306
 user='db_user'
 password='group2isthebest1!'
@@ -17,8 +17,8 @@ def select_query(query):
     results = cursor.fetchall()
     return results
 
-def insert_query(query):
-    cursor.execute(query)
+def insert_query(query, params):
+    cursor.execute(query, params)
     conn.commit()
 
 def close():

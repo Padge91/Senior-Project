@@ -1,18 +1,12 @@
-//
-//  ItemDetailsViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 9/16/15.
-//  Copyright (c) 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let model = ItemDetailModel.getModel()
+    private let commentsSegueIdentifier = "commentsSegue"
+    private let sectionHeadings = ["Reviews", "Blurb", "Comments"]
+    private let reviewsSection = 0, blurbSection = 1, commentsSection = 2
     private var mediaItem: MediaItem? = nil
-    var itemDetails = [String: [AnyObject]]()
+    private var itemDetails = [String: [AnyObject]]()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var topAttrubuteLabel: UILabel!
@@ -22,28 +16,26 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(mediaItem != nil)
         loadTitleAndImage()
         loadTopAttribute()
         loadBottomAttribute()
         setupItemDetailsTable()
     }
     
-    func setupItemDetailsTable() {
+    private func setupItemDetailsTable() {
         itemDetailsTableView.dataSource = self
         itemDetailsTableView.delegate = self
         itemDetailsTableView.estimatedRowHeight = 100.0
         itemDetailsTableView.rowHeight = UITableViewAutomaticDimension
-        itemDetailsTableView.backgroundColor = UIColor.whiteColor()
     }
     
-    func loadTitleAndImage() {
-        assert(mediaItem != nil)
+    private func loadTitleAndImage() {
         coverImageView.image = UIImage(named: mediaItem!.imageName!)
         titleLabel.text = mediaItem!.title
     }
     
-    func loadTopAttribute() {
-        assert(mediaItem != nil)
+    private func loadTopAttribute() {
         if mediaItem is Movie {
             topAttrubuteLabel.text = (mediaItem as! Movie).director
         } else if mediaItem is Book {
@@ -51,10 +43,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func loadBottomAttribute() {
+    private func loadBottomAttribute() {
         assert(mediaItem != nil)
         if mediaItem is Movie {
-            bottomAttributeLabel.text = (mediaItem as! Movie).cast[0]
+            bottomAttributeLabel.text = (mediaItem as! Movie).cast.first
         } else if mediaItem is Book {
             bottomAttributeLabel.text = "Page Count: \((mediaItem as! Book).pageCount)"
         }
@@ -63,12 +55,12 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     func setMediaItem(item: MediaItem) {
         mediaItem = item
         itemDetails = [
-            model.itemDetailHeadings[0]: [
+            sectionHeadings[reviewsSection]: [
                 "Average Friend Reviews:",
                 "Average Embr User Review:",
             ],
-            model.itemDetailHeadings[1]: [item.blurb],
-            model.itemDetailHeadings[2]: item.comments
+            sectionHeadings[blurbSection]: [item.blurb],
+            sectionHeadings[commentsSection]: item.comments
         ]
     }
     
@@ -76,7 +68,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         let reusableCellIdentifier = "cellId"
         var cell = itemDetailsTableView.dequeueReusableCellWithIdentifier(reusableCellIdentifier)
         
-        let sectionTitle = model.itemDetailHeadings[indexPath.section]
+        let sectionTitle = sectionHeadings[indexPath.section]
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reusableCellIdentifier)
         }
@@ -94,6 +86,24 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         return cell!
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 2 {
+            performSegueWithIdentifier(commentsSegueIdentifier, sender: indexPath)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        assert(mediaItem != nil)
+        if sender is NSIndexPath && segue.identifier == commentsSegueIdentifier {
+            let destination = segue.destinationViewController as! CommentsViewController
+            let indexPath = sender as! NSIndexPath
+            destination.comments.removeAll()
+            let selectedComment = mediaItem!.comments[indexPath.row]
+            destination.comments.append(selectedComment)
+            destination.comments.appendContentsOf(selectedComment.children)
+        }
+    }
+    
     @IBAction func reviewItem(sender: UIButton) {
         let index = reviewCollection.indexOf(sender)
         for i in 0...4 {
@@ -107,15 +117,15 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return model.itemDetailHeadings[section]
+        return sectionHeadings[section]
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return model.itemDetailHeadings.count
+        return sectionHeadings.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionTitle = model.itemDetailHeadings[section]
+        let sectionTitle = sectionHeadings[section]
         let sectionDetails = itemDetails[sectionTitle]
         return sectionDetails?.count ?? 0
     }
