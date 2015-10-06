@@ -340,4 +340,15 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" />
 
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="60dp"
+        android:text="Review"
+        android:id="@+id/textView17"
+        android:layout_below="@+id/button2"
+        android:layout_alignLeft="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_marginTop="18dp"
+        android:textColor="#010101" />
+
 </RelativeLayout>
