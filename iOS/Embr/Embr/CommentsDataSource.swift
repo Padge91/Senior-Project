@@ -18,7 +18,7 @@ public class CommentsDataSource {
         return instance!
     }
     
-    func insertComment(comment: Comment) {
+    func insertComment(subject: String, body: String) {
         // Insert comment into the database
     }
 }
