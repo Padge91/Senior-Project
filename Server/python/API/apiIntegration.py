@@ -42,9 +42,11 @@ def main():
 def insert_object(cursor, object):
     new_object = get_object_values(object)
     print new_object
+    exit(1)
     #query to insert item
+    #query1 = "insert into items (type, title, description, creator) values('{0}','{1}','{2}','{3}')".format(new_object[""])
     #query to insert scores
-    query1 = ""
+    query2 = ""
     queries = []
     for query in queries:
         cursor.execute(query)
