@@ -25,6 +25,7 @@ num_items = 10
 api_string = "http://api.walmartlabs.com/v1/search?apiKey={0}&query={1}&categoryId={2}&numItems="+str(num_items)
 object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}"
 time_wait = .3
+max_pages = 200
 
 def main():
     print "Getting unique id's"
@@ -44,7 +45,7 @@ def insert_object(cursor, object):
     print new_object
     exit(1)
     #query to insert item
-    #query1 = "insert into items (type, title, description, creator) values('{0}','{1}','{2}','{3}')".format(new_object[""])
+    #query1 = "insert into items (type, title, description, creator) values('{0}','{1}','{2}','{3}')".format(new_object["category"], new_object["name"], new_object["description"], new_object["brand"])
     #query to insert scores
     query2 = ""
     queries = []
@@ -57,7 +58,7 @@ def get_object_values(object):
     review_score_dict = {"name":"reviewScore","default":0, "fields":["customerRating"]}
     brand_dict = {"name":"brand", "default":None, "fields":["brandName"]}
     description_dict = {"name":"description","default":None, "fields":["shortDescription","longDescription"]}
-    images_dict = {"name":"image","default":None, "fields":["thumbnailImage", "mediumImage", "largeImage"]}
+    images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
     category_dict = {"name":"category","default":None, "fields":["categoryPath"]}
     #needs genres
@@ -99,8 +100,8 @@ def get_item_ids(categories, api_string):
             time.sleep(time_wait)
             object = json.loads(response_json)
             number_of_results = int(object["totalResults"])
-            if number_of_results > 100:
-                number_of_results = 100
+            if number_of_results > max_pages:
+                number_of_results = max_pages
 
             print "Letter " + str(letter) + " has " + str(number_of_results) + " results..."
             iterate_through_pages(url, number_of_results)
