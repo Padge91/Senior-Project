@@ -20,7 +20,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_profile);
         button1 = (Button)findViewById(R.id.search_for_items);
         button1.setOnClickListener(this);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void showPopUp(View view){
