@@ -18,7 +18,7 @@ def get_user_id_from_session(params):
 def logout(params):
     session = params["session"]
     remove_session(session)
-    return {"success":True}
+    return True
 
 def login(params):
     username = params["username"]
@@ -74,19 +74,13 @@ def get_salt(username):
 
 def generate_salt():
     return bcrypt.gensalt(10)
-'''
-def logout():
-    print "logout"
 
-def validate_session():
-    print "validated"
-'''
 def create_account(params):
     validate_password(params["password"], params["passwordConfirm"])
     validate_username_email(params["username"], params["email"])
     insert_account_info(params)
 
-    return {"success":True}
+    return True
 
 def insert_account_info(params):
     salt = generate_salt()

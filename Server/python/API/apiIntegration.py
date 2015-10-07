@@ -4,10 +4,14 @@ import urllib2
 import json
 import pymysql
 import time
+from random import randint
+from random import choice
+from datetime import datetime
 
 #api configurations
 categories = [3920, 4096]
 api_key = "w6cuj9ryxnhuzkctyywu8bkw"
+number_of_users=200
 
 #database configurations
 host = 'localhost'
@@ -17,15 +21,17 @@ password='group2isthebest1!'
 db='EMBR'
 
 #dont change these
-alphabet = "a"
-#alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
+#alphabet = "b"
+alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
 item_ids = []
 objects = []
 num_items = 10
 api_string = "http://api.walmartlabs.com/v1/search?apiKey={0}&query={1}&categoryId={2}&numItems="+str(num_items)
 object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}"
 time_wait = .3
-max_pages = 200
+max_pages = 300
+random_words = ["yo", "test", "organize", "awesome", "not lord of the rings", "pretty good", "idk", "pig latin", "guess who", "horrible", "you know it", "null pointer exception", "Coca-cola, now with zero calories!", "nice"]
+format = '%Y-%m-%d %H:%M:%S'
 
 def main():
     print "Getting unique id's"
@@ -40,23 +46,50 @@ def main():
     insert_objects_into_db(objects)
     print "Done"
 
-def insert_object(cursor, object):
+def insert_object(cursor, object, conn):
     new_object = get_object_values(object)
-    print new_object
-    exit(1)
-    #query to insert item
-    #query1 = "insert into items (type, title, description, creator) values('{0}','{1}','{2}','{3}')".format(new_object["category"], new_object["name"], new_object["description"], new_object["brand"])
-    #query to insert scores
-    query2 = ""
+
     queries = []
+
+    item_id = randint(0, 500000000)
+
+    #query to insert item
+    query1 = "insert into items (id, type, title, description, creator) values({0},{1},{2},{3}, {4})".format(item_id, conn.escape(new_object["category"]), conn.escape(new_object["name"][0:50]), conn.escape(new_object["description"]), conn.escape(new_object["brand"]))
+    queries.append(query1)
+
+    #query to insert scores
+    for i in range(0, int(new_object["numReviews"])):
+        user_id = randint(1,number_of_users-1)
+        queries.append("insert into item_reviews (item_id, user_id, review_value) values ({0}, {1}, {2})".format(item_id, user_id, int(round(float(new_object["reviewScore"])))))
+
+        #query to insert comments
+        for i in range(0, randint(0, 5)):
+            comment_id = randint(0, 90000000000)
+            choices = [choice(random_words) for _ in range(10)]
+            sentence = ' '.join(choices)
+            queries.append("insert into comments (id, user_id, create_date, content) values ({0}, {1}, '{2}', {3})".format(comment_id, user_id, datetime.now().strftime(format), conn.escape(sentence)))
+            queries.append("insert into item_comments (item_id, comment_id) values ({0}, {1})".format(item_id, comment_id))
+
+            #query to insert comments on comments
+            for i in range(0, randint(0,2)):
+                index_comment_id = randint(0, 90000000000)
+                choices = [choice(random_words) for _ in range(10)]
+                sentence = ' '.join(choices)
+                queries.append("insert into comments (id, user_id, create_date, content) values ({0}, {1}, '{2}', {3})".format(index_comment_id, randint(1,number_of_users-1), datetime.now(), conn.escape(sentence)))
+                queries.append("insert into comment_parents (parent_id, child_id) values ({0}, {1})".format(comment_id, index_comment_id))
+
+
     for query in queries:
-        cursor.execute(query)
-        cursor.commit()
+        #print query
+        try:
+            cursor.execute(query)
+        except Exception as e:
+            print "ID collision, skipping this row"
 
 def get_object_values(object):
     review_num_dict = {"name":"numReviews", "default":0, "fields":["numReviews"]}
     review_score_dict = {"name":"reviewScore","default":0, "fields":["customerRating"]}
-    brand_dict = {"name":"brand", "default":None, "fields":["brandName"]}
+    brand_dict = {"name":"brand", "default":"Not Specified", "fields":["brandName"]}
     description_dict = {"name":"description","default":None, "fields":["shortDescription","longDescription"]}
     images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
@@ -82,8 +115,9 @@ def insert_objects_into_db(objects):
     cursor = conn.cursor()
 
     for object in objects:
-        insert_object(cursor, object["items"][0])
+        insert_object(cursor, object["items"][0], conn)
 
+    conn.commit()
     cursor.close()
     conn.close()
 
@@ -98,6 +132,7 @@ def get_item_ids(categories, api_string):
             #get response and get num of items, then iterate_through_pages method
             response_json =  make_request(url)
             time.sleep(time_wait)
+
             object = json.loads(response_json)
             number_of_results = int(object["totalResults"])
             if number_of_results > max_pages:

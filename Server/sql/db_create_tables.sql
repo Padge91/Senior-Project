@@ -12,7 +12,7 @@ create table users (
 create table items (
     id int not null auto_increment,
     type varchar(15) not null,
-    title varchar(50) not null,
+    title varchar(100) not null,
     description text not null,
     creator varchar(50) not null,
     primary key(id)

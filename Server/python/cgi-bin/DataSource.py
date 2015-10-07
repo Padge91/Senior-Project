@@ -18,6 +18,7 @@ def select_query(query):
     return results
 
 def insert_query(query, params):
+
     cursor.execute(query, params)
     conn.commit()
 
