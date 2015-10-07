@@ -4,7 +4,7 @@ class MenuViewController: UITableViewController {
     private let loginSegueIdentifier = "segueToLogin"
     private let signUpSegueIdentifier = "segueToSignUp"
     private let settingsSegueIdentifier = "segueToSettings"
-    var menu = ["Login", "Logout", "Sign Up", "Settings"]
+    var menu = ["Login", "Logout", "Sign Up"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +33,6 @@ class MenuViewController: UITableViewController {
             confirmLogout()
         case menu.indexOf("Sign Up")!:
             performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
-        case menu.indexOf("Settings")!:
-            performSegueWithIdentifier(settingsSegueIdentifier, sender: nil)
         default:
             break;
         }

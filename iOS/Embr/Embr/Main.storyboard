@@ -45,7 +45,6 @@
                     <connections>
                         <segue destination="UGJ-Fb-ILS" kind="show" identifier="segueToLogin" id="bxD-Cw-Ux9"/>
                         <segue destination="kj3-tt-Tvt" kind="show" identifier="segueToSignUp" id="TH7-hf-dQ7"/>
-                        <segue destination="pFD-2G-uJz" kind="show" identifier="segueToSettings" id="av3-Zr-mS8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c36-if-Tbk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -429,37 +428,6 @@
             </objects>
             <point key="canvasLocation" x="2137" y="625"/>
         </scene>
-        <!--Settings-->
-        <scene sceneID="J1i-fZ-0TP">
-            <objects>
-                <tableViewController title="Settings" id="pFD-2G-uJz" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ngU-IX-I9T">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="OTN-bt-40u">
-                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OTN-bt-40u" id="Pf6-uS-hfB">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </tableViewCellContentView>
-                                <animations/>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="pFD-2G-uJz" id="uKr-bd-RoX"/>
-                            <outlet property="delegate" destination="pFD-2G-uJz" id="cGb-6g-QSP"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bhI-uK-zCk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="712" y="2111"/>
-        </scene>
         <!--Login-->
         <scene sceneID="wla-TY-7W8">
             <objects>
@@ -508,7 +476,7 @@
         <!--Sign Up-->
         <scene sceneID="t5I-UW-vix">
             <objects>
-                <viewController title="Sign Up" id="kj3-tt-Tvt" sceneMemberID="viewController">
+                <viewController title="Sign Up" id="kj3-tt-Tvt" customClass="SignUpViewController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4fc-C0-8zg"/>
                         <viewControllerLayoutGuide type="bottom" id="zPm-j9-rhI"/>
@@ -516,9 +484,45 @@
                     <view key="view" contentMode="scaleToFill" id="cMl-DM-dRz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nrq-yQ-Tqg">
+                                <rect key="frame" x="20" y="72" width="560" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="33J-M6-H0e">
+                                <rect key="frame" x="20" y="110" width="560" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u3C-Ji-3DM">
+                                <rect key="frame" x="20" y="148" width="560" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="leading" secondItem="33J-M6-H0e" secondAttribute="leading" id="4tf-hv-aXA"/>
+                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="top" secondItem="33J-M6-H0e" secondAttribute="bottom" constant="8" symbolic="YES" id="BOH-PU-U8J"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="trailing" secondItem="u3C-Ji-3DM" secondAttribute="trailing" id="Jwd-LL-N4v"/>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="trailing" secondItem="cMl-DM-dRz" secondAttribute="trailingMargin" id="LNO-i5-VY6"/>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="trailing" secondItem="33J-M6-H0e" secondAttribute="trailing" id="ZOB-8c-T5B"/>
+                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="leading" secondItem="cMl-DM-dRz" secondAttribute="leadingMargin" id="Zsm-fS-b7G"/>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="top" secondItem="4fc-C0-8zg" secondAttribute="bottom" constant="8" symbolic="YES" id="eWv-p9-er6"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="leading" secondItem="u3C-Ji-3DM" secondAttribute="leading" id="gpD-QS-bjV"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="top" secondItem="nrq-yQ-Tqg" secondAttribute="bottom" constant="8" symbolic="YES" id="mUF-b5-cdI"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="confirmPassword" destination="u3C-Ji-3DM" id="cFT-27-Ric"/>
+                        <outlet property="password" destination="33J-M6-H0e" id="ovg-Vt-1an"/>
+                        <outlet property="username" destination="nrq-yQ-Tqg" id="9u2-RY-mN5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gVh-zG-dvq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
