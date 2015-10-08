@@ -61,6 +61,7 @@ def insert_object(cursor, object, conn):
     for i in range(0, int(new_object["numReviews"])):
         user_id = randint(1,number_of_users-1)
         queries.append("insert into item_reviews (item_id, user_id, review_value) values ({0}, {1}, {2})".format(item_id, user_id, int(round(float(new_object["reviewScore"])))))
+        queries.append("insert into item_images (item_id, image_url) values ({0}, {1})".format(item_id, conn.escape(new_object["image"])))
 
         #query to insert comments
         for i in range(0, randint(0, 5)):

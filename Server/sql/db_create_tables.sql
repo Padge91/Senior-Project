@@ -82,7 +82,7 @@ create table item_statistics (
 create table item_images (
     id int not null auto_increment,
     item_id int not null,
-    image blob not null,
+    image_url varchar(200) not null,
     primary key(id),
     foreign key(item_id) references items(id)
 );
