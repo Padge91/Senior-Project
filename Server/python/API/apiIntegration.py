@@ -21,15 +21,15 @@ password='group2isthebest1!'
 db='EMBR'
 
 #dont change these
-#alphabet = "b"
-alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
+alphabet = "b"
+#alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
 item_ids = []
 objects = []
 num_items = 10
 api_string = "http://api.walmartlabs.com/v1/search?apiKey={0}&query={1}&categoryId={2}&numItems="+str(num_items)
-object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}"
-time_wait = .3
-max_pages = 300
+object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}&richAttributes=true"
+time_wait = 1
+max_pages = 100
 random_words = ["yo", "test", "organize", "awesome", "not lord of the rings", "pretty good", "idk", "pig latin", "guess who", "horrible", "you know it", "null pointer exception", "Coca-cola, now with zero calories!", "nice"]
 format = '%Y-%m-%d %H:%M:%S'
 
@@ -90,7 +90,7 @@ def insert_object(cursor, object, conn):
 def get_object_values(object):
     review_num_dict = {"name":"numReviews", "default":0, "fields":["numReviews"]}
     review_score_dict = {"name":"reviewScore","default":0, "fields":["customerRating"]}
-    brand_dict = {"name":"brand", "default":"Not Specified", "fields":["brandName"]}
+    brand_dict = {"name":"brand", "default":"Not Specified", "fields":["director", "Director", "author", "Author", "Artist", "artist","brandName"]}
     description_dict = {"name":"description","default":None, "fields":["shortDescription","longDescription"]}
     images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
@@ -101,7 +101,10 @@ def get_object_values(object):
     object_dict = dict()
     for dictionary in dicts:
         for attempt_field in dictionary["fields"]:
-            if attempt_field in object:
+            if attempt_field in object["richAttributes"]:
+                object_dict[dictionary["name"]] = object["richAttributes"][attempt_field]
+                break;
+            elif attempt_field in object:
                 object_dict[dictionary["name"]] = object[attempt_field]
                 break;
             else:
