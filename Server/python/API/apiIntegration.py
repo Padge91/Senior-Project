@@ -165,7 +165,10 @@ def check_type(object):
     film_words = ["film", "Film", "Movie", "movie"]
     tv_words = ["TV", "tv", "Tv", "television"]
     book_words = ["book", "Book"]
-    object_category = object["categoryPath"]
+    if "categoryPath" in object:
+        object_category = object["categoryPath"]
+    else:
+        object=category="Not Specified"
     return_val = False
     if "OLD STUFF" in object_category:
         return return_val
