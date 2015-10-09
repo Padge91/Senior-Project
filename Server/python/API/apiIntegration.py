@@ -21,15 +21,15 @@ password='group2isthebest1!'
 db='EMBR'
 
 #dont change these
-alphabet = "b"
-#alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
+#alphabet = "b"
+alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
 item_ids = []
 objects = []
 num_items = 10
 api_string = "http://api.walmartlabs.com/v1/search?apiKey={0}&query={1}&categoryId={2}&numItems="+str(num_items)
 object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}&richAttributes=true"
 time_wait = 1
-max_pages = 100
+max_pages = 200
 random_words = ["yo", "test", "organize", "awesome", "not lord of the rings", "pretty good", "idk", "pig latin", "guess who", "horrible", "you know it", "null pointer exception", "Coca-cola, now with zero calories!", "nice"]
 format = '%Y-%m-%d %H:%M:%S'
 
@@ -135,6 +135,8 @@ def get_item_ids(categories, api_string):
 
             #get response and get num of items, then iterate_through_pages method
             response_json =  make_request(url)
+            if response_json is None:
+                continue
             time.sleep(time_wait)
 
             object = json.loads(response_json)
@@ -150,6 +152,8 @@ def get_item_info(item_ids):
     for id in item_ids:
         url = object_api_string.format(id, api_key)
         response = make_request(url)
+        if response is None:
+                continue
         time.sleep(time_wait);
         object = json.loads(response)
         if not check_type(object["items"][0]):
@@ -184,6 +188,8 @@ def iterate_through_pages(url, number_of_items):
     for i in range(0, iterations):
         new_url = url+"&start="+str((i*num_items)+1)
         response_json = make_request(url)
+        if response_json is None:
+                continue
         time.sleep(time_wait)
         print "Page Number " + str(i+1) + "/" + str(iterations)
         response_object = json.loads(response_json)
@@ -205,8 +211,11 @@ def make_request(url):
     #exception attempts same block of code because sometimes we get a 502 error, which breaks the system
     #this exception will usually work around it
     except Exception as e:
-        response = urllib2.urlopen(url).read()
-        return response
+        try:
+            response = urllib2.urlopen(url).read()
+            return response
+        except Exception as e:
+            return None
 
 if __name__=="__main__":
     main()
