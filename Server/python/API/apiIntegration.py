@@ -101,14 +101,15 @@ def get_object_values(object):
     object_dict = dict()
     for dictionary in dicts:
         for attempt_field in dictionary["fields"]:
-            if attempt_field in object["richAttributes"]:
-                object_dict[dictionary["name"]] = object["richAttributes"][attempt_field]
-                break;
-            elif attempt_field in object:
-                object_dict[dictionary["name"]] = object[attempt_field]
-                break;
-            else:
-                object_dict[dictionary["name"]] = dictionary["default"]
+            if "richAttributes" in object:
+                if attempt_field in object["richAttributes"]:
+                    object_dict[dictionary["name"]] = object["richAttributes"][attempt_field]
+                    break;
+                elif attempt_field in object:
+                    object_dict[dictionary["name"]] = object[attempt_field]
+                    break;
+                else:
+                    object_dict[dictionary["name"]] = dictionary["default"]
 
     return object_dict
 
