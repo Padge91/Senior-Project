@@ -84,6 +84,7 @@ def insert_object(cursor, object, conn):
         #print query
         try:
             cursor.execute(query)
+            conn.commit()
         except Exception as e:
             print "ID collision, skipping this row"
 
