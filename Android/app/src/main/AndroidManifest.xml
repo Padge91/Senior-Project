@@ -15,14 +15,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Search_for_Items"
-            android:label="@string/title_activity_search_for__items" >
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".SearchResults"
             android:label="@string/title_activity_search_results" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ItemView"
@@ -42,6 +45,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.afe.pc.embr.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".CommentView"
+            android:label="@string/title_activity_comment_view"
+            android:parentActivityName=".ItemView" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.afe.pc.embr.ItemView" />
         </activity>
     </application>
 

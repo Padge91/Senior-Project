@@ -1,6 +1,5 @@
 package com.afe.pc.embr;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,26 +7,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ItemView extends AppCompatActivity {
+public class CommentView extends AppCompatActivity {
 
     ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_view_layout);
+        setContentView(R.layout.comment_view_layout);
 
         // Get ListView object from xml
-        listView = (ListView) findViewById(R.id.list1);
+        listView = (ListView) findViewById(R.id.list2);
 
         // Defined Array values to show in ListView
         String[] values = new String[] {"Comment 1", "Comment 2", "Comment 3", "Comment 4",
-                "Comment 5", "Comment 6", "Comment 7", "Comment 8", "Comment 9", "Comment 10",
-                "Comment 11", "Comment 12", "Comment 13", "Comment 14", "Comment 15", "Comment 16"};
+                "", "", "", "", "", "", "", "", "", "", ""};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
@@ -42,7 +39,7 @@ public class ItemView extends AppCompatActivity {
 
                 // ListView Clicked item value
                 String itemValue = (String) listView.getItemAtPosition(position);
-                openCommentActivity(itemValue);
+                Toast.makeText(getApplicationContext(), "Open comment thread", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -50,7 +47,7 @@ public class ItemView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item_view, menu);
+        getMenuInflater().inflate(R.menu.menu_comment_view, menu);
         return true;
     }
 
@@ -67,18 +64,5 @@ public class ItemView extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void addToLibrariesButton(View view) {
-        Toast.makeText(getApplicationContext(),
-                "button is working", Toast.LENGTH_LONG)
-                .show();
-        //Intent intent = new Intent(this, Library.class);
-        //startActivity(intent);
-    }
-
-    public void openCommentActivity(String S) {
-        Intent intent = new Intent(this, CommentView.class);
-        startActivity(intent);
     }
 }

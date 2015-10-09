@@ -17,10 +17,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.profile_layout);
         button1 = (Button)findViewById(R.id.search_for_items);
         button1.setOnClickListener(this);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void showPopUp(View view){
@@ -54,20 +53,21 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
         return super.onOptionsItemSelected(item);
     }
+
     public void openActivity(String S){
-        if (S == "Home"){
+        if (S.equals("Home")){
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
-        else if (S == "RecommendedItems"){
+        else if (S.equals("RecommendedItems")){
             Intent intent = new Intent(this, RecommendedItems.class);
             startActivity(intent);
         }
-        else if (S == "Library"){
+        else if (S.equals("Library")){
             Intent intent = new Intent(this, Library.class);
             startActivity(intent);
         }
-        else if (S == "SearchResults"){
+        else if (S.equals("SearchResults")){
             Intent intent = new Intent(this, SearchResults.class);
             startActivity(intent);
         }
