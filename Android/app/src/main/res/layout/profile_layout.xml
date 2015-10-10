@@ -37,4 +37,5 @@
         android:layout_toRightOf="@+id/Navigation_Button"
         android:layout_toLeftOf="@+id/search_for_items"
         android:layout_toStartOf="@+id/search_for_items" />
+
 </RelativeLayout>

@@ -21,4 +21,7 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search</string>
     <string name="title_activity_comment_view">CommentView</string>
+    <string name="owned_library">Owned</string>
+    <string name="wishlist_library">Wishlist</string>
+    <string name="custom_library">Custom</string>
 </resources>

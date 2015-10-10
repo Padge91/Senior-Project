@@ -87,12 +87,12 @@
         android:layout_width="160dp"
         android:layout_height="25dp"
         android:text="Add to My Libraries"
-        android:id="@+id/button2"
+        android:id="@+id/addToLibraryButton"
         android:background="#565676"
         android:layout_alignBottom="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:layout_toEndOf="@+id/imageView"
-        android:onClick="addToLibrariesButton"/>
+        android:onClick="showLibraryPopUp"/>
 
     // Friends Reviews
     <TextView
