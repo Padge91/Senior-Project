@@ -7,13 +7,13 @@ def success_response(response):
     print("Content-type:application/json")
     print("")
     if response is True:
-        print {"success":True}
+        print json.dumps({"success":True})
     elif isinstance(response, dict):
         print json.dumps({"success":response})
     elif not isinstance(response, list):
-        print {"success":response.jsonify()}
+        print json.dumps({"success":response.jsonify()})
     else:
-        print {"success":json.dumps([object.jsonify() for object in response])}
+        print json.dumps({"success":json.dumps([object.jsonify() for object in response])})
 
 #failure response
 def failure_response(response):
