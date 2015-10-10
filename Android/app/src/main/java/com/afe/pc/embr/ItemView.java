@@ -81,26 +81,20 @@ public class ItemView extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showLibraryPopUp(View view){
-        PopupMenu popupMenu = new PopupMenu(this,view);
-        MenuInflater menuInflater = popupMenu.getMenuInflater();
-        PopUpMenuEventHandle popUpMenuEventHandle = new PopUpMenuEventHandle(getApplicationContext());
-        popupMenu.setOnMenuItemClickListener(popUpMenuEventHandle);
-        menuInflater.inflate(R.menu.menu_library, popupMenu.getMenu());
-        popupMenu.show();
-    }
-
     public void addToLibraryButtonStartActivity(String s) {
         Intent intent;
         switch(s) {
-            case "Owend":
+            case "Owned":
                 intent = new Intent(this, Library.class);
+                intent.putExtra("Library Name", "Owned");
                 break;
             case "Wishlist":
                 intent = new Intent(this, Library.class);
+                intent.putExtra("Library Name", "Wishlist");
                 break;
             case "Custom":
                 intent = new Intent(this, Library.class);
+                intent.putExtra("Library Name", "Custom");
                 break;
             default:
                 Toast.makeText(ItemView.this, "Not Available", Toast.LENGTH_SHORT).show();
@@ -112,6 +106,7 @@ public class ItemView extends AppCompatActivity {
 
     public void openCommentActivity(String s) {
         Intent intent = new Intent(this, CommentView.class);
+        intent.putExtra("Comment ID", s);
         startActivity(intent);
     }
 }
