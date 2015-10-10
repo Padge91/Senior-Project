@@ -2,6 +2,8 @@ __author__ = 'nicholaspadgett'
 
 from DataSource import *
 from CommentClass import *
+from userUtils import *
+import datetime
 
 class CommentORM(object):
 
@@ -101,3 +103,54 @@ class CommentORM(object):
             query += " {0} like '%{1}%'".format(item, query_params[item])
 
         return query
+
+    def add_comment(self, form):
+        format = '%Y-%m-%d %H:%M:%S'
+        parent_type = form["parent_type"]
+        parent_id = form["parent_id"]
+        user_id = get_user_id_from_session(form)
+        content = form["content"]
+
+        query = "insert into comments (user_id, create_date, content) values ({0}, '{1}', '{2}')".format(user_id, datetime.datetime.now().strftime(format), content)
+        insert_query(query)
+
+        get_id_query = "select id from comments where user_id={0} and create_date='{1}' and content='{2}'".format(user_id, datetime.datetime.now().strftime(format), content)
+        results = select_query(get_id_query)
+        comment_id = results[0][0]
+
+        parent_query = ""
+        if parent_type == "comment":
+            parent_query = "insert into comment_parents (parent_id, child_id) values ({0}, {1})".format(parent_id, comment_id)
+        elif parent_type == "item":
+            parent_query = "insert into item_comments (item_id, comment_id) values ({0}, {1})".format(parent_id, comment_id)
+        else:
+            raise Exception("parent_type must be either 'comment' or 'item'")
+
+        insert_query(parent_query)
+        return True
+
+    def rate_comment(self, form):
+        user_id = get_user_id_from_session(form)
+        comment_id = form["comment_id"]
+        rating = form["rating"]
+
+        if rating == "true":
+            rating = True
+        elif rating == "false":
+            rating = False
+        else:
+            raise Exception("Rating field must be either 'true' or 'false'")
+
+        get_rating_query = "select id from comment_ratings where user_id={0} and comment_id={1}".format(user_id, comment_id)
+        results = select_query(get_rating_query)
+        new_query = ""
+        if len(results) > 0:
+            local_id = results[0][0]
+            #do update
+            new_query="update comment_ratings set rating={0} where user_id={1} and comment_id={2}".format(rating, user_id, comment_id)
+        else:
+            #do insert
+            new_query="insert into comment_ratings (user_id, comment_id, rating) values ({0}, {1}, {2})".format(user_id, comment_id, rating)
+
+        insert_query(new_query)
+        return True

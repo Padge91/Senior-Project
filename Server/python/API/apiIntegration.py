@@ -81,7 +81,7 @@ def insert_object(cursor, object, conn):
 
 
     for query in queries:
-        #print query
+        print query
         try:
             cursor.execute(query)
             conn.commit()

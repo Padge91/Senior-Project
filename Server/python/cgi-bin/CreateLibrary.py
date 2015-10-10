@@ -2,14 +2,14 @@
 
 import cgi
 from Utilities import *
-from ItemORM import *
+from LibraryORM import *
 
-required_params = ["LibraryID"]
+required_params = ["session", "library_name", "visible"]
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = ItemORM()
+        orm = LibraryORM()
         response = orm.create_library(form)
         success_response(response)
     except Exception as e:

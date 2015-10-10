@@ -2,7 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py___jb_bak___" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/AddItemToLibrary.py___jb_bak___" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/CreateLibrary.py___jb_bak___" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py___jb_bak___" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/AddItemToLibrary.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/AddItemToLibrary.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/CreateLibrary.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/CreateLibrary.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/API/apiIntegration.py" afterPath="$PROJECT_DIR$/Server/python/API/apiIntegration.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
     </list>
     <ignored path="Senior-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +38,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="apiIntegration.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="apiIntegration.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/python/API/apiIntegration.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4986226" vertical-offset="1109" max-vertical-offset="3465">
-              <caret line="86" column="25" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
+            <state vertical-scroll-proportion="-32.22222" vertical-offset="240" max-vertical-offset="3465">
+              <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
               <folding>
                 <element signature="e#32#46#0" expanded="true" />
               </folding>
@@ -38,22 +50,54 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+      <file leaf-file-name="DataSource.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1137" max-vertical-offset="2520">
-              <caret line="87" column="2" selection-start-line="87" selection-start-column="2" selection-end-line="87" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="540">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_init.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/sql/db_init.sql">
+      <file leaf-file-name="userUtils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2100">
+              <caret line="14" column="43" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="439" max-vertical-offset="2520">
+              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RateComment.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+              <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommentORM.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.62184876" vertical-offset="1924" max-vertical-offset="2415">
+              <caret line="148" column="22" selection-start-line="148" selection-start-column="22" selection-end-line="148" selection-end-column="22" />
+              <folding>
+                <element signature="e#32#56#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,7 +127,6 @@
         <option value="$PROJECT_DIR$/Server/sql/db_drop_tables.sql" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/getIteminfo.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/ItemClass.py" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/CommentClass.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/login.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/searchItems.py" />
@@ -93,16 +136,21 @@
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/getLibraryItems.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/getLibrariesList.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/logout.py" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/removeItemFromLibrary.py" />
         <option value="$PROJECT_DIR$/Server/sql/create_fake_users.sql" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/createAccount.py" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
         <option value="$PROJECT_DIR$/Server/python/API/makeUsers.py" />
         <option value="$PROJECT_DIR$/Server/sql/db_create_tables.sql" />
         <option value="$PROJECT_DIR$/Server/python/API/apiIntegration.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/CreateLibrary.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/AddItemToLibrary.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" />
       </list>
     </option>
   </component>
@@ -110,7 +158,7 @@
     <option name="x" value="46" />
     <option name="y" value="31" />
     <option name="width" value="1376" />
-    <option name="height" value="690" />
+    <option name="height" value="776" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -181,7 +229,33 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="sql" />
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cgi-bin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Senior-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Senior-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="API" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -437,7 +511,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="31" width="1376" height="690" extended-state="0" />
+    <frame x="46" y="31" width="1376" height="776" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -448,7 +522,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3268921" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28712872" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -478,35 +552,17 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="2220">
-          <caret line="23" column="55" selection-start-line="23" selection-start-column="55" selection-end-line="23" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/logout.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="375">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/searchItems.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="465">
           <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -735,13 +791,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91902834" vertical-offset="459" max-vertical-offset="1230">
-          <caret line="76" column="19" selection-start-line="76" selection-start-column="19" selection-end-line="76" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/sql/create_fake_users.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
@@ -756,31 +805,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8711656" vertical-offset="0" max-vertical-offset="1620">
-          <caret line="62" column="35" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30674848" vertical-offset="0" max-vertical-offset="489">
-          <caret line="12" column="40" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/searchItems.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5214724" vertical-offset="0" max-vertical-offset="489">
           <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24539877" vertical-offset="15" max-vertical-offset="2100">
-          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -805,17 +833,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py">
+    <entry file="file://$PROJECT_DIR$/Server/python/API/makeUsers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2760736" vertical-offset="0" max-vertical-offset="495">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.61538464" vertical-offset="0" max-vertical-offset="435">
+          <caret line="18" column="59" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/API/makeUsers.py">
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/CreateLibrary.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5521472" vertical-offset="0" max-vertical-offset="489">
-          <caret line="18" column="59" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.47268906" vertical-offset="0" max-vertical-offset="476">
+          <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+          <folding>
+            <element signature="e#19#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -827,20 +859,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/DataSource.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1137" max-vertical-offset="2520">
-          <caret line="87" column="2" selection-start-line="87" selection-start-column="2" selection-end-line="87" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="540">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1369" max-vertical-offset="1845">
+          <caret line="117" column="19" selection-start-line="117" selection-start-column="19" selection-end-line="117" selection-end-column="19" />
+          <folding>
+            <element signature="e#32#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/AddItemToLibrary.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+          <folding>
+            <element signature="e#39#49#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/API/apiIntegration.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4986226" vertical-offset="1109" max-vertical-offset="3465">
-          <caret line="86" column="25" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="25" />
+        <state vertical-scroll-proportion="-32.22222" vertical-offset="240" max-vertical-offset="3465">
+          <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
           <folding>
             <element signature="e#32#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/AddComment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18907563" vertical-offset="0" max-vertical-offset="476">
+          <caret line="6" column="66" selection-start-line="6" selection-start-column="66" selection-end-line="6" selection-end-column="66" />
+          <folding>
+            <element signature="e#19#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/RateComment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+          <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="439" max-vertical-offset="2520">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2100">
+          <caret line="14" column="43" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62184876" vertical-offset="1924" max-vertical-offset="2415">
+          <caret line="148" column="22" selection-start-line="148" selection-start-column="22" selection-end-line="148" selection-end-column="22" />
+          <folding>
+            <element signature="e#32#56#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -4,6 +4,7 @@ from DataSource import *
 from LibraryClass import *
 from ItemORM import *
 from ItemClass import *
+from userUtils import *
 
 
 class LibraryORM(object):
@@ -74,4 +75,44 @@ class LibraryORM(object):
         query = "delete from library_items where library_id=%(library_id)s and item_id=%(item_id)s"
         insert_query(query, args)
 
+        return True
+
+    def create_library(self, form):
+        session = form["session"]
+        library_name = form["library_name"]
+        visible = form["visible"]
+
+        if visible == "true":
+            visible = True
+        else:
+            visible = False
+
+        user_id = get_user_id_from_session(form)
+
+        existing_query = "select * from libraries where user_id={0} and library_name='{1}'".format(user_id, library_name)
+        results = select_query(existing_query)
+        if len(results) > 0:
+            raise Exception("You already have an existing library with that name")
+
+        query = "insert into libraries (user_id, library_name, visible) values({0}, '{1}', {2})".format(user_id,library_name,visible)
+        insert_query(query)
+        return True
+
+    def add_item_to_library(self, form):
+        user_id = get_user_id_from_session(form)
+        library_id = form["library_id"]
+        item_id = form["item_id"]
+
+        ownership_query = "select * from libraries where id={0} and user_id={1}".format(library_id, user_id)
+        results = select_query(ownership_query)
+        if len(results) < 1:
+            raise Exception("Library not found")
+
+        existing_query = "select * from library_items where library_id={0} and item_id={1}".format(library_id, item_id)
+        results = select_query(existing_query)
+        if len(results) > 0:
+            raise Exception("Item already in library")
+
+        query = "insert into library_items (library_id, item_id) values ({0}, {1})".format(library_id, item_id)
+        insert_query(query)
         return True

@@ -17,10 +17,13 @@ def select_query(query):
     results = cursor.fetchall()
     return results
 
-def insert_query(query, params):
-
-    cursor.execute(query, params)
+def insert_query(query, params=None):
+    if params is not None:
+        cursor.execute(query, params)
+    else:
+        cursor.execute(query)
     conn.commit()
+
 
 def close():
     cursor.close()

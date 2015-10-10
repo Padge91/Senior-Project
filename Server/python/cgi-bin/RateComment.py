@@ -4,7 +4,7 @@ import cgi
 from Utilities import *
 from CommentORM import *
 
-required_params = ["commentID"]
+required_params = ["session", "comment_id", "rating"]
 
 def main():
     try:
