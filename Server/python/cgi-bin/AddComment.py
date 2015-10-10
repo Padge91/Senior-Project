@@ -4,7 +4,7 @@ import cgi
 from Utilities import *
 from CommentORM import *
 
-required_params = ["CommentID"]
+required_params = ["parent_type","parent_id", "session", "content"]
 
 def main():
     try:
