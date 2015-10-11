@@ -7,10 +7,12 @@ import time
 from random import randint
 from random import choice
 from datetime import datetime
+import traceback
 
 #api configurations
 categories = [3920, 4096]
-api_key = "w6cuj9ryxnhuzkctyywu8bkw"
+api_key = "4zuwvptdxrh7ydc74wchxfgy"
+#api_key = "w6cuj9ryxnhuzkctyywu8bkw"
 number_of_users=200
 
 #database configurations
@@ -21,7 +23,7 @@ password='group2isthebest1!'
 db='EMBR'
 
 #dont change these
-#alphabet = "b"
+#alphabet = "ab"
 alphabet = "abcdefghijklmnopqrstuvwxz1234567890"
 item_ids = []
 objects = []
@@ -79,14 +81,15 @@ def insert_object(cursor, object, conn):
                 queries.append("insert into comments (id, user_id, create_date, content) values ({0}, {1}, '{2}', {3})".format(index_comment_id, randint(1,number_of_users-1), datetime.now(), conn.escape(sentence)))
                 queries.append("insert into comment_parents (parent_id, child_id) values ({0}, {1})".format(comment_id, index_comment_id))
 
-
     for query in queries:
         print query
         try:
             cursor.execute(query)
             conn.commit()
         except Exception as e:
-            print "ID collision, skipping this row"
+            print traceback.format_exc()
+            print "Query error: " + e.message
+            continue
 
 def get_object_values(object):
     review_num_dict = {"name":"numReviews", "default":0, "fields":["numReviews"]}
@@ -95,7 +98,7 @@ def get_object_values(object):
     description_dict = {"name":"description","default":None, "fields":["shortDescription","longDescription"]}
     images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
-    category_dict = {"name":"category","default":None, "fields":["categoryPath"]}
+    category_dict = {"name":"category","default":"Not Specified", "fields":["categoryPath"]}
     #needs genres
 
     dicts = [review_num_dict, review_score_dict, brand_dict, description_dict, images_dict, name_dict, category_dict]
@@ -111,6 +114,14 @@ def get_object_values(object):
                     break;
                 else:
                     object_dict[dictionary["name"]] = dictionary["default"]
+            else:
+                if attempt_field in object:
+                    object_dict[dictionary["name"]] = object[attempt_field]
+                    break;
+                else:
+                    object_dict[dictionary["name"]] = dictionary["default"]
+
+
 
     return object_dict
 
@@ -161,6 +172,7 @@ def get_item_info(item_ids):
         if not check_type(object["items"][0]):
             continue
         objects.append(object)
+        print "Added object to list"
 
 def check_type(object):
     film_words = ["film", "Film", "Movie", "movie"]
