@@ -95,7 +95,7 @@ def get_object_values(object):
     review_num_dict = {"name":"numReviews", "default":0, "fields":["numReviews"]}
     review_score_dict = {"name":"reviewScore","default":0, "fields":["customerRating"]}
     brand_dict = {"name":"brand", "default":"Not Specified", "fields":["director", "Director", "author", "Author", "Artist", "artist","brandName"]}
-    description_dict = {"name":"description","default":None, "fields":["shortDescription","longDescription"]}
+    description_dict = {"name":"description","default":"Not Specified", "fields":["shortDescription","longDescription"]}
     images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
     category_dict = {"name":"category","default":"Not Specified", "fields":["categoryPath"]}

@@ -37,9 +37,7 @@ create table comment_parents (
     id bigint not null auto_increment,
     parent_id bigint not null,
     child_id bigint not null,
-    primary key(id),
-    foreign key(parent_id) references comments(id),
-    foreign key(child_id) references comments(id)
+    primary key(id)
 );
 
 create table comment_ratings (
@@ -110,9 +108,7 @@ create table item_comments (
     id bigint not null auto_increment,
     item_id bigint not null,
     comment_id bigint not null,
-    primary key(id),
-    foreign key(item_id) references items(id),
-    foreign key(comment_id) references comments(id)
+    primary key(id)
 );
 
 create table user_ignored_items (
