@@ -1,11 +1,3 @@
-//
-//  SignUpViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 10/7/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
