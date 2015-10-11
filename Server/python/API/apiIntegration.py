@@ -70,16 +70,16 @@ def insert_object(cursor, object, conn):
             comment_id = randint(0, 90000000000)
             choices = [choice(random_words) for _ in range(10)]
             sentence = ' '.join(choices)
-            queries.append("insert into comments (id, user_id, create_date, content) values ({0}, {1}, '{2}', {3})".format(comment_id, user_id, datetime.now().strftime(format), conn.escape(sentence)))
-            queries.append("insert into item_comments (item_id, comment_id) values ({0}, {1})".format(item_id, comment_id))
+            queries.append("insert into comments (id, user_id, create_date, content) values ("+str(comment_id)+", "+str(user_id)+", '"+str(datetime.now().strftime(format))+"', "+str(conn.escape(sentence))+")")
+            queries.append("insert into item_comments (item_id, comment_id) values ("+str(item_id)+", "+str(comment_id)+")")
 
             #query to insert comments on comments
             for i in range(0, randint(0,2)):
                 index_comment_id = randint(0, 90000000000)
                 choices = [choice(random_words) for _ in range(10)]
                 sentence = ' '.join(choices)
-                queries.append("insert into comments (id, user_id, create_date, content) values ({0}, {1}, '{2}', {3})".format(index_comment_id, randint(1,number_of_users-1), datetime.now(), conn.escape(sentence)))
-                queries.append("insert into comment_parents (parent_id, child_id) values ({0}, {1})".format(comment_id, index_comment_id))
+                queries.append("insert into comments (id, user_id, create_date, content) values ("+str(index_comment_id)+", "+str(randint(1,number_of_users-1))+", '"+str(datetime.now())+"', "+str(conn.escape(sentence))+")")
+                queries.append("insert into comment_parents (parent_id, child_id) values ("+str(comment_id)+", "+str(index_comment_id)+")")
 
     for query in queries:
         print query
