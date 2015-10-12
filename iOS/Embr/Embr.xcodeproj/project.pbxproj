@@ -23,6 +23,7 @@
 		666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666796971BB6BD2A00643098 /* ItemDataSource.swift */; settings = {ASSET_TAGS = (); }; };
 		66873A0E1BA9CED600A71432 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */; };
 		66B172FC1BC40DB000B0BA3D /* CreateCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B172FB1BC40DB000B0BA3D /* CreateCommentViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		66C07B9B1BCC147E00103F34 /* UniversalNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C07B9A1BCC147E00103F34 /* UniversalNavigationController.swift */; settings = {ASSET_TAGS = (); }; };
 		66CA4B321BB5DE17000B1C76 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA4B311BB5DE17000B1C76 /* MenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		66CA4B341BB5E7D0000B1C76 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CA4B331BB5E7D0000B1C76 /* CommentsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		666796971BB6BD2A00643098 /* ItemDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDataSource.swift; sourceTree = "<group>"; };
 		66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
 		66B172FB1BC40DB000B0BA3D /* CreateCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCommentViewController.swift; sourceTree = "<group>"; };
+		66C07B9A1BCC147E00103F34 /* UniversalNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalNavigationController.swift; sourceTree = "<group>"; };
 		66CA4B311BB5DE17000B1C76 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		66CA4B331BB5E7D0000B1C76 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,6 +162,7 @@
 				666796971BB6BD2A00643098 /* ItemDataSource.swift */,
 				66209A1D1BC2FA3600902B02 /* CommentsDataSource.swift */,
 				66209A1F1BC2FB5C00902B02 /* UserDataSource.swift */,
+				66C07B9A1BCC147E00103F34 /* UniversalNavigationController.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				665AC88C1BC5B92D00589860 /* SignUpViewController.swift in Sources */,
 				66CA4B341BB5E7D0000B1C76 /* CommentsViewController.swift in Sources */,
 				66B172FC1BC40DB000B0BA3D /* CreateCommentViewController.swift in Sources */,
+				66C07B9B1BCC147E00103F34 /* UniversalNavigationController.swift in Sources */,
 				66209A1E1BC2FA3600902B02 /* CommentsDataSource.swift in Sources */,
 				6637245E1BC082CC00BEA831 /* LoginViewController.swift in Sources */,
 				666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */,
