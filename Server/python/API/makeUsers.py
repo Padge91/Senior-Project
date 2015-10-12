@@ -5,7 +5,7 @@ import string
 import random
 
 number_of_users = 200
-url ="http://localhost:8000/cgi-bin/createAccount.py?"
+url ="http://localhost:8000/cgi-bin/CreateAccount.py?"
 user_base_name="TestUser"
 
 def main():
