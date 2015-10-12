@@ -13,7 +13,6 @@ class MenuViewController: UITableViewController {
         super.viewDidLoad()
         tableView.tableHeaderView = nil
         menu = [loginString, logoutString, signUpString]
-        print(UserDataSource.getInstance().getSession())
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

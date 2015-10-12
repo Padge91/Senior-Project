@@ -58,7 +58,54 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func goToLibraries() {
-        performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
+        if UserDataSource.getInstance().getSession() != nil {
+            performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
+        } else {
+            let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
+            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
+            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in
+                textfield.secureTextEntry = true
+                textfield.placeholder = "Password"
+            })
+            let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
+                if let username = alert.textFields![0].text, password = alert.textFields![1].text {
+                    UserDataSource.getInstance().attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
+                }
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            alert.addAction(loginAction)
+            alert.addAction(cancelAction)
+            presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func alertError(errorMessage error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func succesfulLogin(sessionId session: String) {
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            UserDataSource.getInstance().storeSession(sessionId: session)
+        }
+    }
+    
+    func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if let sessionResponse = response["success"], session = sessionResponse["session"] as? String {
+                    succesfulLogin(sessionId: session)
+                } else if response["error"] != nil {
+                    alertError(errorMessage: "Invalid login")
+                }
+            } catch {
+                alertError(errorMessage: "Invalid response")
+            }
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
