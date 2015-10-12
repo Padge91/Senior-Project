@@ -4,11 +4,16 @@ class MenuViewController: UITableViewController {
     private let loginSegueIdentifier = "segueToLogin"
     private let signUpSegueIdentifier = "segueToSignUp"
     private let settingsSegueIdentifier = "segueToSettings"
-    var menu = ["Login", "Logout", "Sign Up"]
+    private let loginString = "Login"
+    private let logoutString = "Logout"
+    private let signUpString = "SignUp"
+    var menu = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableHeaderView = nil
+        menu = [loginString, logoutString, signUpString]
+        print(UserDataSource.getInstance().getSession())
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -27,11 +32,11 @@ class MenuViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.row {
-        case menu.indexOf("Login")!:
+        case menu.indexOf(loginString)!:
             performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
-        case menu.indexOf("Logout")!:
+        case menu.indexOf(logoutString)!:
             confirmLogout()
-        case menu.indexOf("Sign Up")!:
+        case menu.indexOf(signUpString)!:
             performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
         default:
             break;
@@ -48,7 +53,8 @@ class MenuViewController: UITableViewController {
     }
     
     func logout(action: UIAlertAction) {
-        // Perform logout
+        UserDataSource.getInstance().removeSession()
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
