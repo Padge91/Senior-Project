@@ -90,6 +90,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private func succesfulLogin(sessionId session: String) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
             UserDataSource.getInstance().storeSession(sessionId: session)
+            self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: nil)
         }
     }
     
