@@ -116,10 +116,10 @@
             </objects>
             <point key="canvasLocation" x="726" y="-79"/>
         </scene>
-        <!--Universal Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="QN7-cD-uSv">
             <objects>
-                <navigationController toolbarHidden="NO" id="gJJ-Ik-rHQ" customClass="UniversalNavigationController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="gJJ-Ik-rHQ" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1DZ-zg-MGl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -132,7 +132,6 @@
                     </toolbar>
                     <connections>
                         <segue destination="uXV-Vi-g7e" kind="relationship" relationship="rootViewController" id="XNO-3s-zk5"/>
-                        <segue destination="r0S-R0-FGJ" kind="show" identifier="segueToLibraries" id="qES-0s-Git"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qOb-Ge-xrN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -183,6 +182,7 @@
                         <outlet property="searchResultsTableView" destination="6bI-Ua-PF7" id="3l9-KQ-KzA"/>
                         <segue destination="aSC-40-bIC" kind="show" identifier="segueToMenu" id="J36-J7-SSk"/>
                         <segue destination="brd-f3-Oiw" kind="show" identifier="segueToItemDetails" id="kvR-ZX-q6Z"/>
+                        <segue destination="r0S-R0-FGJ" kind="show" identifier="segueToLibraries" id="SjV-Ox-er9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q3K-JT-BPh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -428,6 +428,7 @@
                         <segue destination="t4i-hn-Qek" kind="show" identifier="segueToComments" id="3Pt-md-Sbl"/>
                         <segue destination="aSC-40-bIC" kind="show" identifier="segueToMenu" id="beZ-fF-TWw"/>
                         <segue destination="ceU-Vv-Qdj" kind="show" identifier="segueToCommentCreator" id="Hl1-VX-9yS"/>
+                        <segue destination="r0S-R0-FGJ" kind="show" identifier="segueToLibraries" id="u4J-yZ-wqv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-58-1Vr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -540,5 +541,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="beZ-fF-TWw"/>
+        <segue reference="u4J-yZ-wqv"/>
     </inferredMetricsTieBreakers>
 </document>

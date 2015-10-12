@@ -2,6 +2,7 @@ import UIKit
 
 class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    private let librariesSegueIdentifier = "segueToLibraries"
     private let commentsSegueIdentifier = "segueToComments"
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let menuSegueIdentifier = "segueToMenu"
@@ -25,6 +26,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         loadBottomAttribute()
         setupItemDetailsTable()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+        let librariesButton = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "goToLibraries")
+        toolbarItems = [librariesButton]
     }
     
     func goToMenu() {
@@ -142,6 +145,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBAction func commentOnItem(sender: UIButton) {
         performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
+    }
+    
+    func goToLibraries() {
+        performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

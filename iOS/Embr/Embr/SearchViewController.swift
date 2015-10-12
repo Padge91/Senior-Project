@@ -4,6 +4,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     private let menuSegueIdentifier = "segueToMenu"
+    private let librariesSegueIdentifier = "segueToLibraries"
     private var model = ItemDataSource.getInstance()
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
@@ -14,7 +15,9 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         setupSearchController()
         setupSearchResultsTableView()
         definesPresentationContext = true
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+        let librariesButton = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "goToLibraries")
+        toolbarItems = [librariesButton]
     }
     
     func goToMenu() {
@@ -52,6 +55,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
+    }
+    
+    func goToLibraries() {
+        performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
