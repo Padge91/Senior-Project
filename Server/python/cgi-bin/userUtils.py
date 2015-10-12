@@ -24,7 +24,6 @@ def login(params):
     username = params["username"]
     password = params["password"]
     hashed_password = hash_password(username, password)
-    raise Exception("Hi")
     response = login_query(username, hashed_password)
     return response
 
