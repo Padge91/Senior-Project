@@ -87,3 +87,17 @@ class ItemORM(object):
             query += " {0} like '{1}'".format("id", i["id"])
 
         return query
+
+    def add_score(self, query_params):
+        max_score = 5
+
+        user_id = get_user_id_from_session(query_params)
+        item_id = query_params["item_id"]
+        score = query_params["score"]
+
+        if score < 0 or score > max_score:
+            raise Exception("Score must be between 0 and " + str(max_score))
+
+        query = "insert into item_reviews (item_id, user_id, review_value) values ({0}, {1}, {2})".format(item_id, user_id, score)
+        insert_query(query)
+        return True

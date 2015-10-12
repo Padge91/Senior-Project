@@ -24,12 +24,17 @@ def login(params):
     username = params["username"]
     password = params["password"]
     hashed_password = hash_password(username, password)
+    raise Exception("Hi")
     response = login_query(username, hashed_password)
     return response
 
 def login_query(username, password):
     query = "select password from users where username='{0}'".format(username)
-    in_password = select_query(query)[0][0];
+    response = select_query(query)
+    in_password = ""
+    if len(response) == 0:
+        raise Exception("Account not found")
+    in_password = response[0][0];
     if password == in_password:
         return {"success":True,"session":generate_session(username)}
     else:
@@ -70,6 +75,8 @@ def hash_password(username, password):
 def get_salt(username):
     query = "select salt from users where username='{0}'".format(username)
     results = select_query(query)
+    if len(results) == 0:
+        raise Exception("Account not found")
     return results[0][0]
 
 def generate_salt():
