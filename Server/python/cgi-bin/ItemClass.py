@@ -8,7 +8,7 @@ class SimpleItem(object):
         self.title = row[1]
         self.description = row[2]
         self.creator = row[3]
-        self.image = ""
+        self.image = "http://52.88.5.108/cgi-bin/static/notfound.png"
         self.genres = list()
 
 
@@ -21,7 +21,7 @@ class FullItem(object):
         self.title = row[1]
         self.description = row[2]
         self.creator = row[3]
-        self.image = ""
+        self.image = "http://52.88.5.108/cgi-bin/static/notfound.png"
         self.comments = list()
         self.genres = list()
 
