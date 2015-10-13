@@ -9,10 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     Button button1;
+    SearchView search_text;
+
+    public static final String SEARCH_QUERY_KEY = "SEARCH_QUERY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.profile_layout);
         button1 = (Button)findViewById(R.id.search_for_items);
         button1.setOnClickListener(this);
+        search_text = (SearchView)findViewById(R.id.search_for_Item);
     }
 
     public void showPopUp(View view){
@@ -51,6 +56,43 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         if (id == R.id.action_settings) {
             return true;
         }
+        switch (item.getTitle().toString()) {
+            case "Recommended Items": {
+                Intent intent = new Intent(this, RecommendedItems.class);
+                startActivity(intent);
+                break;
+            }
+            case "Home": {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case "Profile": {
+                Intent intent = new Intent(this, Profile.class);
+                startActivity(intent);
+                break;
+            }
+            case "Libraries": {
+                //if () {
+                Intent intent = new Intent(this, Library.class);
+                startActivity(intent);
+                break;
+                //}
+            }
+            case "Go to SearchResults": {
+                Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Login": {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -69,7 +111,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             startActivity(intent);
         }
         else if (S.equals("SearchResults")){
+            CharSequence search_query = search_text.getQuery();
             Intent intent = new Intent(this, SearchResults.class);
+            intent.putExtra(SEARCH_QUERY_KEY, search_query);
             startActivity(intent);
         }
     }

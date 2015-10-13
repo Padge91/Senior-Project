@@ -34,6 +34,8 @@ public class HomeActivity extends AppCompatActivity {
         String[] values = new String[] {"Go to ItemView", "Go to SearchResults", "Go to Profile", "Go to Library", "Go to RecommendedItems", "Go to Login",
                 placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder};
 
+
+
         // Define a new Adapter
         // First parameter - Context
         // Second parameter - Layout for the row
@@ -55,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                 int itemPosition = position;
 
                 // ListView Clicked item value
-                String itemValue = (String) listView.getItemAtPosition(position);
+                String itemValue = (String) listView.getItemAtPosition(itemPosition);
 
                 openActivity(itemValue);
             }
@@ -72,6 +74,43 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getTitle().toString()) {
+            case "Recommended Items": {
+                Intent intent = new Intent(this, RecommendedItems.class);
+                startActivity(intent);
+                break;
+            }
+            case "Home": {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case "Profile": {
+                Intent intent = new Intent(this, Profile.class);
+                startActivity(intent);
+                break;
+            }
+            case "Libraries": {
+                //if () {
+                Intent intent = new Intent(this, Library.class);
+                startActivity(intent);
+                break;
+                //}
+            }
+           case "Go to SearchResults": {
+                Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Login": {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -94,9 +133,11 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
             case "Go to Library": {
-                Intent intent = new Intent(this, Library.class);
-                startActivity(intent);
-                break;
+                //if () {
+                    Intent intent = new Intent(this, Library.class);
+                    startActivity(intent);
+                    break;
+                //}
             }
             case "Go to SearchResults": {
                 Intent intent = new Intent(this, SearchResults.class);

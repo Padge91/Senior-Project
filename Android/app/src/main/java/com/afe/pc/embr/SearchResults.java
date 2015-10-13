@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,22 +33,21 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     LinearLayout mainLayout;
     CheckBoxPreference check;
     boolean click = true;
-    //EditText search_text = (EditText)findViewById(R.id.search_for_Item);
-    String str = "hello";
-            //search_text.getText().toString();
-    /*if(str.isNull()){
-        str = " ";
-    }
-    else {*/
-            String[] data = {str};
-    //}
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_results_layout);
         ListView iv = (ListView) findViewById(R.id.searchResults);
 
-        iv.setAdapter(new MyListAdapter(this, R.layout.single_row, data));
+        Intent intent = getIntent();
+        String search_query = intent.getCharSequenceExtra(Profile.SEARCH_QUERY_KEY).toString();
+        if (search_query != null) {
+            String[] queries = { search_query };
+            iv.setAdapter(new MyListAdapter(this, R.layout.single_row, queries));
+        }
+
         /*iv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,6 +74,43 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        switch (item.getTitle().toString()) {
+            case "Recommended Items": {
+                Intent intent = new Intent(this, RecommendedItems.class);
+                startActivity(intent);
+                break;
+            }
+            case "Home": {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case "Profile": {
+                Intent intent = new Intent(this, Profile.class);
+                startActivity(intent);
+                break;
+            }
+            case "Libraries": {
+                //if () {
+                Intent intent = new Intent(this, Library.class);
+                startActivity(intent);
+                break;
+                //}
+            }
+            case "Go to SearchResults": {
+                Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Login": {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                break;
+            }
+            default: {
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);

@@ -22,6 +22,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         button1.setOnClickListener(this);
     }
 
+    /*public login(String login, String password){
+        if(){
+
+        }
+
+    }*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -46,7 +53,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        //if(v.getId() == R.id.login_button){
+        //if() {
 
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);

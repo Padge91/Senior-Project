@@ -1,6 +1,7 @@
 package com.afe.pc.embr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ public class Library extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.library_layout);
 
@@ -44,6 +46,43 @@ public class Library extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        switch (item.getTitle().toString()) {
+            case "Recommended Items": {
+                Intent intent = new Intent(this, RecommendedItems.class);
+                startActivity(intent);
+                break;
+            }
+            case "Home": {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case "Profile": {
+                Intent intent = new Intent(this, Profile.class);
+                startActivity(intent);
+                break;
+            }
+            case "Libraries": {
+                //if () {
+                Intent intent = new Intent(this, Library.class);
+                startActivity(intent);
+                break;
+                //}
+            }
+            case "Go to SearchResults": {
+                Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Login": {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                break;
+            }
+            default: {
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);

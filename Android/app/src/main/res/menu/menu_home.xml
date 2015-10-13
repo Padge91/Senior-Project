@@ -24,4 +24,7 @@
     <item android:id="@+id/Libraries"
         android:title="Libraries" />
 
+    <item android:id="@+id/Login"
+        android:title="Login" />
+
 </menu>
