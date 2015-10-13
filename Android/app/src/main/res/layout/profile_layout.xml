@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Menu"
         android:id="@+id/Navigation_Button"
-        android:layout_alignTop="@+id/searchView"
+        android:layout_alignTop="@+id/search_for_Item"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="showPopUp" />
@@ -32,8 +32,8 @@
     <SearchView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchView"
-        android:layout_alignTop="@+id/searchView"
+        android:id="@+id/search_for_Item"
+        android:layout_alignTop="@+id/search_for_Item"
         android:layout_toRightOf="@+id/Navigation_Button"
         android:layout_toLeftOf="@+id/search_for_items"
         android:layout_toStartOf="@+id/search_for_items" />

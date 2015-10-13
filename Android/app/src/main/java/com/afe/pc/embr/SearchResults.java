@@ -1,17 +1,27 @@
 package com.afe.pc.embr;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.preference.CheckBoxPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class SearchResults extends AppCompatActivity implements View.OnClickListener{
 
@@ -22,13 +32,29 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     LinearLayout mainLayout;
     CheckBoxPreference check;
     boolean click = true;
-
+    //EditText search_text = (EditText)findViewById(R.id.search_for_Item);
+    String str = "hello";
+            //search_text.getText().toString();
+    /*if(str.isNull()){
+        str = " ";
+    }
+    else {*/
+            String[] data = {str};
+    //}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_results_layout);
+        ListView iv = (ListView) findViewById(R.id.searchResults);
 
-
+        iv.setAdapter(new MyListAdapter(this, R.layout.single_row, data));
+        /*iv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(id, ItemView.class);
+                startActivity(intent);
+            }
+        });*/
     }
 
     @Override
@@ -72,19 +98,46 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.relativeLayout2:
-                viewItemDetails();
-                break;
-            case R.id.relativeLayout3:
-                viewItemDetails();
-                break;
-            case R.id.relativeLayout:
-                viewItemDetails();
-                break;
-
-        }
 
     }
+    /*public View getView(int position, View convertView, ViewGroup parent){
+        View v = inflater.inflate(R.layout.single_row, false);
+        View v = root View
+    }*/
+    private class MyListAdapter extends ArrayAdapter<String>{
+        private int layout;
+        private MyListAdapter(Context context, int resource, String[] objects) {
+            super(context, resource, objects);
+            layout = resource;
+        }
 
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder mainViewHolder = null;
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(layout, parent, false);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.results_Image = (ImageView) convertView.findViewById(R.id.results_Image);
+                viewHolder.results_Title = (TextView) convertView.findViewById(R.id.results_Title);
+                viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Director_Author);
+                convertView.setTag(viewHolder);
+            }
+            else {
+                mainViewHolder = (ViewHolder) convertView.getTag();
+                mainViewHolder.results_Title.setText(getItem(position));
+            }
+
+            return convertView;
+        }
+    }
+
+    public class ViewHolder {
+        ImageView results_Image;
+        TextView results_Title;
+        TextView results_Director_Author;
+    }
 }
+
+
+

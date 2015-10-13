@@ -19,27 +19,11 @@ public class PopUpMenuEventHandle implements PopupMenu.OnMenuItemClickListener {
         this.context = context;
     }
 
-    /*public void openActivity(String S) {
-        if (S == "Home") {
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-        } else if (S == "RecommendedItems") {
-            Intent intent = new Intent(this, RecommendedItems.class);
-            startActivity(intent);
-        } else if (S == "Library") {
-            Intent intent = new Intent(this, Library.class);
-            startActivity(intent);
-        } else if (S == "SearchResults") {
-            Intent intent = new Intent(this, SearchResults.class);
-            startActivity(intent);
-        }
-    }*/
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Home:
-                Intent intent = new Intent(String.valueOf(HomeActivity.class));
+                Intent intent = new Intent(context, HomeActivity.class);
                 context.startActivity(intent);
                 Toast.makeText(context, "Home", Toast.LENGTH_SHORT).show();
                 break;
@@ -56,6 +40,8 @@ public class PopUpMenuEventHandle implements PopupMenu.OnMenuItemClickListener {
         }
         return true;
     }
+
+
 }
 
 

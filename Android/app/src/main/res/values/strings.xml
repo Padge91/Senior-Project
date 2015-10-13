@@ -24,4 +24,11 @@
     <string name="owned_library">Owned</string>
     <string name="wishlist_library">Wishlist</string>
     <string name="custom_library">Custom</string>
+    <string-array name="titles">
+        <item>name 1</item>
+        <item>name 2</item>
+        <item>name 3</item>
+    </string-array>
+    <string name="title_activity_test_nav_bar">test_nav_bar</string>
+    <string name="title_activity_login">Login</string>
 </resources>

@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
 
         // Defined Array values to show in ListView
-        String[] values = new String[] {"Go to ItemView", "Go to SearchResults", "Go to Profile", "Go to Library", "Go to RecommendedItems",
+        String[] values = new String[] {"Go to ItemView", "Go to SearchResults", "Go to Profile", "Go to Library", "Go to RecommendedItems", "Go to Login",
                 placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder, placeHolder};
 
         // Define a new Adapter
@@ -100,6 +100,11 @@ public class HomeActivity extends AppCompatActivity {
             }
             case "Go to SearchResults": {
                 Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Go to Login": {
+                Intent intent = new Intent(this, Login.class);
                 startActivity(intent);
                 break;
             }
