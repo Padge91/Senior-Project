@@ -43,7 +43,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func loadTitleAndImage() {
-        coverImageView.image = UIImage(named: mediaItem!.imageName!)
+        // coverImageView.image = UIImage(named: mediaItem!.imageName!)
         titleLabel.text = mediaItem!.title
     }
     
@@ -52,6 +52,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             topAttrubuteLabel.text = (mediaItem as! Movie).director
         } else if mediaItem is Book {
             topAttrubuteLabel.text = (mediaItem as! Book).author
+        } else if mediaItem is BasicMediaItem {
+            topAttrubuteLabel.text = (mediaItem as! BasicMediaItem).creator
         }
     }
     
