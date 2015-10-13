@@ -35,7 +35,7 @@ def login_query(username, password):
         raise Exception("Account not found")
     in_password = response[0][0];
     if password == in_password:
-        return {"success":True,"session":generate_session(username)}
+        return generate_session(username)
     else:
         raise Exception("Password does not match")
 

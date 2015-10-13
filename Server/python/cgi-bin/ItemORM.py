@@ -38,7 +38,16 @@ class ItemORM(object):
             query = self.build_query_or(query_params)
         rows = select_query(query)
         response_objects = self.convert_rows_to_SimpleItem(rows)
+        self.add_images_to_item(response_objects)
         return response_objects
+
+    def add_images_to_item(self, objects):
+        for i in range(0, len(objects)):
+            #raise Exception(objects[i].id)
+            query = "select image_url from item_images where item_id={0}".format(objects[i].id)
+            results = select_query(query)
+            if len(results) > 0:
+                objects[i].image = results[0][0]
 
     #convert rows to objects
     def convert_rows_to_SimpleItem(self,rows):
@@ -72,6 +81,8 @@ class ItemORM(object):
 
             query += " {0} like '%{1}%'".format(item, query_params[item])
 
+        query += " limit 10"
+
         return query
 
     #build query
@@ -85,6 +96,8 @@ class ItemORM(object):
                 query += " or "
 
             query += " {0} like '{1}'".format("id", i["id"])
+
+        query += " limit 10"
 
         return query
 

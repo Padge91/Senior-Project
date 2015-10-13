@@ -9,17 +9,21 @@ def success_response(response):
     if response is True:
         print json.dumps({"success":True})
     elif isinstance(response, dict):
-        print json.dumps({"success":response})
+        print json.dumps({"success":True, "response":response})
+    elif isinstance(response, str):
+        print json.dumps({"success":True, "response":response})
+    elif isinstance(response, int):
+        print json.dumps({"success":True, "response":response})
     elif not isinstance(response, list):
-        print json.dumps({"success":response.jsonify()})
+        print json.dumps({"success":True, "response":response.jsonify()})
     else:
-        print json.dumps({"success":json.dumps([object.jsonify() for object in response])})
+        print json.dumps({"success":True, "response":[object.jsonify() for object in response]})
 
 #failure response
 def failure_response(response):
     print("Content-type:application/json")
     print("")
-    print json.dumps({"error":response})
+    print json.dumps({"success":False,"response":response})
 
 #get request parameters
 def get_required_parameters(request, required_params):
