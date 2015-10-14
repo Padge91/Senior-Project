@@ -32,14 +32,52 @@ class ItemORM(object):
 
     #returns array of basic item information
     def search_items(self, query_params, option=None):
+        comment_orm = CommentORM()
+
         if option is None:
             query = self.build_query(query_params)
         else:
             query = self.build_query_or(query_params)
         rows = select_query(query)
-        response_objects = self.convert_rows_to_SimpleItem(rows)
-        self.add_images_to_item(response_objects)
-        return response_objects
+
+        item_list = []
+        for i in range(0, len(rows)):
+            item_list.append(self.convert_row_to_FullItemWholeRow(rows[i]))
+
+        for i in range(0, len(item_list)):
+            item_list[i].genres = self.get_item_genres(item_list[i].id)
+            item_list[i].comments = comment_orm.get_comments_on_item({"item_id":item_list[i].id})
+            score_results = self.get_scores(item_list[i].id)
+            item_list[i].average_score = score_results["item_score"]
+
+
+        self.add_images_to_item(item_list)
+
+
+        # using FullItem instead
+        #response_objects = self.convert_rows_to_SimpleItem(rows)
+        #self.add_images_to_item(response_objects)
+
+        return item_list
+
+
+    def get_scores(self, item_id, user_id=None):
+        item_query = "select item_id,AVG(review_value) from item_reviews where item_id={0}".format(item_id)
+
+        average_score = 0
+        user_score = None
+        item_results = select_query(item_query)
+        if len(item_results) > 0 and item_results[0][1] != None:
+            average_score = item_results[0][1]
+
+        if user_id is not None:
+            user_query = "select review_value from item_reviews where item_id={0} and user_id={1}".format(item_id, user_id)
+            user_results = select_query(user_query)
+            if len(user_results) > 0:
+                user_score = user_results[0][0]
+
+        return {"item_score":average_score, "user_score":user_score}
+
 
     def add_images_to_item(self, objects):
         for i in range(0, len(objects)):
@@ -61,6 +99,9 @@ class ItemORM(object):
     #convert rows to objects
     def convert_row_to_FullItem(self,rows):
         return FullItem(rows[0])
+
+    def convert_row_to_FullItemWholeRow(self,row):
+        return FullItem(row)
 
     def build_search_query(self, params, genres):
         query = "select id, title, description, creator from items where "
@@ -108,9 +149,30 @@ class ItemORM(object):
         item_id = query_params["item_id"]
         score = query_params["score"]
 
-        if score < 0 or score > max_score:
+        check_query = "select id from items where id={0}".format(item_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Item not found")
+
+        if int(score) < 0 or int(score) > max_score:
             raise Exception("Score must be between 0 and " + str(max_score))
 
-        query = "insert into item_reviews (item_id, user_id, review_value) values ({0}, {1}, {2})".format(item_id, user_id, score)
+        check_query = "select id from item_reviews where item_id={0} and user_id={1}".format(item_id, user_id)
+        results = select_query(check_query)
+        if len(results) > 0:
+            return self.replace_score(query_params)
+        else:
+            query = "insert into item_reviews (item_id, user_id, review_value) values ({0}, {1}, {2})".format(item_id, user_id, score)
+            insert_query(query)
+            return True
+
+    def replace_score(self,query_params):
+        max_score = 5
+
+        user_id = get_user_id_from_session(query_params)
+        item_id = query_params["item_id"]
+        score = query_params["score"]
+
+        query = "update item_reviews set review_value={0} where item_id={1} and user_id={2}".format(score, item_id, user_id)
         insert_query(query)
         return True

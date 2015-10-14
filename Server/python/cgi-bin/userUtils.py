@@ -40,6 +40,11 @@ def login_query(username, password):
         raise Exception("Password does not match")
 
 def remove_session(session):
+    check_query = "select id from user_sessions where session_id='{0}'".format(session)
+    results = select_query(check_query)
+    if len(results) < 1:
+        raise Exception("Already logged out.")
+
     query = "update user_sessions set session_id=null where session_id=%(session)s;"
     args = {"session":session}
     insert_query(query, args)
@@ -84,9 +89,26 @@ def generate_salt():
 def create_account(params):
     validate_password(params["password"], params["passwordConfirm"])
     validate_username_email(params["username"], params["email"])
-    insert_account_info(params)
+    id = insert_account_info(params)
+    if id is None:
+        raise Exception("Error saving account.")
+
+    insert_new_account_libraries(id)
 
     return True
+
+def insert_new_account_libraries(id):
+    library_names = ["Viewed", "Owned", "Wishlist"]
+
+    insert_libraries_query1 = "insert into libraries(user_id, library_name, visible) values ({0}, '{1}', {2})".format(id, library_names[0], 1)
+    insert_libraries_query2 = "insert into libraries(user_id, library_name, visible) values ({0}, '{1}', {2})".format(id, library_names[1], 1)
+    insert_libraries_query3 = "insert into libraries(user_id, library_name, visible) values ({0}, '{1}', {2})".format(id, library_names[2], 1)
+
+    queries = [insert_libraries_query1, insert_libraries_query2, insert_libraries_query3]
+
+    for i in range(0, len(queries)):
+        insert_query(queries[i])
+
 
 def insert_account_info(params):
     salt = generate_salt()
@@ -101,6 +123,7 @@ def insert_account_info(params):
     args={"id":id}
     query2 = "insert into user_sessions (user_id) values (%(id)s)"
     insert_query(query2, args)
+    return args["id"]
 
 def validate_username_email(username, email):
     query="select username from users where username='{0}'".format(username)

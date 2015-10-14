@@ -111,11 +111,25 @@ class CommentORM(object):
         user_id = get_user_id_from_session(form)
         content = form["content"]
 
+        check_query=""
+        if parent_type=="comment":
+            check_query = "select id from comments where id={0}".format(parent_id)
+        elif parent_type=="item":
+            check_query = "select id from items where id={0}".format(parent_id)
+        else:
+            raise Exception("parent_type must be either 'comment' or 'item'")
+
+        response = select_query(check_query)
+        if len(response) < 1:
+            raise Exception("Parent object not found")
+
         query = "insert into comments (user_id, create_date, content) values ({0}, '{1}', '{2}')".format(user_id, datetime.datetime.now().strftime(format), content)
         insert_query(query)
 
         get_id_query = "select id from comments where user_id={0} and create_date='{1}' and content='{2}'".format(user_id, datetime.datetime.now().strftime(format), content)
         results = select_query(get_id_query)
+        if len(results) < 1:
+            raise Exception("Error saving comment.")
         comment_id = results[0][0]
 
         parent_query = ""
@@ -140,6 +154,11 @@ class CommentORM(object):
             rating = False
         else:
             raise Exception("Rating field must be either 'true' or 'false'")
+
+        item_query = "select id from comments where id={0}".format(comment_id)
+        results = select_query(item_query)
+        if len(results) < 1:
+            raise Exception("Comment not found")
 
         get_rating_query = "select id from comment_ratings where user_id={0} and comment_id={1}".format(user_id, comment_id)
         results = select_query(get_rating_query)

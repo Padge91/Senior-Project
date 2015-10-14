@@ -1,13 +1,14 @@
 __author__ = 'nicholaspadgett'
 
 import json
+from EscapeChars import *
 
 class FullComment(object):
     def __init__(self, row):
         self.id = row[0]
         self.user_id = row[1]
         self.create_date = row[2]
-        self.content = row[3]
+        self.content = strip_tags(html_unescape(row[3]))
         self.item_id = None
         self.user_name = None
         self.user_review = None

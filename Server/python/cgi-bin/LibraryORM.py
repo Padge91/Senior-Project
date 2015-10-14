@@ -12,6 +12,11 @@ class LibraryORM(object):
         library_id = form["library_id"]
         user_id = form["user_id"]
 
+        check_query = "select id from libraries where id={0}".format(library_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Library not found.")
+
         #check if library is visible or if it is owned by user
         is_library_viewable=self.check_if_library_visible(library_id,user_id)
         if not is_library_viewable:
@@ -47,6 +52,11 @@ class LibraryORM(object):
         user_id = form["user_id"]
         current_user_id = form["current_user_id"]
 
+        check_query = "select id from users where id={0}".format(user_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("User not found.")
+
         query = "select id,library_name, user_id, visible from libraries where user_id={0}".format(user_id)
         results = select_query(query)
         return self.get_libraries_from_response(results)
@@ -63,6 +73,16 @@ class LibraryORM(object):
         item_id = form["item_id"]
         library_id = form["library_id"]
         user_id = form["user_id"]
+
+        check_query = "select id from items where id={0}".format(item_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Item not found")
+
+        check_query = "select id from libraries where id={0}".format(library_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Library not found")
 
         #make sure user owns library
         query = "select id, user_id from libraries where id={0} and user_id={1}".format(library_id, user_id)
@@ -107,6 +127,11 @@ class LibraryORM(object):
         results = select_query(ownership_query)
         if len(results) < 1:
             raise Exception("Library not found")
+
+        item_query = "select id from items where id={0}".format(item_id)
+        results = select_query(item_query)
+        if len(results) < 1:
+            raise Exception("Item not found")
 
         existing_query = "select * from library_items where library_id={0} and item_id={1}".format(library_id, item_id)
         results = select_query(existing_query)
