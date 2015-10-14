@@ -50,6 +50,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         self.searchResults = []
+        self.searchResultsTableView.reloadData()
         model.getItemsBySearchCriteria(self.searchController.searchBar.text!, completionHandler: getSearchResultsCompletionHandler)
     }
     
@@ -57,8 +58,8 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         if data != nil {
             do {
                 if let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
-                    if let successString = responseObject["success"] as? String {
-                        if let successArray = JsonParser.parseArrayFromString(successString) {
+                    if responseObject["success"] as! Bool {
+                        if let successArray = responseObject["response"] as? NSArray {
                             for element in successArray {
                                 if element is NSDictionary {
                                     self.searchResults.append(BasicMediaItem.parseBasicMediaItem(element as! NSDictionary))
@@ -69,7 +70,9 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                 }
             } catch {}
             if self.searchResults.count > 0 {
-                self.searchResultsTableView.reloadData()
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.searchResultsTableView.reloadData()
+                }
             }
         }
     }

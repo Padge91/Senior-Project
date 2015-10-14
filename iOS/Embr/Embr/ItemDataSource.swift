@@ -12,7 +12,7 @@ class ItemDataSource {
     }
     
     func getItemsBySearchCriteria(searchCriteria: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
-        EmbrConnection.get("/cgi-bin/searchItems.py", params: ["title": searchCriteria], completionHandler: completionHandler)
+        EmbrConnection.get("/cgi-bin/SearchItems.py", params: ["title": searchCriteria], completionHandler: completionHandler)
     }
     
     func updateItemReview(mediaItem: MediaItem, review: Int) {

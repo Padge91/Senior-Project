@@ -84,19 +84,17 @@ class BasicMediaItem: MediaItem {
     private(set) var creator: String?
     private(set) var comments: [Comment]
     
-    init(description: String?, creator: String?, id: Int, title: String?) {
-        self.blurb = description!
-        self.creator = creator
+    init(id: Int, title: String?) {
+        self.blurb = "Description of the story."
+        self.creator = "Not Specified"
         self.id = id
         self.title = title!
         self.comments = []
     }
     
     static func parseBasicMediaItem(mediaItemDictionary: NSDictionary) -> BasicMediaItem {
-        let description = mediaItemDictionary["description"] as? String
-        let creator = mediaItemDictionary["creator"] as? String
         let id = mediaItemDictionary["id"] as! Int
         let title = mediaItemDictionary["title"] as? String
-        return BasicMediaItem(description: description, creator: creator, id: id, title: title)
+        return BasicMediaItem(id: id, title: title)
     }
 }
