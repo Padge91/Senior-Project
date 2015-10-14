@@ -26,9 +26,17 @@ class EmbrConnection {
     }
     
     static func post(path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        postOrPut("POST", path: path, httpBody: httpBody, completionHandler: completionHandler)
+    }
+    
+    static func put(path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        postOrPut("PUT", path: path, httpBody: httpBody, completionHandler: completionHandler)
+    }
+    
+    private static func postOrPut(httpMethod: String, path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         let urlComponents = buildURLComponents(path)
         let postRequest = NSMutableURLRequest(URL: urlComponents.URL!)
-        postRequest.HTTPMethod = "POST"
+        postRequest.HTTPMethod = httpMethod
         postRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if httpBody != nil {
             if let data = makeDataFromBody(httpBody!) {

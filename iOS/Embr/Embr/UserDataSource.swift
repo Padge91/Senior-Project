@@ -36,6 +36,6 @@ class UserDataSource {
     }
     
     func attemptLogin(username: String, password: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
-        EmbrConnection.get("/cgi-bin/login.py", params: ["username": username, "password": password], completionHandler: completionHandler)
+        EmbrConnection.get("/cgi-bin/Login.py", params: ["username": username, "password": password], completionHandler: completionHandler)
     }
 }
