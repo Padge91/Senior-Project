@@ -9,7 +9,7 @@
 import Foundation
 
 class LibrariesDataSource {
-//    func getMyLibraries() -> [MediaItem] {
-//        EmbrConnection.get("/cgi-bin/GetLibrariesList.py", params: , completionHandler: <#T##(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void#>)
-//    }
+    func getMyLibraries(userId: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetLibrariesList.py", params: ["session": SessionModel.getSession(), "user_id": "\(userId)"], completionHandler: completionHandler)
+    }
 }
