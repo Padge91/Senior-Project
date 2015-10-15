@@ -12,6 +12,9 @@ class ItemORM(object):
     def get_full_item(self,query_params):
         query = self.build_query(query_params)
         rows = select_query(query)
+        if len(rows) < 1:
+            raise Exception("Item not found.")
+
         response_object = self.convert_row_to_FullItem(rows)
 
         #add comments to the object
@@ -32,7 +35,6 @@ class ItemORM(object):
 
     #returns array of basic item information
     def search_items(self, query_params, option=None):
-        comment_orm = CommentORM()
 
         if option is None:
             query = self.build_query(query_params)
@@ -40,25 +42,10 @@ class ItemORM(object):
             query = self.build_query_or(query_params)
         rows = select_query(query)
 
-        item_list = []
-        for i in range(0, len(rows)):
-            item_list.append(self.convert_row_to_FullItemWholeRow(rows[i]))
+        response_objects = self.convert_rows_to_SimpleItem(rows)
+        self.add_images_to_item(response_objects)
 
-        for i in range(0, len(item_list)):
-            item_list[i].genres = self.get_item_genres(item_list[i].id)
-            item_list[i].comments = comment_orm.get_comments_on_item({"item_id":item_list[i].id})
-            score_results = self.get_scores(item_list[i].id)
-            item_list[i].average_score = score_results["item_score"]
-
-
-        self.add_images_to_item(item_list)
-
-
-        # using FullItem instead
-        #response_objects = self.convert_rows_to_SimpleItem(rows)
-        #self.add_images_to_item(response_objects)
-
-        return item_list
+        return response_objects
 
 
     def get_scores(self, item_id, user_id=None):
@@ -98,7 +85,18 @@ class ItemORM(object):
 
     #convert rows to objects
     def convert_row_to_FullItem(self,rows):
-        return FullItem(rows[0])
+        comment_orm = CommentORM()
+        item = FullItem(rows[0])
+
+        item.genres = self.get_item_genres(item.id)
+        item.comments = comment_orm.get_comments_on_item({"item_id":item.id})
+        score_results = self.get_scores(item.id)
+        item.average_score = score_results["item_score"]
+
+
+        self.add_images_to_item([item])
+
+        return item
 
     def convert_row_to_FullItemWholeRow(self,row):
         return FullItem(row)
