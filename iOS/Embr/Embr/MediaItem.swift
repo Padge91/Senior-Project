@@ -1,8 +1,9 @@
 import Foundation
 
-protocol MediaItem {
+protocol MediaItem : AnyObject {
     var id: Int { get }
     var title: String { get }
+    var creator: String { get }
     var imageName: String? { get }
     var blurb: String { get }
     var recommendedAge: Int? { get }
@@ -10,6 +11,8 @@ protocol MediaItem {
     var avgFriendReview: Double? { get }
     var avgReview: Double? { get }
     var comments: [Comment] { get }
+    
+    func getAverageReviewString() -> String
 }
 
 class Book : MediaItem {
@@ -21,7 +24,7 @@ class Book : MediaItem {
     private(set) var myReview: Int?
     private(set) var avgFriendReview: Double?
     private(set) var avgReview: Double?
-    private(set) var author: String
+    private(set) var creator: String
     private(set) var pageCount: Int
     private(set) var publisher: String
     private(set) var comments: [Comment]
@@ -35,10 +38,17 @@ class Book : MediaItem {
         self.myReview = myReview
         self.avgFriendReview = avgFriendReview
         self.avgReview = avgReview
-        self.author = author
+        self.creator = author
         self.pageCount = pageCount
         self.publisher = publisher
         self.comments = comments
+    }
+    
+    func getAverageReviewString() -> String {
+        if avgReview == nil {
+            return "None"
+        }
+        return "\(avgReview!)"
     }
 }
 
@@ -51,7 +61,7 @@ class Movie : MediaItem {
     private(set) var myReview: Int?
     private(set) var avgFriendReview: Double?
     private(set) var avgReview: Double?
-    private(set) var director: String
+    private(set) var creator: String
     private(set) var cast: [String]
     private(set) var crew: [String]
     private(set) var comments: [Comment]
@@ -65,14 +75,21 @@ class Movie : MediaItem {
         self.myReview = myReview
         self.avgFriendReview = avgFriendReview
         self.avgReview = avgReview
-        self.director = director
+        self.creator = director
         self.cast = cast
         self.crew = crew
         self.comments = comments
     }
+    
+    func getAverageReviewString() -> String {
+        if avgReview == nil {
+            return "None"
+        }
+        return "\(avgReview!)"
+    }
 }
 
-class BasicMediaItem: MediaItem {
+class GenericMediaItem: MediaItem {
     private(set) var id: Int
     private(set) var title: String
     private(set) var imageName: String?
@@ -81,20 +98,36 @@ class BasicMediaItem: MediaItem {
     private(set) var myReview: Int?
     private(set) var avgFriendReview: Double?
     private(set) var avgReview: Double?
-    private(set) var creator: String?
+    private(set) var creator: String
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String?) {
-        self.blurb = "Description of the story."
-        self.creator = "Not Specified"
+    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAge: Int?, myReview: Int?, avgReview: Double?, creator: String) {
         self.id = id
-        self.title = title!
-        self.comments = []
+        self.title = title
+        self.imageName = imageName
+        self.blurb = blurb
+        self.recommendedAge = recommendedAge
+        self.myReview = myReview
+        self.avgReview = avgReview
+        self.creator = creator
+        comments = []
     }
     
-    static func parseBasicMediaItem(mediaItemDictionary: NSDictionary) -> BasicMediaItem {
+    static func parseGenericMediaItem(mediaItemDictionary: NSDictionary) -> GenericMediaItem {
         let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as? String
-        return BasicMediaItem(id: id, title: title)
+        let title = mediaItemDictionary["title"] as! String
+        let imageName = mediaItemDictionary["image"] as? String
+        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        let myReview = mediaItemDictionary["user_score"] as? Int
+        let avgReview = mediaItemDictionary["average_score"] as? Double
+        let creator = mediaItemDictionary["creator"] as? String ?? "Not Specified"
+        return GenericMediaItem(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAge: nil, myReview: myReview, avgReview: avgReview, creator: creator)
+    }
+    
+    func getAverageReviewString() -> String {
+        if avgReview == nil {
+            return "None"
+        }
+        return "\(avgReview!)"
     }
 }

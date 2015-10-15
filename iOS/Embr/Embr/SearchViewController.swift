@@ -5,7 +5,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     private let menuSegueIdentifier = "segueToMenu"
     private let librariesSegueIdentifier = "segueToLibraries"
-    private var model = ItemDataSource.getInstance()
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!
@@ -16,7 +15,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         setupSearchResultsTableView()
         definesPresentationContext = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
-        let librariesButton = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "goToLibraries")
+        let librariesButton = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "goToLibraries")
         toolbarItems = [librariesButton]
     }
     
@@ -37,21 +36,38 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(itemDetailSegueIdentifier, sender: indexPath)
+        let itemToView = self.searchResults[indexPath.row]
+        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
+    }
+    
+    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if let response = jsonResponse["response"] as? NSDictionary {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                let itemToView = GenericMediaItem.parseGenericMediaItem(response)
+                                self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
+                            }
+                        }
+                    }
+                }
+            } catch {}
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if sender is NSIndexPath && segue.identifier == itemDetailSegueIdentifier {
+        if sender is MediaItem && segue.identifier == itemDetailSegueIdentifier {
             let destination = segue.destinationViewController as! ItemDetailsViewController
-            let mediaItem = searchResults[(sender as! NSIndexPath).row]
-            destination.setMediaItem(mediaItem)
+            destination.setMediaItem(sender as! MediaItem)
         }
     }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         self.searchResults = []
         self.searchResultsTableView.reloadData()
-        model.getItemsBySearchCriteria(self.searchController.searchBar.text!, completionHandler: getSearchResultsCompletionHandler)
+        ItemDataSource.getItemsBySearchCriteria(self.searchController.searchBar.text!, completionHandler: getSearchResultsCompletionHandler)
     }
     
     func getSearchResultsCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
@@ -62,7 +78,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                         if let successArray = responseObject["response"] as? NSArray {
                             for element in successArray {
                                 if element is NSDictionary {
-                                    self.searchResults.append(BasicMediaItem.parseBasicMediaItem(element as! NSDictionary))
+                                    self.searchResults.append(GenericMediaItem.parseGenericMediaItem(element as! NSDictionary))
                                 }
                             }
                         }
@@ -82,7 +98,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func goToLibraries() {
-        if UserDataSource.getInstance().getSession() != nil {
+        if SessionModel.getSession() != "" {
             performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
         } else {
             let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
@@ -113,7 +129,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     private func succesfulLogin(sessionId session: String) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
-            UserDataSource.getInstance().storeSession(sessionId: session)
+            SessionModel.storeSession(sessionId: session)
             self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: nil)
         }
     }
@@ -122,8 +138,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         if data != nil {
             do {
                 let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if let sessionResponse = response["success"], session = sessionResponse["session"] as? String {
-                    succesfulLogin(sessionId: session)
+                if response["success"] as! Bool {
+                    if let session = response["response"] as? String {
+                        succesfulLogin(sessionId: session)
+                    }
                 } else if response["error"] != nil {
                     alertError(errorMessage: "Invalid login")
                 }
@@ -143,13 +161,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         
         let mediaItem = searchResults[indexPath.row]
         cell!.textLabel!.text = mediaItem.title
-        
-        if mediaItem is Book {
-            cell!.detailTextLabel?.text = (mediaItem as! Book).author
-        } else if mediaItem is Movie {
-            cell!.detailTextLabel?.text = (mediaItem as! Movie).director
-        }
-        
+        cell!.detailTextLabel?.text = mediaItem.creator
         if let imageName = mediaItem.imageName {
             cell!.imageView?.image = UIImage(named: imageName)
         }

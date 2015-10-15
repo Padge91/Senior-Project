@@ -12,7 +12,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    private let userDataSource = UserDataSource.getInstance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func attemptLogin() {
-        userDataSource.attemptLogin(usernameTextField.text!, password: passwordTextField.text!, completionHandler: loginCompletionHandler)
+        UserDataSource.getInstance().attemptLogin(usernameTextField.text!, password: passwordTextField.text!, completionHandler: loginCompletionHandler)
     }
     
     private func alertError(errorMessage error: String) {
@@ -53,7 +52,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     private func succesfulLogin(sessionId session: String) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.userDataSource.storeSession(sessionId: session)
+            SessionModel.storeSession(sessionId: session)
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
     }
@@ -62,8 +61,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if data != nil {
             do {
                 let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if let sessionResponse = response["success"], session = sessionResponse["session"] as? String {
-                    succesfulLogin(sessionId: session)
+                if response["success"] as! Bool {
+                    if let session = response["response"] as? String {
+                        succesfulLogin(sessionId: session)
+                    }
                 } else if let sessionResponse = response["error"] {
                     alertError(errorMessage: sessionResponse as? String ?? "Invalid session")
                 }

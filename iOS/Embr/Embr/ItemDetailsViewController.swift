@@ -13,7 +13,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private var itemDetails = [String: [AnyObject]]()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var topAttrubuteLabel: UILabel!
+    @IBOutlet weak var topAttributeLabel: UILabel!
     @IBOutlet weak var bottomAttributeLabel: UILabel!
     @IBOutlet weak var itemDetailsTableView: UITableView!
     @IBOutlet var reviewCollection: [UIButton]!
@@ -21,7 +21,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(mediaItem != nil)
-        loadTitleAndImage()
+        loadTitle()
+        loadImage()
         loadTopAttribute()
         loadBottomAttribute()
         setupItemDetailsTable()
@@ -42,19 +43,25 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         itemDetailsTableView.backgroundColor = UIColor.whiteColor()
     }
     
-    private func loadTitleAndImage() {
-        // coverImageView.image = UIImage(named: mediaItem!.imageName!)
+    private func loadImage() {
+        assert(mediaItem != nil)
+        if let imageName = mediaItem!.imageName {
+            if let imageURL = NSURL(string: imageName) {
+                if let imageData = NSData(contentsOfURL: imageURL) {
+                    coverImageView.image = UIImage(data: imageData)
+                }
+            }
+        }
+    }
+    
+    private func loadTitle() {
+        assert(mediaItem != nil)
         titleLabel.text = mediaItem!.title
     }
     
     private func loadTopAttribute() {
-        if mediaItem is Movie {
-            topAttrubuteLabel.text = (mediaItem as! Movie).director
-        } else if mediaItem is Book {
-            topAttrubuteLabel.text = (mediaItem as! Book).author
-        } else if mediaItem is BasicMediaItem {
-            topAttrubuteLabel.text = (mediaItem as! BasicMediaItem).creator
-        }
+        assert(mediaItem != nil)
+        topAttributeLabel.text = mediaItem!.creator
     }
     
     private func loadBottomAttribute() {
@@ -63,6 +70,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             bottomAttributeLabel.text = (mediaItem as! Movie).cast.first
         } else if mediaItem is Book {
             bottomAttributeLabel.text = "Page Count: \((mediaItem as! Book).pageCount)"
+        } else {
+            bottomAttributeLabel.hidden = true
         }
     }
     
@@ -70,8 +79,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         mediaItem = item
         itemDetails = [
             sectionHeadings[reviewsSection]: [
-                "Average Friend Reviews:",
-                "Average Embr User Review:",
+                "Average Embr User Review: \(mediaItem!.getAverageReviewString())",
             ],
             sectionHeadings[blurbSection]: [item.blurb],
             sectionHeadings[commentsSection]: item.comments
@@ -150,7 +158,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func goToLibraries() {
-        if UserDataSource.getInstance().getSession() != nil {
+        if SessionModel.getSession() != "" {
             performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
         } else {
             let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
@@ -181,7 +189,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func succesfulLogin(sessionId session: String) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
-            UserDataSource.getInstance().storeSession(sessionId: session)
+            SessionModel.storeSession(sessionId: session)
             self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: nil)
         }
     }

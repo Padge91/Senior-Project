@@ -25,15 +25,15 @@ class EmbrConnection {
         dataTask.resume()
     }
     
-    static func post(path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    static func post(path: String, httpBody: [String: AnyObject]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         postOrPut("POST", path: path, httpBody: httpBody, completionHandler: completionHandler)
     }
     
-    static func put(path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    static func put(path: String, httpBody: [String: AnyObject]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         postOrPut("PUT", path: path, httpBody: httpBody, completionHandler: completionHandler)
     }
     
-    private static func postOrPut(httpMethod: String, path: String, httpBody: [String: String]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    private static func postOrPut(httpMethod: String, path: String, httpBody: [String: AnyObject]?, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         let urlComponents = buildURLComponents(path)
         let postRequest = NSMutableURLRequest(URL: urlComponents.URL!)
         postRequest.HTTPMethod = httpMethod
@@ -47,7 +47,7 @@ class EmbrConnection {
         dataTask.resume()
     }
     
-    private static func makeDataFromBody(body: [String: String]) -> NSData? {
+    private static func makeDataFromBody(body: [String: AnyObject]) -> NSData? {
         do {
             let data = try NSJSONSerialization.dataWithJSONObject(body, options: .PrettyPrinted)
             return data

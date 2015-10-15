@@ -52,7 +52,7 @@ class MenuViewController: UITableViewController {
     }
     
     func logout(action: UIAlertAction) {
-        UserDataSource.getInstance().removeSession()
+        SessionModel.removeSession()
         self.navigationController?.popViewControllerAnimated(true)
     }
     

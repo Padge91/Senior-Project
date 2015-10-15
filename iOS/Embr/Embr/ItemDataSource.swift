@@ -2,21 +2,16 @@ import Foundation
 
 class ItemDataSource {
     
-    private static var instance: ItemDataSource?
-    
-    static func getInstance() -> ItemDataSource {
-        if instance == nil {
-            instance = ItemDataSource()
-        }
-        return instance!
-    }
-    
-    func getItemsBySearchCriteria(searchCriteria: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    static func getItemsBySearchCriteria(searchCriteria: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         EmbrConnection.get("/cgi-bin/SearchItems.py", params: ["title": searchCriteria], completionHandler: completionHandler)
     }
     
-    func updateItemReview(mediaItem: MediaItem, review: Int) {
-        // access database
+    static func updateItemReview(mediaItem: MediaItem, review: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.put("/cgi-bin/SubmitReview.py", httpBody: ["session": SessionModel.getSession(), "item_id": mediaItem.id, "score": "\(review)"], completionHandler: completionHandler)
+    }
+    
+    static func getItem(id: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetItemInfo.py", params: ["id": "\(id)"], completionHandler: completionHandler)
     }
     
 }

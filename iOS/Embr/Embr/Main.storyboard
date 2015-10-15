@@ -419,7 +419,7 @@
                         <outlet property="coverImageView" destination="rJx-70-7nJ" id="xkz-5T-FDb"/>
                         <outlet property="itemDetailsTableView" destination="dao-rG-Iet" id="qBh-aH-0H8"/>
                         <outlet property="titleLabel" destination="I2i-RW-ewI" id="Ses-LF-EKx"/>
-                        <outlet property="topAttrubuteLabel" destination="SOJ-zZ-pVc" id="2Vs-Fc-5NN"/>
+                        <outlet property="topAttributeLabel" destination="SOJ-zZ-pVc" id="k6d-Mt-dNH"/>
                         <outletCollection property="reviewCollection" destination="v4D-ED-6Fk" collectionClass="NSMutableArray" id="kuO-Wt-WzS"/>
                         <outletCollection property="reviewCollection" destination="WDE-fd-8kc" collectionClass="NSMutableArray" id="tZy-1S-2ok"/>
                         <outletCollection property="reviewCollection" destination="vdp-pj-U5o" collectionClass="NSMutableArray" id="lvP-81-MCn"/>
