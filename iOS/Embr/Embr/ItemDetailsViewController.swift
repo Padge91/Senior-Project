@@ -124,7 +124,9 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             destination.comments.append(selectedComment)
             destination.comments.appendContentsOf(selectedComment.children)
         } else if segue.identifier == commentCreatorSegueIdentifier {
-            // Send media item
+            if let destination = segue.destinationViewController as? CreateCommentViewController {
+                destination.mediaItem = self.mediaItem!
+            }
         }
     }
     

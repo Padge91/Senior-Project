@@ -2,20 +2,17 @@ import UIKit
 
 public class CreateCommentViewController : UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
+    var mediaItem: MediaItem?
     private let placeholderText = "Write a comment..."
-    @IBOutlet weak var subject: UITextField!
+    @IBOutlet weak var mediaItemTitle: UILabel!
     @IBOutlet weak var body: UITextView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupSubject()
+        assert(mediaItem != nil)
+        mediaItemTitle.text = mediaItem!.title
         setupBody()
         setupNavigationBar()
-    }
-    
-    private func setupSubject() {
-        subject.delegate = self
-        subject.returnKeyType = UIReturnKeyType.Next
     }
     
     private func setupBody() {

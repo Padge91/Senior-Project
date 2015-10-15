@@ -201,14 +201,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzC-Rj-XvR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzC-Rj-XvR">
                                 <rect key="frame" x="283" y="72" width="34" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Body" translatesAutoresizingMaskIntoConstraints="NO" id="re9-LI-ZWm">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Body" translatesAutoresizingMaskIntoConstraints="NO" id="re9-LI-ZWm">
                                 <rect key="frame" x="20" y="101" width="560" height="479"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
@@ -218,11 +218,17 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mzC-Rj-XvR" firstAttribute="top" secondItem="DqI-de-lEj" secondAttribute="bottom" constant="8" symbolic="YES" id="5X4-2L-ntC"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="centerX" secondItem="mzC-Rj-XvR" secondAttribute="centerX" id="CWC-WD-6QV"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="trailing" secondItem="ZdV-lE-0fU" secondAttribute="trailingMargin" id="PEz-BR-bmb"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="leading" secondItem="ZdV-lE-0fU" secondAttribute="leadingMargin" id="UGx-5X-UCq"/>
+                            <constraint firstAttribute="bottom" secondItem="re9-LI-ZWm" secondAttribute="bottom" constant="20" symbolic="YES" id="jIz-8V-7WD"/>
+                            <constraint firstItem="mzC-Rj-XvR" firstAttribute="top" secondItem="DqI-de-lEj" secondAttribute="bottom" constant="8" symbolic="YES" id="m33-8f-T4S"/>
+                            <constraint firstItem="re9-LI-ZWm" firstAttribute="top" secondItem="mzC-Rj-XvR" secondAttribute="bottom" constant="8" symbolic="YES" id="oR0-qT-7Co"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="body" destination="re9-LI-ZWm" id="fCh-E5-Laf"/>
+                        <outlet property="mediaItemTitle" destination="mzC-Rj-XvR" id="fIs-99-U7W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D02-a6-KkO" userLabel="First Responder" sceneMemberID="firstResponder"/>
