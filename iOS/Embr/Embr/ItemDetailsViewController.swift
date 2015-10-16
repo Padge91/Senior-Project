@@ -21,7 +21,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(mediaItem != nil)
-        print(mediaItem!.myReview)
         loadTitle()
         loadImage()
         loadTopAttribute()
@@ -174,16 +173,52 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func addToLibrary(sender: UIButton) {
-        let libraryActionSheet = UIAlertController(title: "Add to Library", message: nil, preferredStyle: .ActionSheet)
-        let viewedAction = UIAlertAction(title: "Viewed", style: .Default, handler: nil)
-        let ownedAction = UIAlertAction(title: "Owned", style: .Default, handler: nil)
-        let wishlistAction = UIAlertAction(title: "Wishlist", style: .Default, handler: nil)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        libraryActionSheet.addAction(viewedAction)
-        libraryActionSheet.addAction(ownedAction)
-        libraryActionSheet.addAction(wishlistAction)
-        libraryActionSheet.addAction(cancelAction)
-        presentViewController(libraryActionSheet, animated: true, completion: nil)
+        UserDataSource.getUserId { (data, response, error) -> Void in
+            if data != nil {
+                do {
+                    if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                        if jsonResponse["success"] as! Bool {
+                            let userId = jsonResponse["response"] as! Int
+                            LibrariesDataSource.getMyLibraries(userId, completionHandler: { (data, response, error) -> Void in
+                                if data != nil {
+                                    let libraryActionSheet = UIAlertController(title: "Add to Library", message: nil, preferredStyle: .ActionSheet)
+                                    do {
+                                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                                        if jsonResponse["success"] as! Bool {
+                                            if let response = jsonResponse["response"] as? NSArray {
+                                                let librariesList = parseLibraryList(librariesArray: response)
+                                                for library in librariesList {
+                                                    libraryActionSheet.addAction(UIAlertAction(title: library.name, style: .Default, handler: nil))
+                                                }
+                                            } else {
+                                                let jsonError = jsonResponse["response"]
+                                                let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
+                                                log(logType: .Error, message: errorMsg)
+                                            }
+                                        } else {
+                                            let jsonError = jsonResponse["response"]
+                                            let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
+                                            log(logType: .Error, message: errorMsg)
+                                        }
+                                    } catch {
+                                        let errorMsg = "Invalid data from GetLibrariesList.py"
+                                        log(logType: .Error, message: errorMsg)
+                                    }
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                                        libraryActionSheet.addAction(cancelAction)
+                                        self.presentViewController(libraryActionSheet, animated: true, completion: nil)
+                                    }
+                                }
+                            })
+                        }
+                    }
+                } catch {
+                    let errorMsg = "Invalid data from GetUserIdFromSession.py"
+                    log(logType: .Error, message: errorMsg)
+                }
+            }
+        }
     }
     
     @IBAction func commentOnItem(sender: UIButton) {
