@@ -165,3 +165,17 @@ def check_password_characters(password):
             raise Exception("Password must contain one capital letter, one special character, and one number")
 
 
+def check_session_id(form):
+    format = '%Y-%m-%d %H:%M:%S'
+    query = "select id, session_exp from user_sessions where session_id='{0}'".format(form["session"])
+
+    response = select_query(query)
+    if len(response) < 1:
+        return False
+
+    exp_time = response[0][1]
+    now_time = datetime.strptime(datetime.now().strftime(format), format)
+    if exp_time > now_time:
+        return True
+    else:
+        return False

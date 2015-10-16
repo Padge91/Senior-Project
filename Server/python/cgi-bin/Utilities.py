@@ -7,8 +7,8 @@ import decimal
 def success_response(response):
     print("Content-type:application/json")
     print("")
-    if response is True:
-        print json.dumps({"success":True},default=decimal_default)
+    if response is True or response is False:
+        print json.dumps({"success":True, "response":response},default=decimal_default)
     elif isinstance(response, dict):
         print json.dumps({"success":True, "response":response},default=decimal_default)
     elif isinstance(response, str):
