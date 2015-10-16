@@ -14,7 +14,6 @@
             android:layout_weight=".8"
             android:layout_height="50dp"
             android:id="@+id/action_bar_edit_text"
-            android:hint="Embr"
             android:textColorHint="@color/color_text_black"
             android:background="#00000000" />
 
