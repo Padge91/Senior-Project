@@ -4,6 +4,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var email: UITextField!
     @IBOutlet weak var confirmPassword: UITextField!
     
     override func viewDidLoad() {
@@ -12,14 +13,20 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         username.returnKeyType = .Next
         password.delegate = self
         password.returnKeyType = .Next
+        password.secureTextEntry = true
+        email.delegate = self
+        email.returnKeyType = .Next
         confirmPassword.delegate = self
         confirmPassword.returnKeyType = .Done
+        confirmPassword.secureTextEntry = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "signUp")
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         switch textField {
         case username:
+            email.becomeFirstResponder()
+        case email:
             password.becomeFirstResponder()
         case password:
             confirmPassword.becomeFirstResponder()
@@ -35,8 +42,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         if validateFields() {
             if passwordsMatch() {
                 if passwordsAreStrong() {
-                    // Todo: Attempt sign up
-                    navigationController?.popViewControllerAnimated(true)
+                    UserDataSource.signUp(username.text!, email: email.text!, password: password.text!, confirmPassword: confirmPassword.text!, completionHandler: signUpCompletionHandler)
                 } else {
                     let weakPasswordAlert = UIAlertController(title: "Weak Password", message: "Your password must be at least 9 characters long.", preferredStyle: .Alert)
                     weakPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
@@ -54,8 +60,21 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func signUpCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                if jsonResponse["success"] as! Bool {
+                    navigationController?.popViewControllerAnimated(true)
+                } else {
+                }
+            } catch {}
+        }
+    }
+    
     private func validateFields() -> Bool {
-        return username.text! != "" && password.text! != "" && confirmPassword.text! != ""
+        return username.text! != "" && email.text! != "" && password.text! != "" && confirmPassword.text! != ""
     }
     
     private func passwordsMatch() -> Bool {
@@ -68,9 +87,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func passwordsAreStrong() -> Bool {
-        let minPasswordLength = 9
+        let minPasswordLength = 8
         if let password = self.password.text {
-            // Todo: Check password strength
             return password.characters.count >= minPasswordLength
         }
         return false

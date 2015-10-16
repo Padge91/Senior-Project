@@ -169,7 +169,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             })
             let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
                 if let username = alert.textFields![0].text, password = alert.textFields![1].text {
-                    UserDataSource.getInstance().attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
+                    UserDataSource.attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
                 }
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)

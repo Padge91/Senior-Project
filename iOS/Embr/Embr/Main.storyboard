@@ -498,14 +498,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="33J-M6-H0e">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cAd-ph-cdy">
                                 <rect key="frame" x="20" y="110" width="560" height="30"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u3C-Ji-3DM">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="33J-M6-H0e">
                                 <rect key="frame" x="20" y="148" width="560" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u3C-Ji-3DM">
+                                <rect key="frame" x="20" y="186" width="560" height="30"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -514,19 +520,23 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="leading" secondItem="33J-M6-H0e" secondAttribute="leading" id="4tf-hv-aXA"/>
-                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="top" secondItem="33J-M6-H0e" secondAttribute="bottom" constant="8" symbolic="YES" id="BOH-PU-U8J"/>
-                            <constraint firstItem="33J-M6-H0e" firstAttribute="trailing" secondItem="u3C-Ji-3DM" secondAttribute="trailing" id="Jwd-LL-N4v"/>
-                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="trailing" secondItem="cMl-DM-dRz" secondAttribute="trailingMargin" id="LNO-i5-VY6"/>
-                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="trailing" secondItem="33J-M6-H0e" secondAttribute="trailing" id="ZOB-8c-T5B"/>
-                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="leading" secondItem="cMl-DM-dRz" secondAttribute="leadingMargin" id="Zsm-fS-b7G"/>
-                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="top" secondItem="4fc-C0-8zg" secondAttribute="bottom" constant="8" symbolic="YES" id="eWv-p9-er6"/>
-                            <constraint firstItem="33J-M6-H0e" firstAttribute="leading" secondItem="u3C-Ji-3DM" secondAttribute="leading" id="gpD-QS-bjV"/>
-                            <constraint firstItem="33J-M6-H0e" firstAttribute="top" secondItem="nrq-yQ-Tqg" secondAttribute="bottom" constant="8" symbolic="YES" id="mUF-b5-cdI"/>
+                            <constraint firstItem="cAd-ph-cdy" firstAttribute="trailing" secondItem="33J-M6-H0e" secondAttribute="trailing" id="00f-vN-a50"/>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="leading" secondItem="cAd-ph-cdy" secondAttribute="leading" id="7RM-gk-4QI"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="leading" secondItem="cMl-DM-dRz" secondAttribute="leadingMargin" id="8aF-oe-dVB"/>
+                            <constraint firstItem="nrq-yQ-Tqg" firstAttribute="top" secondItem="4fc-C0-8zg" secondAttribute="bottom" constant="8" symbolic="YES" id="IPK-1w-n0y"/>
+                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="top" secondItem="33J-M6-H0e" secondAttribute="bottom" constant="8" symbolic="YES" id="Iy5-MJ-Ywo"/>
+                            <constraint firstItem="u3C-Ji-3DM" firstAttribute="trailing" secondItem="33J-M6-H0e" secondAttribute="trailing" id="LpH-7b-euO"/>
+                            <constraint firstItem="cAd-ph-cdy" firstAttribute="trailing" secondItem="nrq-yQ-Tqg" secondAttribute="trailing" id="NGx-DB-wm6"/>
+                            <constraint firstItem="cAd-ph-cdy" firstAttribute="trailing" secondItem="cMl-DM-dRz" secondAttribute="trailingMargin" id="VgJ-Is-9W9"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="top" secondItem="cAd-ph-cdy" secondAttribute="bottom" constant="8" symbolic="YES" id="YN0-nb-ImE"/>
+                            <constraint firstItem="cAd-ph-cdy" firstAttribute="leading" secondItem="33J-M6-H0e" secondAttribute="leading" id="fM6-w1-FKF"/>
+                            <constraint firstItem="cAd-ph-cdy" firstAttribute="top" secondItem="nrq-yQ-Tqg" secondAttribute="bottom" constant="8" symbolic="YES" id="zQk-U7-Qvi"/>
+                            <constraint firstItem="33J-M6-H0e" firstAttribute="leading" secondItem="u3C-Ji-3DM" secondAttribute="leading" id="zVE-M6-uOy"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="confirmPassword" destination="u3C-Ji-3DM" id="cFT-27-Ric"/>
+                        <outlet property="email" destination="cAd-ph-cdy" id="F4u-wq-13Q"/>
                         <outlet property="password" destination="33J-M6-H0e" id="ovg-Vt-1an"/>
                         <outlet property="username" destination="nrq-yQ-Tqg" id="9u2-RY-mN5"/>
                     </connections>
