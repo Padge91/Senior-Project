@@ -44,7 +44,7 @@ def json_request(form, required_params):
 def get_required_parameters(request, required_params):
     form = request.FieldStorage()
 
-    if os.environ["CONTENT_TYPE"] == "application/json":
+    if "CONTENT_TYPE" in os.environ and os.environ["CONTENT_TYPE"] == "application/json":
         return json_request(form, required_params)
     else:
         response = dict()
