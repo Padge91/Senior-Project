@@ -15,6 +15,15 @@ def get_user_id_from_session(params):
         raise Exception("No session found")
     return response[0][0]
 
+def get_user_id_from_session_no_error(params):
+    session = params["session"]
+    query = "select user_id from user_sessions where session_id='{0}'".format(session)
+    args = {"session":session}
+    response = select_query(query)
+    if len(response) == 0:
+        return None
+    return response[0][0]
+
 def logout(params):
     session = params["session"]
     remove_session(session)

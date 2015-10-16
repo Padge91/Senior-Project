@@ -10,12 +10,12 @@ class ItemORM(object):
 
     #get everything on item, including comments
     def get_full_item(self,query_params):
-        query = self.build_query(query_params)
+        query = self.build_query({"id":query_params["id"]})
         rows = select_query(query)
         if len(rows) < 1:
             raise Exception("Item not found.")
 
-        response_object = self.convert_row_to_FullItem(rows)
+        response_object = self.convert_row_to_FullItem(rows, query_params)
 
         #add comments to the object
         comment_orm = CommentORM()
@@ -84,7 +84,7 @@ class ItemORM(object):
         return response_objects
 
     #convert rows to objects
-    def convert_row_to_FullItem(self,rows):
+    def convert_row_to_FullItem(self, rows, params):
         comment_orm = CommentORM()
         item = FullItem(rows[0])
 
@@ -92,11 +92,36 @@ class ItemORM(object):
         item.comments = comment_orm.get_comments_on_item({"item_id":item.id})
         score_results = self.get_scores(item.id)
         item.average_score = score_results["item_score"]
-
+        item.user_score = self.get_user_score(params)
 
         self.add_images_to_item([item])
 
         return item
+
+    def get_user_score(self, params):
+        item_id = params["id"]
+        session = params["session"]
+        user_id = get_user_id_from_session_no_error(params)
+        if user_id is None:
+            return None
+
+        check_query = "select id from items where id={0}".format(item_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Item not found")
+
+        check_query = "select id from items where id={0}".format(item_id)
+        results = select_query(check_query)
+        if len(results) < 1:
+            raise Exception("Item not found")
+
+        query = "select review_value from item_reviews where item_id={0} and user_id={1}".format(item_id, user_id)
+        response = select_query(query)
+        if len(response) < 1:
+            return None
+        else:
+            return response[0][0]
+
 
     def convert_row_to_FullItemWholeRow(self,row):
         return FullItem(row)

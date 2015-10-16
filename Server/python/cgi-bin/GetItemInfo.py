@@ -5,7 +5,7 @@ import cgi
 from Utilities import *
 from ItemORM import *
 
-required_params = ["id"]
+required_params = ["id", "session"]
 
 def main():
     try:
