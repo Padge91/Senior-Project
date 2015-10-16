@@ -44,16 +44,19 @@ def json_request(form, required_params):
 def get_required_parameters(request, required_params):
     form = request.FieldStorage()
 
-    if "CONTENT_TYPE" in os.environ and os.environ["CONTENT_TYPE"] == "application/json":
-        return json_request(form, required_params)
-    else:
-        response = dict()
-        for param in required_params:
-            if param not in form:
-                raise Exception(param +" is required")
-            response[param] = form[param].value
+    if os.environ is not None:
+        if "CONTENT_TYPE" in os.environ:
+            if os.environ["CONTENT_TYPE"] is not None:
+                if os.environ["CONTENT_TYPE"] == "application/json":
+                    return json_request(form, required_params)
 
-        return response
+    response = dict()
+    for param in required_params:
+        if param not in form:
+            raise Exception(param +" is required")
+        response[param] = form[param].value
+
+    return response
 
 def decimal_default(obj):
     if isinstance(obj, decimal.Decimal):
