@@ -21,6 +21,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(mediaItem != nil)
+        print(mediaItem!.myReview)
         loadTitle()
         loadImage()
         loadTopAttribute()
@@ -89,7 +90,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             for i in 0...4 {
                 let star = reviewCollection[i]
                 if i < review {
-                    star.setTitleColor(UIColor.yellowColor(), forState: UIControlState.Normal)
+                    star.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
                 } else {
                     star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
                 }
@@ -153,7 +154,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func reviewItem(sender: UIButton) {
-        if SessionModel.getSession() != "" {
+        if SessionModel.getSession() != SessionModel.noSession {
+            // Update UI
             let index = reviewCollection.indexOf(sender)
             for i in 0...4 {
                 let star = reviewCollection[i]
@@ -163,6 +165,9 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
                 }
             }
+            
+            // Update DB
+            ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in /* Do nothing */})
         } else {
             promptUserLogin()
         }
@@ -186,7 +191,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func goToLibraries() {
-        if SessionModel.getSession() != "" {
+        if SessionModel.getSession() != SessionModel.noSession {
             performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
         } else {
             promptUserLogin()

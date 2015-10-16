@@ -37,7 +37,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let itemToView = self.searchResults[indexPath.row]
-        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
+        ItemDataSource.getItem(SessionModel.getSession(), id: itemToView.id, completionHandler: self.getItemCompletionHandler)
     }
     
     func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
@@ -99,7 +99,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func goToLibraries() {
-        if SessionModel.getSession() != "" {
+        if SessionModel.getSession() != SessionModel.noSession {
             performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
         } else {
             let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)

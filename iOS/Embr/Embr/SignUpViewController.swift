@@ -44,7 +44,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 if passwordsAreStrong() {
                     UserDataSource.signUp(username.text!, email: email.text!, password: password.text!, confirmPassword: confirmPassword.text!, completionHandler: signUpCompletionHandler)
                 } else {
-                    let weakPasswordAlert = UIAlertController(title: "Weak Password", message: "Your password must be at least 9 characters long.", preferredStyle: .Alert)
+                    let weakPasswordAlert = UIAlertController(title: "Weak Password", message: "Your password must be at least 8 characters long.", preferredStyle: .Alert)
                     weakPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
                     presentViewController(weakPasswordAlert, animated: true, completion: nil)
                 }

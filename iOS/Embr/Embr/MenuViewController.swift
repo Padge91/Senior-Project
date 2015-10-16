@@ -16,11 +16,28 @@ class MenuViewController: UITableViewController {
     }
     
     func setupMenu() {
-        if SessionModel.getSession() != "" {
-            menu = [logoutString, signUpString]
-        } else {
-            menu = [loginString]
-        }
+        let session = SessionModel.getSession()
+        SessionModel.validateSession(session, completionHandler: setupMenuCompletionHandler)
+    }
+    
+    func setupMenuCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        do {
+            if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                if jsonResponse["success"] as! Bool {
+                    if jsonResponse["response"] as! Bool {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.menu = [self.logoutString]
+                            self.tableView.reloadData()
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.menu = [self.loginString, self.signUpString]
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        } catch {}
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
