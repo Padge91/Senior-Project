@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" />
     </list>
     <ignored path="Senior-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VerifySession.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="VerifySession.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.22091311" vertical-offset="0" max-vertical-offset="679">
+              <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
               <folding>
                 <element signature="e#50#73#0" expanded="true" />
               </folding>
@@ -83,10 +80,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Utilities.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.50810015" vertical-offset="0" max-vertical-offset="735">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
               <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding>
                 <element signature="e#32#43#0" expanded="true" />
@@ -158,9 +155,9 @@
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" />
       </list>
     </option>
   </component>
@@ -978,22 +975,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py">
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding>
-            <element signature="e#50#73#0" expanded="true" />
+            <element signature="e#32#43#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50810015" vertical-offset="0" max-vertical-offset="735">
-          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.22091311" vertical-offset="0" max-vertical-offset="679">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
           <folding>
-            <element signature="e#32#43#0" expanded="true" />
+            <element signature="e#50#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
