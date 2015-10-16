@@ -25,10 +25,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         loadImage()
         loadTopAttribute()
         loadBottomAttribute()
+        loadMyReview()
         setupItemDetailsTable()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
-        let librariesButton = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: "goToLibraries")
-        toolbarItems = [librariesButton]
+        setupNavigation()
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     func goToMenu() {
@@ -43,6 +43,19 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         itemDetailsTableView.backgroundColor = UIColor.whiteColor()
     }
     
+    private func setupNavigation() {
+        let menuItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
+        let librariesItem = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "goToLibraries")
+        navigationItem.rightBarButtonItem = menuItem
+        let librariesButton = librariesItem
+        toolbarItems = [librariesButton]
+    }
+    
+    private func loadTitle() {
+        assert(mediaItem != nil)
+        titleLabel.text = mediaItem!.title
+    }
+    
     private func loadImage() {
         assert(mediaItem != nil)
         if let imageName = mediaItem!.imageName {
@@ -52,11 +65,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 }
             }
         }
-    }
-    
-    private func loadTitle() {
-        assert(mediaItem != nil)
-        titleLabel.text = mediaItem!.title
     }
     
     private func loadTopAttribute() {
@@ -72,6 +80,20 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             bottomAttributeLabel.text = "Page Count: \((mediaItem as! Book).pageCount)"
         } else {
             bottomAttributeLabel.hidden = true
+        }
+    }
+    
+    private func loadMyReview() {
+        assert(mediaItem != nil)
+        if let review = mediaItem!.myReview {
+            for i in 0...4 {
+                let star = reviewCollection[i]
+                if i < review {
+                    star.setTitleColor(UIColor.yellowColor(), forState: UIControlState.Normal)
+                } else {
+                    star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+                }
+            }
         }
     }
     
@@ -131,14 +153,18 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func reviewItem(sender: UIButton) {
-        let index = reviewCollection.indexOf(sender)
-        for i in 0...4 {
-            let star = reviewCollection[i]
-            if i <= index {
-                star.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
-            } else {
-                star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        if SessionModel.getSession() != "" {
+            let index = reviewCollection.indexOf(sender)
+            for i in 0...4 {
+                let star = reviewCollection[i]
+                if i <= index {
+                    star.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+                } else {
+                    star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+                }
             }
+        } else {
+            promptUserLogin()
         }
     }
     
@@ -163,52 +189,17 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         if SessionModel.getSession() != "" {
             performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
         } else {
-            let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
-            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in
-                textfield.secureTextEntry = true
-                textfield.placeholder = "Password"
-            })
-            let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
-                if let username = alert.textFields![0].text, password = alert.textFields![1].text {
-                    UserDataSource.getInstance().attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
-                }
-            })
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            alert.addAction(loginAction)
-            alert.addAction(cancelAction)
-            presentViewController(alert, animated: true, completion: nil)
+            promptUserLogin()
         }
     }
     
-    private func alertError(errorMessage error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    private func succesfulLogin(sessionId session: String) {
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            SessionModel.storeSession(sessionId: session)
-            self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: nil)
-        }
-    }
-    
-    func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
-        if data != nil {
-            do {
-                let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if let sessionResponse = response["success"], session = sessionResponse["session"] as? String {
-                    succesfulLogin(sessionId: session)
-                } else if response["error"] != nil {
-                    alertError(errorMessage: "Invalid login")
-                }
-            } catch {
-                alertError(errorMessage: "Invalid response")
-            }
-        }
+    private func promptUserLogin() {
+        let alert = UIAlertController(title: "Login", message: "Login required to access this content.", preferredStyle: .Alert)
+        let loginAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alert.addAction(loginAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

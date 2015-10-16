@@ -19,9 +19,19 @@ class SessionModel {
     static func removeSession() {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(userDefaultSessionKey)
     }
+    
+    private static func sessionIsValid(sessionId: String) -> Bool {
+        // TODO: ask server
+        return true
+    }
 
     static func getSession() -> String {
-        let session = NSUserDefaults.standardUserDefaults().objectForKey(userDefaultSessionKey)
-        return session as? String ?? ""
+        if let session = NSUserDefaults.standardUserDefaults().objectForKey(userDefaultSessionKey) as? String {
+            if sessionIsValid(session) {
+                print(session)
+                return session
+            }
+        }
+        return ""
     }
 }

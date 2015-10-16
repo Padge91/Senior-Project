@@ -6,13 +6,21 @@ class MenuViewController: UITableViewController {
     private let settingsSegueIdentifier = "segueToSettings"
     private let loginString = "Login"
     private let logoutString = "Logout"
-    private let signUpString = "SignUp"
+    private let signUpString = "Sign Up"
     var menu = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableHeaderView = nil
-        menu = [loginString, logoutString, signUpString]
+        setupMenu()
+    }
+    
+    func setupMenu() {
+        if SessionModel.getSession() != "" {
+            menu = [logoutString, signUpString]
+        } else {
+            menu = [loginString]
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -30,15 +38,19 @@ class MenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch indexPath.row {
-        case menu.indexOf(loginString)!:
-            performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
-        case menu.indexOf(logoutString)!:
-            confirmLogout()
-        case menu.indexOf(signUpString)!:
-            performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
-        default:
-            break;
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let cellText = cell.textLabel?.text {
+                switch cellText {
+                    case loginString:
+                        performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
+                    case logoutString:
+                        confirmLogout()
+                    case signUpString:
+                        performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
+                    default:
+                        break;
+                }
+            }
         }
     }
     

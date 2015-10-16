@@ -65,12 +65,12 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        self.searchResults = []
         self.searchResultsTableView.reloadData()
         ItemDataSource.getItemsBySearchCriteria(self.searchController.searchBar.text!, completionHandler: getSearchResultsCompletionHandler)
     }
     
     func getSearchResultsCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        var newSearchResults = [MediaItem]()
         if data != nil {
             do {
                 if let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
@@ -78,15 +78,16 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                         if let successArray = responseObject["response"] as? NSArray {
                             for element in successArray {
                                 if element is NSDictionary {
-                                    self.searchResults.append(GenericMediaItem.parseGenericMediaItem(element as! NSDictionary))
+                                    newSearchResults.append(GenericMediaItem.parseGenericMediaItem(element as! NSDictionary))
                                 }
                             }
                         }
                     }
                 }
             } catch {}
-            if self.searchResults.count > 0 {
+            if newSearchResults.count > 0 {
                 dispatch_async(dispatch_get_main_queue()) {
+                    self.searchResults = newSearchResults
                     self.searchResultsTableView.reloadData()
                 }
             }
@@ -109,7 +110,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             })
             let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
                 if let username = alert.textFields![0].text, password = alert.textFields![1].text {
-                    UserDataSource.getInstance().attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
+                    UserDataSource.attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
                 }
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
