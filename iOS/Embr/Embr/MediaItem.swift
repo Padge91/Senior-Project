@@ -101,7 +101,7 @@ class GenericMediaItem: MediaItem {
     private(set) var creator: String
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAge: Int?, myReview: Int?, avgReview: Double?, creator: String) {
+    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAge: Int?, myReview: Int?, avgReview: Double?, creator: String, comments: [Comment]) {
         self.id = id
         self.title = title
         self.imageName = imageName
@@ -110,7 +110,7 @@ class GenericMediaItem: MediaItem {
         self.myReview = myReview
         self.avgReview = avgReview
         self.creator = creator
-        comments = []
+        self.comments = comments
     }
     
     static func parseGenericMediaItem(mediaItemDictionary: NSDictionary) -> GenericMediaItem {
@@ -121,7 +121,13 @@ class GenericMediaItem: MediaItem {
         let myReview = mediaItemDictionary["user_score"] as? Int
         let avgReview = mediaItemDictionary["average_score"] as? Double
         let creator = mediaItemDictionary["creator"] as? String ?? "Not Specified"
-        return GenericMediaItem(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAge: nil, myReview: myReview, avgReview: avgReview, creator: creator)
+        var comments = [Comment]()
+        if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
+            comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
+        } else {
+            comments = []
+        }
+        return GenericMediaItem(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAge: nil, myReview: myReview, avgReview: avgReview, creator: creator, comments: comments)
     }
     
     func getAverageReviewString() -> String {
