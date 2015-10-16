@@ -34,7 +34,6 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     CheckBoxPreference check;
     boolean click = true;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar appBar;
     private ListView listView;
     private EditText action_bar_edit_text;
-    private String[] values = new String[] {"ItemView", "SearchResults", "Profile", "Library", "RecommendedItems", "Login", "test"};
+    private String[] values = new String[] {"ItemView", "Search", "Profile", "Library", "RecommendedItems", "Login", "test"};
     private ArrayList<String> listview_values = new ArrayList<>();
 
     @Override
