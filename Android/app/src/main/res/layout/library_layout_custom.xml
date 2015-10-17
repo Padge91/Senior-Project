@@ -9,7 +9,7 @@
         android:id="@+id/action_bar" />
 
     <ListView
-        android:id="@+id/library_listView"
+        android:id="@+id/custom_library_listView"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 

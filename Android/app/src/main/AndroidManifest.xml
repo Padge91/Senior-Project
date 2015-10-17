@@ -21,15 +21,24 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
+            android:theme="@style/Theme.AppCompat.Light"
             android:name=".SearchResults"
-            android:label="@string/title_activity_search_results" >
+            android:label="@string/title_activity_search_results"
+            android:parentActivityName=".Profile">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.afe.pc.embr.Profile" />
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ItemView"
-            android:label="@string/title_activity_item_view" >
+            android:label="@string/title_activity_item_view"
+            android:parentActivityName=".SearchResults" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.afe.pc.embr.SearchResults" />
         </activity>
         <activity
             android:name=".Library"
@@ -40,11 +49,9 @@
             android:label="@string/title_activity_recommended_items" >
         </activity>
         <activity
+            android:theme="@style/Theme.AppCompat.Light"
             android:name=".Profile"
             android:label="@string/title_activity_profile" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.afe.pc.embr.HomeActivity" />
         </activity>
         <activity
             android:name=".CommentView"
