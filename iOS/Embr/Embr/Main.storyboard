@@ -386,7 +386,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Add to Library"/>
                                 <connections>
-                                    <action selector="addToLibrary:" destination="brd-f3-Oiw" eventType="touchUpInside" id="dJ8-X4-ETP"/>
+                                    <action selector="attemptAddToLibrary:" destination="brd-f3-Oiw" eventType="touchUpInside" id="F2y-89-7D1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GBf-Z9-1Qm">
