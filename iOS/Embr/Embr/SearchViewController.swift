@@ -212,7 +212,11 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         cell!.textLabel!.text = mediaItem.title
         cell!.detailTextLabel?.text = mediaItem.creator
         if let imageName = mediaItem.imageName {
-            cell!.imageView?.image = UIImage(named: imageName)
+            if let imageURL = NSURL(string: imageName) {
+                if let imageData = NSData(contentsOfURL: imageURL) {
+                    cell!.imageView?.image = UIImage(data: imageData)
+                }
+            }
         }
         
         return cell!
