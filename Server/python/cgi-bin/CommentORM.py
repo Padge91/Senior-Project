@@ -21,7 +21,11 @@ class CommentORM(object):
 
         #have list of objects, now need to fill in extra properties for each object
         self.build_comment_objects(response_objects, params["item_id"])
+        self.order_by_date(response_objects)
         return response_objects
+
+    def order_by_date(self, objects):
+        objects.sort(key=lambda x:x.create_date, reverse=True)
 
     def build_comment_objects(self, response_objects, item_id):
         for comment in response_objects:
@@ -86,7 +90,7 @@ class CommentORM(object):
     #build query
     def build_comment_ids_query(self, query_params):
         item = "item_id"
-        query = "select item_comments.comment_id from item_comments, comment_parents where item_comments.{0} = {1} and comment_parents.parent_id = item_comments.comment_id".format(item, query_params[item])
+        query = "select comment_id from item_comments where item_id={0}".format(query_params[item])
         #raise Exception(query)
         return query
 
