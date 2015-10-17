@@ -145,7 +145,7 @@ class ItemORM(object):
 
             query += " {0} like '%{1}%'".format(item, query_params[item])
 
-        #query += " limit 10"
+        query += " limit 20"
 
         return query
 
@@ -161,7 +161,7 @@ class ItemORM(object):
 
             query += " {0} like '{1}'".format("id", i["id"])
 
-        query += " limit 10"
+        #query += " limit 10"
 
         return query
 
