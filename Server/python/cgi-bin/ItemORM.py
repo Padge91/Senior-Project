@@ -35,7 +35,7 @@ class ItemORM(object):
 
     #returns array of basic item information
     def search_items(self, query_params, option=None):
-    
+
         if option is None:
             query = self.build_query(query_params)
         else:
@@ -145,7 +145,7 @@ class ItemORM(object):
 
             query += " {0} like '%{1}%'".format(item, query_params[item])
 
-        query += " limit 10"
+        #query += " limit 10"
 
         return query
 
