@@ -35,7 +35,7 @@ class ItemORM(object):
 
     #returns array of basic item information
     def search_items(self, query_params, option=None):
-
+    
         if option is None:
             query = self.build_query(query_params)
         else:

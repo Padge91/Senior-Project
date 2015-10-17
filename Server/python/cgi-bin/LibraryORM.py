@@ -31,6 +31,9 @@ class LibraryORM(object):
         response = select_query(query)
         options = []
 
+        if len(response) < 1:
+                return []
+
         item_orm = ItemORM()
         for i in range(0, len(response)):
             options.append({"id":response[i][0]})
