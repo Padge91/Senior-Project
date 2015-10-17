@@ -15,7 +15,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         setupSearchResultsTableView()
         definesPresentationContext = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
-        let librariesButton = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "goToLibraries")
+        let librariesButton = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "attemptToOpenLibraries")
         toolbarItems = [librariesButton]
     }
     
@@ -61,6 +61,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         if sender is MediaItem && segue.identifier == itemDetailSegueIdentifier {
             let destination = segue.destinationViewController as! ItemDetailsViewController
             destination.setMediaItem(sender as! MediaItem)
+        } else if segue.identifier == librariesSegueIdentifier {
+            let destination = segue.destinationViewController as! LibraryViewController
+            let libraryList = sender as! LibraryList
+            destination.librariesList = libraryList.list
         }
     }
     
@@ -99,8 +103,54 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func goToLibraries() {
+        UserDataSource.getUserId { (data, response, error) -> Void in
+            if data != nil {
+                do {
+                    if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                        if jsonResponse["success"] as! Bool {
+                            let userId = jsonResponse["response"] as! Int
+                            LibrariesDataSource.getMyLibraries(userId, completionHandler: { (data, response, error) -> Void in
+                                if data != nil {
+                                    let librariesList = LibraryList(libraryList: [])
+                                    do {
+                                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                                        if jsonResponse["success"] as! Bool {
+                                            if let response = jsonResponse["response"] as? NSArray {
+                                                librariesList.list = parseLibraryList(librariesArray: response)
+                                            } else {
+                                                let jsonError = jsonResponse["response"]
+                                                let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
+                                                log(logType: .Error, message: errorMsg)
+                                            }
+                                        } else {
+                                            let jsonError = jsonResponse["response"]
+                                            let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
+                                            log(logType: .Error, message: errorMsg)
+                                        }
+                                    } catch {
+                                        let errorMsg = "Invalid data from GetLibrariesList.py"
+                                        log(logType: .Error, message: errorMsg)
+                                    }
+                                    if librariesList.list.count > 0 {
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: librariesList)
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                } catch {
+                    let errorMsg = "Invalid data from GetUserIdFromSession.py"
+                    log(logType: .Error, message: errorMsg)
+                }
+            }
+        }
+    }
+    
+    func attemptToOpenLibraries() {
         if SessionModel.getSession() != SessionModel.noSession {
-            performSegueWithIdentifier(librariesSegueIdentifier, sender: nil)
+            goToLibraries()
         } else {
             let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
             alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
@@ -131,7 +181,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private func succesfulLogin(sessionId session: String) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
             SessionModel.storeSession(sessionId: session)
-            self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: nil)
+            self.goToLibraries()
         }
     }
     

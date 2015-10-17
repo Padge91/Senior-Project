@@ -7,12 +7,10 @@ class ItemDataSource {
     }
     
     static func updateItemReview(mediaItem: MediaItem, review: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
-        
-        print("session: \(SessionModel.getSession())")
-        print("id: \(mediaItem.id)")
-        print("score: \(review)")
-        
-        EmbrConnection.put("/cgi-bin/SubmitReview.py", httpBody: ["session": SessionModel.getSession(), "item_id": mediaItem.id, "score": review], completionHandler: completionHandler)
+        EmbrConnection.put("/cgi-bin/SubmitReview.py", httpBody:
+            "session=\(SessionModel.getSession())&" +
+            "item_id=\(mediaItem.id)&" +
+            "score=\(review)", completionHandler: completionHandler)
     }
     
     static func getItem(session: String, id: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {

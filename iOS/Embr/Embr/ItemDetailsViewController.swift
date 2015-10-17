@@ -166,7 +166,12 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
             // Update DB
-            ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in /* Do nothing */})
+            ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+                if data != nil {
+                    let message = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
+                    log(logType: EmbrLogType.Debug, message: message)
+                }
+            })
         } else {
             promptUserLogin()
         }

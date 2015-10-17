@@ -19,6 +19,10 @@ class UserDataSource {
     }
     
     static func signUp(username: String, email: String, password: String, confirmPassword: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
-        EmbrConnection.post("/cgi-bin/CreateAccount.py", httpBody: ["username": username, "email": email, "password": password, "passwordConfirm": confirmPassword], completionHandler: completionHandler)
+        EmbrConnection.post("/cgi-bin/CreateAccount.py", httpBody:
+            "username=\(username)&" +
+            "email=\(email)&" +
+            "password=\(password)&" +
+            "passwordConfirm=\(confirmPassword)", completionHandler: completionHandler)
     }
 }

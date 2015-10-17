@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Library {
+protocol Library : AnyObject {
     var id: Int { get }
     var ownerId: Int { get }
     var name: String { get }
@@ -23,6 +23,14 @@ class BasicLibrary : Library {
         self.id = id
         self.ownerId = ownerId
         self.name = name
+    }
+}
+
+class LibraryList : AnyObject {
+    var list = [Library]()    
+    
+    init(libraryList: [Library]) {
+        self.list = libraryList
     }
 }
 
