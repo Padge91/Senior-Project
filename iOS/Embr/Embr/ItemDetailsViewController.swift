@@ -243,7 +243,11 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func commentOnItem(sender: UIButton) {
-        performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
+        if SessionModel.getSession() != SessionModel.noSession {
+            performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
+        } else {
+            promptUserLogin()
+        }
     }
     
     func attemptToOpenLibraries() {
