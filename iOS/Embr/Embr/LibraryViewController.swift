@@ -1,6 +1,7 @@
 import UIKit
 
 class LibraryViewController: UITableViewController {
+    private let itemDetailSegueIdentifier = "segueToItemDetails"
     var library = [MediaItem]()
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -23,5 +24,34 @@ class LibraryViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return library.count
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let itemToView = self.library[indexPath.row]
+        ItemDataSource.getItem(SessionModel.getSession(), id: itemToView.id, completionHandler: self.getItemCompletionHandler)
+    }
+    
+    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if let response = jsonResponse["response"] as? NSDictionary {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                let itemToView = GenericMediaItem.parseGenericMediaItem(response)
+                                self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
+                            }
+                        }
+                    }
+                }
+            } catch {}
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if sender is MediaItem && segue.identifier == itemDetailSegueIdentifier {
+            let destination = segue.destinationViewController as! ItemDetailsViewController
+            destination.setMediaItem(sender as! MediaItem)
+        }
     }
 }

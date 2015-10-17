@@ -16,4 +16,11 @@ class LibrariesDataSource {
     static func getLibrary(libraryId: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         EmbrConnection.get("/cgi-bin/GetLibraryItems.py", params: ["session": SessionModel.getSession(), "library_id": "\(libraryId)"], completionHandler: completionHandler)
     }
+    
+    static func addItemToLibrary(libraryId: Int, itemId: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.put("/cgi-bin/AddItemToLibrary.py", httpBody:
+            "session=\(SessionModel.getSession())&" +
+            "library_id=\(libraryId)&" +
+            "item_id=\(itemId)", completionHandler: completionHandler)
+    }
 }
