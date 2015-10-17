@@ -27,8 +27,9 @@ public class CreateCommentViewController : UIViewController, UITextFieldDelegate
     }
     
     func submitComment() {
-        // Submit the comment
-        navigationController?.popViewControllerAnimated(true)
+        assert(mediaItem != nil)
+        CommentsDataSource.insertComment(CommentParentType.Item, parentId: mediaItem!.id, body: body.text)
+        navigationController?.popToRootViewControllerAnimated(true)
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
