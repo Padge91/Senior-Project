@@ -61,10 +61,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         if sender is MediaItem && segue.identifier == itemDetailSegueIdentifier {
             let destination = segue.destinationViewController as! ItemDetailsViewController
             destination.setMediaItem(sender as! MediaItem)
-        } else if segue.identifier == librariesSegueIdentifier {
-            let destination = segue.destinationViewController as! LibraryViewController
-            let libraryList = sender as! LibraryList
-            destination.librariesList = libraryList.list
+        } else if segue.identifier == librariesSegueIdentifier && sender is NSArray {
+            let destination = segue.destinationViewController as! LibrariesListTableViewController
+            let libraries = parseLibraryList(librariesArray: sender as! NSArray)
+            destination.librariesList = libraries
         }
     }
     
@@ -111,12 +111,15 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                             let userId = jsonResponse["response"] as! Int
                             LibrariesDataSource.getMyLibraries(userId, completionHandler: { (data, response, error) -> Void in
                                 if data != nil {
-                                    let librariesList = LibraryList(libraryList: [])
                                     do {
                                         let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                                         if jsonResponse["success"] as! Bool {
                                             if let response = jsonResponse["response"] as? NSArray {
-                                                librariesList.list = parseLibraryList(librariesArray: response)
+                                                if response.count > 0 {
+                                                    dispatch_async(dispatch_get_main_queue()) {
+                                                        self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: response)
+                                                    }
+                                                }
                                             } else {
                                                 let jsonError = jsonResponse["response"]
                                                 let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
@@ -130,11 +133,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                                     } catch {
                                         let errorMsg = "Invalid data from GetLibrariesList.py"
                                         log(logType: .Error, message: errorMsg)
-                                    }
-                                    if librariesList.list.count > 0 {
-                                        dispatch_async(dispatch_get_main_queue()) {
-                                            self.performSegueWithIdentifier(self.librariesSegueIdentifier, sender: librariesList)
-                                        }
                                     }
                                 }
                             })

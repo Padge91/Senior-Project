@@ -8,29 +8,21 @@
 
 import Foundation
 
-protocol Library : AnyObject {
-    var id: Int { get }
-    var ownerId: Int { get }
-    var name: String { get }
-}
-
-class BasicLibrary : Library {
+class Library : AnyObject {
     private(set) var id: Int
     private(set) var ownerId: Int
     private(set) var name: String
+    private(set) var items: [MediaItem]
     
     init(id: Int, ownerId: Int, name: String) {
         self.id = id
         self.ownerId = ownerId
         self.name = name
+        self.items = []
     }
-}
-
-class LibraryList : AnyObject {
-    var list = [Library]()    
     
-    init(libraryList: [Library]) {
-        self.list = libraryList
+    func addItemToLibrary(mediaItem: MediaItem) {
+        items.append(mediaItem)
     }
 }
 
@@ -41,7 +33,7 @@ func parseLibraryList(librariesArray libArray: NSArray) -> [Library] {
             let id = libraryInfo["id"] as! Int
             let name = libraryInfo["name"] as! String
             let ownerId = libraryInfo["user_id"] as! Int
-            let library = BasicLibrary(id: id, ownerId: ownerId, name: name)
+            let library = Library(id: id, ownerId: ownerId, name: name)
             librariesList.append(library)
         }
     }

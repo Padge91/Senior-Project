@@ -18,6 +18,7 @@ class SessionModel {
 
     static func getSession() -> String {
         let session = NSUserDefaults.standardUserDefaults().objectForKey(userDefaultSessionKey) as? String
+        print(session)
         return session ?? noSession
     }
 }

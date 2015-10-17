@@ -137,3 +137,11 @@ class GenericMediaItem: MediaItem {
         return "\(avgReview!)"
     }
 }
+
+class MediaItemList : AnyObject {
+    var list = [MediaItem]()
+    
+    init(mediaItemList: [MediaItem]) {
+        self.list = mediaItemList
+    }
+}

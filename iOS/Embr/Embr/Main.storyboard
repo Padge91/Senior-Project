@@ -85,10 +85,41 @@
             </objects>
             <point key="canvasLocation" x="2137" y="1373"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="UrV-wY-e6d">
+            <objects>
+                <tableViewController id="Gvy-58-HV8" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="q3c-n4-5zB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="WBH-df-yUN">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WBH-df-yUN" id="YUG-zp-RKg">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Gvy-58-HV8" id="Kx9-aL-rlp"/>
+                            <outlet property="delegate" destination="Gvy-58-HV8" id="DDm-ZS-Z45"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UPE-UK-hm5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="726" y="-758"/>
+        </scene>
         <!--Library-->
         <scene sceneID="sOq-Fm-qaQ">
             <objects>
-                <tableViewController title="Library" id="r0S-R0-FGJ" customClass="LibraryViewController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Library" id="r0S-R0-FGJ" customClass="LibrariesListTableViewController" customModule="Embr" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ofM-G1-3s4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -104,6 +135,9 @@
                                     <animations/>
                                 </tableViewCellContentView>
                                 <animations/>
+                                <connections>
+                                    <segue destination="Gvy-58-HV8" kind="show" identifier="segueToLibrary" id="Yxv-pu-rdx"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

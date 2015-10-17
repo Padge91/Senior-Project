@@ -1,7 +1,7 @@
 import UIKit
 
 class LibraryViewController: UITableViewController {
-    var librariesList = [Library]()
+    var library = [MediaItem]()
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellId = "cellId"
@@ -11,13 +11,17 @@ class LibraryViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellId)
         }
         
-        cell!.textLabel!.text = librariesList[indexPath.row].name
-        cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        let mediaItem = library[indexPath.row]
+        cell!.textLabel!.text = mediaItem.title
+        cell!.detailTextLabel?.text = mediaItem.creator
+        if let imageName = mediaItem.imageName {
+            cell!.imageView?.image = UIImage(named: imageName)
+        }
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return librariesList.count
+        return library.count
     }
 }
