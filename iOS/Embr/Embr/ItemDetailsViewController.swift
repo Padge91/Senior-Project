@@ -206,7 +206,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                                             if let response = jsonResponse["response"] as? NSArray {
                                                 let librariesList = parseLibraryList(librariesArray: response)
                                                 for library in librariesList {
-                                                    libraryActionSheet.addAction(UIAlertAction(title: library.name, style: .Default, handler: nil))
+                                                    libraryActionSheet.addAction(UIAlertAction(title: library.name, style: .Default, handler: { action in
+                                                        let libraryId = library.id
+                                                        LibrariesDataSource.addItemToLibrary(libraryId, itemId: self.mediaItem!.id, completionHandler: {data, response, error in print(NSString(data: data!, encoding: NSUTF8StringEncoding))})
+                                                    }))
                                                 }
                                             } else {
                                                 let jsonError = jsonResponse["response"]
