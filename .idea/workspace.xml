@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Senior-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,8 +29,8 @@
       <file leaf-file-name="ItemORM.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6244477" vertical-offset="1811" max-vertical-offset="3075">
-              <caret line="151" column="16" selection-start-line="151" selection-start-column="16" selection-end-line="151" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.46980855" vertical-offset="1811" max-vertical-offset="3075">
+              <caret line="144" column="0" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -955,8 +954,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6244477" vertical-offset="1811" max-vertical-offset="3075">
-          <caret line="151" column="16" selection-start-line="151" selection-start-column="16" selection-end-line="151" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.46980855" vertical-offset="1811" max-vertical-offset="3075">
+          <caret line="144" column="0" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
           <folding />
         </state>
       </provider>
