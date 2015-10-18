@@ -32,6 +32,7 @@
     <string name="title_activity_test_nav_bar">test_nav_bar</string>
     <string name="title_activity_login">Login</string>
     <string name="layout_name"></string>
+<<<<<<< HEAD
     <string name="title_activity_sign_up">Sign_up</string>
 
     <!-- Strings related to login -->
@@ -46,4 +47,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+=======
+    <string name="menu_search">Search</string>
+>>>>>>> d1766833ef3f35d042a24a05eb9ad5bbab6c5648
 </resources>

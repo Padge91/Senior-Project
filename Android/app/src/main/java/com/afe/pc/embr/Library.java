@@ -1,22 +1,17 @@
 package com.afe.pc.embr;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -183,7 +178,7 @@ public class Library extends AppCompatActivity {
                 break;
             }
             case "Home": {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, Search.class);
                 startActivity(intent);
                 break;
             }
@@ -270,7 +265,7 @@ public class Library extends AppCompatActivity {
                 break;
             default:
                 Toast.makeText(Library.this, "Not Available", Toast.LENGTH_SHORT).show();
-                intent = new Intent(this, HomeActivity.class);
+                intent = new Intent(this, Search.class);
                 break;
         }
         startActivity(intent);

@@ -2,12 +2,9 @@ package com.afe.pc.embr;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by Matt McInturff on 10/4/2015.
@@ -23,7 +20,7 @@ public class PopUpMenuEventHandle implements PopupMenu.OnMenuItemClickListener {
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Home:
-                Intent intent = new Intent(context, HomeActivity.class);
+                Intent intent = new Intent(context, Search.class);
                 context.startActivity(intent);
                 Toast.makeText(context, "Home", Toast.LENGTH_SHORT).show();
                 break;
