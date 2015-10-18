@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
 
@@ -55,7 +53,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         //if() {
 
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, Search.class);
             startActivity(intent);
         //}
     }
