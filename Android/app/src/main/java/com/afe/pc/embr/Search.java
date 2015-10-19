@@ -1,5 +1,7 @@
 package com.afe.pc.embr;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
-import common.*;
 
 /*
 *  Making this view be a temporary Search on start, to maintain consistency with the iOS version
@@ -23,17 +24,18 @@ import common.*;
 *  Author: Tyler Davis
 *  Date: 10.9.15 - 2:12AM
  */
-public class HomeActivity extends AppCompatActivity {
+public class Search extends AppCompatActivity implements View.OnClickListener {
 
     //Toolbar appBar;
     private ListView listView;
     private EditText action_bar_edit_text;
-    private String[] values = new String[] {"ItemView", "Search", "Profile", "Library", "RecommendedItems", "Login", "test"};
+    private String[] values = new String[] {"ItemView", "Search", "Profile", "Library", "RecommendedItems", "Login", "SearchResults", "test"};
     private ArrayList<String> listview_values = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD:Android/app/src/main/java/com/afe/pc/embr/HomeActivity.java
         setContentView(R.layout.home_layout);
         //populate_listview();
 
@@ -58,13 +60,41 @@ public class HomeActivity extends AppCompatActivity {
                 populate_listview();
             }
         });*/
+=======
+        setContentView(R.layout.search_layout);
+        populate_listview();
+
+//        appBar = (Toolbar) findViewById(R.id.action_bar);
+//        ImageButton action_bar_button = (ImageButton) findViewById(R.id.action_bar_button);
+//        action_bar_edit_text = (EditText) findViewById(R.id.action_bar_edit_text);
+//        action_bar_edit_text.setHint("Search");
+
+//        action_bar_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                // using action_bar_edit_text.getText().toString() to extract the search input
+//                // send that value to the backend, and everything that gets returned needs to
+//                // be put into a string array which will be used to populate the listview.
+//                listview_values.clear();
+//                for (int i = 0; i < values.length; i++)
+//                    if (values[i].equalsIgnoreCase(action_bar_edit_text.getText().toString()))
+//                        listview_values.add(values[i]);
+//
+//                action_bar_edit_text.setText("");
+//                populate_listview();
+//            }
+//        });
+>>>>>>> 247e6424d3fdc4f449511499013c34421d1861b1:Android/app/src/main/java/com/afe/pc/embr/Search.java
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
-
+        inflater.inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
@@ -77,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
             case "Home": {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, Search.class);
                 startActivity(intent);
                 break;
             }
@@ -87,11 +117,12 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
             case "Libraries": {
+                //if(login())
                 Intent intent = new Intent(this, Library.class);
                 startActivity(intent);
                 break;
             }
-            case "Go to SearchResults": {
+            case "SearchResults": {
                 Intent intent = new Intent(this, SearchResults.class);
                 startActivity(intent);
                 break;
@@ -123,8 +154,7 @@ public class HomeActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int itemPosition = position;
-                String itemValue = (String) listView.getItemAtPosition(itemPosition);
+                String itemValue = (String) listView.getItemAtPosition(position);
                 openActivity(itemValue);
             }
         });
@@ -163,9 +193,18 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
             default: {
-                Toast.makeText(HomeActivity.this, "Not Available", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Search.this, "Not Available", Toast.LENGTH_SHORT).show();
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.search_for_items:
+                openActivity("SearchResults");
+                break;
         }
     }
 }

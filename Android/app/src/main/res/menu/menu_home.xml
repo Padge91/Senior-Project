@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.afe.pc.embr.HomeActivity">
 
+<<<<<<< HEAD
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
@@ -13,6 +14,8 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
+=======
+>>>>>>> 247e6424d3fdc4f449511499013c34421d1861b1
     <item android:id="@+id/Home" android:title="Home"></item>
     <item android:id="@+id/Recommended_Items" android:title="Recommended Items"></item>
     <item android:id="@+id/Libraries" android:title="Libraries"></item>

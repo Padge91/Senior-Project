@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
 
     Button button1;
+    String login;
+    boolean logged_in;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         button1.setOnClickListener(this);
     }
 
-    /*public login(String login, String password){
-        if(){
+    //public final boolean Is_Logged_in = login();
 
-        }
-
-    }*/
+    public boolean isLogged_in(String login, String password){
+        this.login = login;
+        if (login.contains("") || login.contains(" "))
+            return false;
+        else
+            return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,7 +58,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         //if() {
 
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, Search.class);
             startActivity(intent);
         //}
     }

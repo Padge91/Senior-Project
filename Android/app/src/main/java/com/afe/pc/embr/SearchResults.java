@@ -11,18 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.List;
 
 public class SearchResults extends AppCompatActivity implements View.OnClickListener{
 
@@ -58,7 +52,6 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search_results, menu);
         return true;
     }
@@ -81,7 +74,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
                 break;
             }
             case "Home": {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, Search.class);
                 startActivity(intent);
                 break;
             }

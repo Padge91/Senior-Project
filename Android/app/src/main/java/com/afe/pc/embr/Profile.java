@@ -63,7 +63,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case "Home": {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, Search.class);
                 startActivity(intent);
                 break;
             }
@@ -99,7 +99,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     public void openActivity(String S){
         if (S.equals("Home")){
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, Search.class);
             startActivity(intent);
         }
         else if (S.equals("RecommendedItems")){

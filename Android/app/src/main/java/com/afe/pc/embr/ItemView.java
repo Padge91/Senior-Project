@@ -1,17 +1,14 @@
 package com.afe.pc.embr;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -98,7 +95,7 @@ public class ItemView extends AppCompatActivity {
                 break;
             default:
                 Toast.makeText(ItemView.this, "Not Available", Toast.LENGTH_SHORT).show();
-                intent = new Intent(this, HomeActivity.class);
+                intent = new Intent(this, Search.class);
                 break;
         }
         startActivity(intent);
