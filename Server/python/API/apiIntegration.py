@@ -32,7 +32,7 @@ api_string = "http://api.walmartlabs.com/v1/search?apiKey={0}&query={1}&category
 object_api_string = "http://api.walmartlabs.com/v1/items?ids={0}&apiKey={1}&richAttributes=true"
 time_wait = 1
 max_pages = 200
-random_words = ["yo", "test", "organize", "awesome", "not lord of the rings", "pretty good", "idk", "pig latin", "guess who", "horrible", "you know it", "null pointer exception", "Coca-cola, now with zero calories!", "nice"]
+random_words = "Lorem ipsum dolor sit amet consectetur adipiscing elit In sit amet tortor justo Nunc aliquam ex vel ultricies tincidunt Curabitur imperdiet nunc eu pretium dapibus".split(" ")
 format = '%Y-%m-%d %H:%M:%S'
 
 def main():
@@ -68,7 +68,7 @@ def insert_object(cursor, object, conn):
         #query to insert comments
         for i in range(0, randint(0, 5)):
             comment_id = randint(0, 90000000000)
-            choices = [choice(random_words) for _ in range(10)]
+            choices = [choice(random_words) for _ in range(len(random_words))]
             sentence = ' '.join(choices)
             queries.append("insert into comments (id, user_id, create_date, content) values ("+str(comment_id)+", "+str(user_id)+", '"+str(datetime.now().strftime(format))+"', "+str(conn.escape(sentence))+")")
             queries.append("insert into item_comments (item_id, comment_id) values ("+str(item_id)+", "+str(comment_id)+")")
@@ -76,7 +76,7 @@ def insert_object(cursor, object, conn):
             #query to insert comments on comments
             for i in range(0, randint(0,2)):
                 index_comment_id = randint(0, 90000000000)
-                choices = [choice(random_words) for _ in range(10)]
+                choices = [choice(random_words) for _ in range(len(random_words))]
                 sentence = ' '.join(choices)
                 queries.append("insert into comments (id, user_id, create_date, content) values ("+str(index_comment_id)+", "+str(randint(1,number_of_users-1))+", '"+str(datetime.now())+"', "+str(conn.escape(sentence))+")")
                 queries.append("insert into comment_parents (parent_id, child_id) values ("+str(comment_id)+", "+str(index_comment_id)+")")
@@ -94,7 +94,7 @@ def insert_object(cursor, object, conn):
 def get_object_values(object):
     review_num_dict = {"name":"numReviews", "default":0, "fields":["numReviews"]}
     review_score_dict = {"name":"reviewScore","default":0, "fields":["customerRating"]}
-    brand_dict = {"name":"brand", "default":"Not Specified", "fields":["director", "Director", "author", "Author", "Artist", "artist","brandName"]}
+    brand_dict = {"name":"brand", "default":"Not Specified", "fields":["studio", "director", "Director", "author", "Author", "Artist", "artist","brandName"]}
     description_dict = {"name":"description","default":"Not Specified", "fields":["shortDescription","longDescription"]}
     images_dict = {"name":"image","default":None, "fields":["largeImage", "mediumImage","smallImage", "thumbnailImage"]}
     name_dict = {"name":"name","default":None, "fields":["name"]}
