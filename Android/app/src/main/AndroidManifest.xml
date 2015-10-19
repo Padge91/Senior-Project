@@ -28,7 +28,6 @@
         <activity
             android:name=".SearchResults"
             android:label="@string/title_activity_search_results"
-<<<<<<< HEAD
             android:parentActivityName=".Profile"
             android:theme="@style/Theme.AppCompat.Light" >
             <meta-data
