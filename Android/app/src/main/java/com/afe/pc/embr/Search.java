@@ -90,6 +90,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case "Libraries": {
+                //if(login())
                 Intent intent = new Intent(this, Library.class);
                 startActivity(intent);
                 break;
