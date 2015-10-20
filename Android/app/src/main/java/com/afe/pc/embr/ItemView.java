@@ -74,6 +74,43 @@ public class ItemView extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        switch (item.getTitle().toString()) {
+            case "Recommended Items": {
+                Intent intent = new Intent(this, RecommendedItems.class);
+                startActivity(intent);
+                break;
+            }
+            case "Home": {
+                Intent intent = new Intent(this, Search.class);
+                startActivity(intent);
+                break;
+            }
+            case "Profile": {
+                Intent intent = new Intent(this, Profile.class);
+                startActivity(intent);
+                break;
+            }
+            case "Libraries": {
+                //if () {
+                Intent intent = new Intent(this, Library.class);
+                startActivity(intent);
+                break;
+                //}
+            }
+            case "Go to SearchResults": {
+                Intent intent = new Intent(this, SearchResults.class);
+                startActivity(intent);
+                break;
+            }
+            case "Login": {
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -82,8 +119,9 @@ public class ItemView extends AppCompatActivity {
         Intent intent;
         switch(s) {
             case "Owned":
-                intent = new Intent(this, Library.class);
-                intent.putExtra("Library Name", "Owned");
+                Toast.makeText(ItemView.this, "Added to Owned Library", Toast.LENGTH_SHORT).show();
+                //intent = new Intent(this, Library.class);
+                //intent.putExtra("Library Name", "Owned");
                 break;
             case "Wishlist":
                 intent = new Intent(this, Library.class);
@@ -98,7 +136,8 @@ public class ItemView extends AppCompatActivity {
                 intent = new Intent(this, Search.class);
                 break;
         }
-        startActivity(intent);
+
+        //startActivity(intent);
     }
 
     public void openCommentActivity(String s) {
