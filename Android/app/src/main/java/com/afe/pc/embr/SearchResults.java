@@ -129,10 +129,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
     }
-    /*public View getView(int position, View convertView, ViewGroup parent){
-        View v = inflater.inflate(R.layout.single_row, false);
-        View v = root View
-    }*/
+
     private class MyListAdapter extends ArrayAdapter<String>{
         private int layout;
         private MyListAdapter(Context context, int resource, String[] objects) {

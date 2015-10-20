@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afe.pc.embr" >
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/embr_logo"
@@ -10,7 +15,7 @@
         <activity
             android:name=".Search"
             android:label="Search"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,10 +26,13 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:theme="@style/Theme.AppCompat.Light"
             android:name=".SearchResults"
             android:label="@string/title_activity_search_results"
-            android:parentActivityName=".Profile">
+            android:parentActivityName=".Profile"
+            android:theme="@style/Theme.AppCompat.Light" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.afe.pc.embr.Profile" />
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -36,7 +44,8 @@
         <activity
             android:name=".ItemView"
             android:label="@string/title_activity_item_view"
-            android:parentActivityName=".SearchResults" >
+            android:parentActivityName=".SearchResults"
+            android:theme="@style/Theme.AppCompat.Light">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.afe.pc.embr.SearchResults" />
@@ -50,9 +59,9 @@
             android:label="@string/title_activity_recommended_items" >
         </activity>
         <activity
-            android:theme="@style/Theme.AppCompat.Light"
             android:name=".Profile"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.AppCompat.Light" >
         </activity>
         <activity
             android:name=".CommentView"
@@ -64,6 +73,10 @@
         </activity>
         <activity
             android:name=".Login"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
     </application>

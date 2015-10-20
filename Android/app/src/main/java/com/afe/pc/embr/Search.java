@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class Search extends AppCompatActivity implements View.OnClickListener {
 
-    Toolbar appBar;
+    //Toolbar appBar;
     private ListView listView;
     private EditText action_bar_edit_text;
     private String[] values = new String[] {"ItemView", "Search", "Profile", "Library", "RecommendedItems", "Login", "SearchResults", "test"};
@@ -35,30 +35,34 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //populate_listview();
+
+        /*appBar = (Toolbar) findViewById(R.id.action_bar);
+        ImageButton action_bar_button = (ImageButton) findViewById(R.id.action_bar_button);
+        action_bar_edit_text = (EditText) findViewById(R.id.action_bar_edit_text);
+        action_bar_edit_text.setHint("Home");
+
+        action_bar_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // using action_bar_edit_text.getText().toString() to extract the search input
+                // send that value to the backend, and everything that gets returned needs to
+                // be put into a string array which will be used to populate the listview.
+                listview_values.clear();
+                for (int i = 0; i < values.length; i++)
+                    if (values[i].equalsIgnoreCase(action_bar_edit_text.getText().toString()))
+                        listview_values.add(values[i]);
+
+                action_bar_edit_text.setText("");
+                populate_listview();
+            }
+        });*/
+
         setContentView(R.layout.search_layout);
         populate_listview();
 
-//        appBar = (Toolbar) findViewById(R.id.action_bar);
-//        ImageButton action_bar_button = (ImageButton) findViewById(R.id.action_bar_button);
-//        action_bar_edit_text = (EditText) findViewById(R.id.action_bar_edit_text);
-//        action_bar_edit_text.setHint("Search");
-
-//        action_bar_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                // using action_bar_edit_text.getText().toString() to extract the search input
-//                // send that value to the backend, and everything that gets returned needs to
-//                // be put into a string array which will be used to populate the listview.
-//                listview_values.clear();
-//                for (int i = 0; i < values.length; i++)
-//                    if (values[i].equalsIgnoreCase(action_bar_edit_text.getText().toString()))
-//                        listview_values.add(values[i]);
-//
-//                action_bar_edit_text.setText("");
-//                populate_listview();
-//            }
-//        });
     }
 
     @Override
@@ -90,6 +94,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case "Libraries": {
+                //if(login())
                 Intent intent = new Intent(this, Library.class);
                 startActivity(intent);
                 break;
