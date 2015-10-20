@@ -35,15 +35,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func alertError(errorMessage error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+        dispatch_async(dispatch_get_main_queue()) {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
     private func succesfulLogin(sessionId session: String) {
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+        dispatch_async(dispatch_get_main_queue()) {
             SessionModel.storeSession(sessionId: session)
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
@@ -52,13 +52,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
         if data != nil {
             do {
-                let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if response["success"] as! Bool {
-                    if let session = response["response"] as? String {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if jsonResponse["success"] as! Bool {
+                    if let session = jsonResponse["response"] as? String {
                         succesfulLogin(sessionId: session)
                     }
-                } else if let sessionResponse = response["error"] {
-                    alertError(errorMessage: sessionResponse as? String ?? "Invalid session")
+                } else {
+                    alertError(errorMessage: jsonResponse["response"] as! String)
                 }
             } catch {
                 alertError(errorMessage: "Invalid response")

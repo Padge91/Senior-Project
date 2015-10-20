@@ -82,7 +82,7 @@ class MenuViewController: UITableViewController {
     
     func logout(action: UIAlertAction) {
         SessionModel.removeSession()
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

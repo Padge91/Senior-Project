@@ -171,28 +171,27 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private func alertError(errorMessage error: String) {
         let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+        dispatch_async(dispatch_get_main_queue()){
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
     private func succesfulLogin(sessionId session: String) {
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+        dispatch_async(dispatch_get_main_queue()) {
             SessionModel.storeSession(sessionId: session)
-            self.goToLibraries()
         }
     }
     
     func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
         if data != nil {
             do {
-                let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if response["success"] as! Bool {
-                    if let session = response["response"] as? String {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if jsonResponse["success"] as! Bool {
+                    if let session = jsonResponse["response"] as? String {
                         succesfulLogin(sessionId: session)
                     }
-                } else if response["error"] != nil {
-                    alertError(errorMessage: "Invalid login")
+                } else {
+                    alertError(errorMessage: jsonResponse["response"] as! String)
                 }
             } catch {
                 alertError(errorMessage: "Invalid response")
@@ -211,13 +210,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         let mediaItem = searchResults[indexPath.row]
         cell!.textLabel!.text = mediaItem.title
         cell!.detailTextLabel?.text = mediaItem.creator
-        if let imageName = mediaItem.imageName {
-            if let imageURL = NSURL(string: imageName) {
-                if let imageData = NSData(contentsOfURL: imageURL) {
-                    cell!.imageView?.image = UIImage(data: imageData)
-                }
-            }
-        }
         
         return cell!
     }

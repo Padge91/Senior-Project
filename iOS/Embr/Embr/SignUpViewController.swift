@@ -39,25 +39,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     func signUp() {
-        if validateFields() {
-            if passwordsMatch() {
-                if passwordsAreStrong() {
-                    UserDataSource.signUp(username.text!, email: email.text!, password: password.text!, confirmPassword: confirmPassword.text!, completionHandler: signUpCompletionHandler)
-                } else {
-                    let weakPasswordAlert = UIAlertController(title: "Weak Password", message: "Your password must be at least 8 characters long.", preferredStyle: .Alert)
-                    weakPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-                    presentViewController(weakPasswordAlert, animated: true, completion: nil)
-                }
-            } else {
-                let mismatchedPasswordAlert = UIAlertController(title: "Password Mismatch", message: "The passwords you entered do not match.", preferredStyle: .Alert)
-                mismatchedPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-                presentViewController(mismatchedPasswordAlert, animated: true, completion: nil)
-            }
-        } else {
-            let validationAlert = UIAlertController(title: "Empty Fields", message: "You must enter a username, password, and confirmation password.", preferredStyle: .Alert)
-            validationAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-            presentViewController(validationAlert, animated: true, completion: nil)
-        }
+        UserDataSource.signUp(username.text!, email: email.text!, password: password.text!, confirmPassword: confirmPassword.text!, completionHandler: signUpCompletionHandler)
     }
     
     func signUpCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
@@ -66,32 +48,54 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                 print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 if jsonResponse["success"] as! Bool {
-                    navigationController?.popViewControllerAnimated(true)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        UserDataSource.attemptLogin(self.username.text!, password: self.password.text!, completionHandler: self.loginCompletionHandler)
+                    }
                 } else {
+                    let alertMessage = jsonResponse["response"] as? String
+                    let alert = UIAlertController(title: "Invalid Sign Up", message: alertMessage, preferredStyle: .Alert)
+                    let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
                 }
             } catch {}
         }
     }
     
-    private func validateFields() -> Bool {
-        return username.text! != "" && email.text! != "" && password.text! != "" && confirmPassword.text! != ""
+    private func alertError(errorMessage error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        dispatch_async(dispatch_get_main_queue()) {
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
-    private func passwordsMatch() -> Bool {
-        if let pass1 = password.text {
-            if let pass2 = confirmPassword.text {
-                return pass1 == pass2
+    private func succesfulLogin(sessionId session: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            SessionModel.storeSession(sessionId: session)
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        }
+    }
+    
+    func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if jsonResponse["success"] as! Bool {
+                    if let session = jsonResponse["response"] as? String {
+                        succesfulLogin(sessionId: session)
+                    }
+                } else {
+                    alertError(errorMessage: jsonResponse["response"] as! String)
+                }
+            } catch {
+                alertError(errorMessage: "Invalid response")
             }
         }
-        return false
-    }
-    
-    private func passwordsAreStrong() -> Bool {
-        let minPasswordLength = 8
-        if let password = self.password.text {
-            return password.characters.count >= minPasswordLength
-        }
-        return false
     }
 
 }
