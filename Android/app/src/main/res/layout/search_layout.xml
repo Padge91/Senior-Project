@@ -10,7 +10,7 @@
     tools:context=".Search">
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/search_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

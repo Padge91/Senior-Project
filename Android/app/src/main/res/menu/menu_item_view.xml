@@ -1,11 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.afe.pc.embr.ItemView">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.afe.pc.embr.ItemView">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
-    <item android:id="@+id/Home" android:title="Home"></item>
-    <item android:id="@+id/Recommended_Items" android:title="Recommended Items"></item>
-    <item android:id="@+id/Libraries" android:title="Libraries"></item>
+    <item
+        android:id="@+id/Home"
+        android:title="Home" />
+    <item
+        android:id="@+id/Recommended_Items"
+        android:title="Recommended Items" />
+    <item
+        android:id="@+id/Libraries"
+        android:title="Libraries" />
 
 </menu>

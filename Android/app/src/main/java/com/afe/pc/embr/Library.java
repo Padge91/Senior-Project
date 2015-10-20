@@ -20,14 +20,14 @@ public class Library extends AppCompatActivity {
 
     Toolbar appBar;
     private EditText action_bar_edit_text;
-    private String[] a_library_names = {"Owned", "Wishlist", "Custom", "test"};
-    private String[] a_owned_library_items = new String[]{"Fellowship of the Ring", "Two Towers", "Return of the King", "test"};
-    private String[] a_wishlist_library_items = new String[]{"Goblet of Fire", "The Hobbit", "Not 50 shades of Gray", "test"};
-    private String[] a_custom_library_items = new String[]{"test1", "test2", "test3", "test4"};
+    private String[] a_library_names = {"Owned", "Wishlist", "Viewed"};
+    private String[] a_owned_library_items = new String[]{"The Lord of the Rings: The Fellowship of the Ring"};
+    private String[] a_wishlist_library_items = new String[]{"Goblet of Fire", "The Hobbit", "50 shades of Gray"};
+    private String[] a_viewed_library_items = new String[]{"Twilight"};
     private ArrayList<String> al_library_names = new ArrayList<>();
     private ArrayList<String> al_owned_library_items = new ArrayList<>();
     private ArrayList<String> al_wishlist_library_items = new ArrayList<>();
-    private ArrayList<String> al_custom_library_items = new ArrayList<>();
+    private ArrayList<String> al_viewed_library_items = new ArrayList<>();
     private ArrayList<String> listview_values = new ArrayList<>();
 
     @Override
@@ -98,8 +98,8 @@ public class Library extends AppCompatActivity {
         else if (library_name != null && library_name.equalsIgnoreCase("Custom")) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.library_layout_custom);
-            add_to_arrayList(al_custom_library_items, a_custom_library_items);
-            populate_listview(al_custom_library_items, (ListView) findViewById(R.id.custom_library_listView));
+            add_to_arrayList(al_viewed_library_items, a_viewed_library_items);
+            populate_listview(al_viewed_library_items, (ListView) findViewById(R.id.custom_library_listView));
 
             appBar = (Toolbar) findViewById(R.id.action_bar);
             ImageButton action_bar_button = (ImageButton) findViewById(R.id.action_bar_button);
@@ -114,13 +114,13 @@ public class Library extends AppCompatActivity {
                     // send that value to the backend, and everything that gets returned needs to
                     // be put into a string array which will be used to populate the listview.
                     // populate_listview((String[]) custom_library_items.toArray());
-                    al_custom_library_items.clear();
-                    for (int i = 0; i < a_custom_library_items.length; i++)
-                        if (a_custom_library_items[i].equalsIgnoreCase(action_bar_edit_text.getText().toString()))
-                            al_custom_library_items.add(a_custom_library_items[i]);
+                    al_viewed_library_items.clear();
+                    for (int i = 0; i < a_viewed_library_items.length; i++)
+                        if (a_viewed_library_items[i].equalsIgnoreCase(action_bar_edit_text.getText().toString()))
+                            al_viewed_library_items.add(a_viewed_library_items[i]);
 
                     action_bar_edit_text.setText("");
-                    populate_listview(al_custom_library_items, (ListView) findViewById(R.id.custom_library_listView));
+                    populate_listview(al_viewed_library_items, (ListView) findViewById(R.id.custom_library_listView));
                 }
             });
         }
@@ -206,7 +206,6 @@ public class Library extends AppCompatActivity {
                 break;
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -230,7 +229,7 @@ public class Library extends AppCompatActivity {
             });
         }
         else {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.single_row, R.id.results_Title, values);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -273,7 +272,9 @@ public class Library extends AppCompatActivity {
 
     public void openItemViewActivity(String s) {
         Intent intent = new Intent(this, ItemView.class);
-        intent.putExtra("Book Name", s);
+        intent.putExtra("Book Title", s);
+        intent.putExtra("Book Author", "J. R. R. Tolkien");
+        intent.putExtra("Book Picture", "fellowship");
         startActivity(intent);
     }
 }

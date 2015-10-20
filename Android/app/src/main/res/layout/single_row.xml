@@ -4,7 +4,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_stacked_max_height"
+        android:layout_height="52dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -17,12 +17,12 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@drawable/fellowship_of_the_ring" />
+            android:src="@drawable/lotr1" />
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_dropdownitem_icon_width"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_height="36dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/results_Title"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/results_Image"
@@ -31,14 +31,14 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_floating_window_z"
+            android:layout_height="16dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/results_Director_Author"
             android:layout_alignParentTop="false"
             android:layout_toRightOf="@+id/results_Image"
             android:layout_toEndOf="@+id/results_Image"
             android:layout_below="@+id/results_Title"
-            android:text="Author: ..." />
+            android:text="Author: J. R. R. Tolkien" />
 
     </RelativeLayout>
 

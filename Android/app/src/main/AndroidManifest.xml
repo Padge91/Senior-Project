@@ -10,7 +10,7 @@
         <activity
             android:name=".Search"
             android:label="Search"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,9 +34,14 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
+            android:theme="@style/Theme.AppCompat.Light"
             android:name=".ItemView"
             android:label="@string/title_activity_item_view"
             android:parentActivityName=".SearchResults" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.afe.pc.embr.SearchResults" />
