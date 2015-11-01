@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/UpdateItem.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/UpdateItem.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/adminUtils.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/adminUtils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" afterPath="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
     </list>
     <ignored path="Senior-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +41,8 @@
       <file leaf-file-name="UpdateItem.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/static/UpdateItem.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.291667" vertical-offset="95" max-vertical-offset="945">
-              <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+            <state vertical-scroll-proportion="-1.6666666" vertical-offset="260" max-vertical-offset="945">
+              <caret line="20" column="29" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -53,9 +51,23 @@
       <file leaf-file-name="UpdateItem.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/UpdateItem.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.08836524" vertical-offset="0" max-vertical-offset="679">
-              <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
-              <folding />
+            <state vertical-scroll-proportion="0.04418262" vertical-offset="0" max-vertical-offset="679">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding>
+                <element signature="e#50#60#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utilities.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.148149" vertical-offset="383" max-vertical-offset="1035">
+              <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+              <folding>
+                <element signature="e#32#43#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -142,16 +154,16 @@
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/GetItemInfo.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/SubmitReview.py" />
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/LibraryORM.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/CommentORM.py" />
         <option value="$PROJECT_DIR$/Server/python/API/apiIntegration.py" />
         <option value="$PROJECT_DIR$/Server/python/API/makeUsers.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/ItemORM.py" />
-        <option value="$PROJECT_DIR$/Server/static/UpdateItem.html" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/__init__.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/adminUtils.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/UpdateItem.py" />
+        <option value="$PROJECT_DIR$/Server/static/UpdateItem.html" />
+        <option value="$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py" />
       </list>
     </option>
   </component>
@@ -817,13 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1035">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/GetLibraryItems.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
@@ -916,14 +921,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/static/UpdateItem.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.291667" vertical-offset="95" max-vertical-offset="945">
-          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/API/apiIntegration.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="3645">
@@ -964,6 +961,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/static/UpdateItem.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.6666666" vertical-offset="260" max-vertical-offset="945">
+          <caret line="20" column="29" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/adminUtils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
@@ -972,11 +977,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/Utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.148149" vertical-offset="383" max-vertical-offset="1035">
+          <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+          <folding>
+            <element signature="e#32#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/python/cgi-bin/UpdateItem.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08836524" vertical-offset="0" max-vertical-offset="679">
-          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
-          <folding />
+        <state vertical-scroll-proportion="0.04418262" vertical-offset="0" max-vertical-offset="679">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="e#50#60#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

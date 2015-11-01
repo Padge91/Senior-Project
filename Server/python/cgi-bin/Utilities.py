@@ -47,7 +47,7 @@ def get_required_parameters(request, required_params):
     if os.environ is not None:
         if "CONTENT_TYPE" in os.environ:
             if os.environ["CONTENT_TYPE"] is not None:
-                if os.environ["CONTENT_TYPE"] == "application/json":
+                if "application/json" in os.environ["CONTENT_TYPE"]:
                     return json_request(form, required_params)
 
     response = dict()
