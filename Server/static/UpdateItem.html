@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <title>Update Item</title>
+</head>
+<body>
+<script type="text/javascript">
+    angular.module('sp', []).controller('spController', function($scope, $http) {
+        $scope.items = [{"id":1, "title":"hi"}, {"id":2, "title":"yo"}];
+        $scope.response = ""
+
+        $scope.searchItems = function(criteria) {
+            $http.get("/cgi-bin/SearchItems.py?title="+criteria).
+            success(function(data, status, headers, config) {
+                $scope.items = data.response;
+                $scope.response = data.success;
+            })
+            .error(function(data, status, headers, config) {
+                $scope.response = data.response;
+                $scope.items = [];
+            });
+        };
+
+        $scope.updateItem = function(id, creator) {
+
+
+        }
+    });
+</script>
+<div ng-app="sp">
+    <div ng-controller="spController">
+        <div>
+            <form ng-submit="searchItems(searchCriteria)">
+                <input type="textbox" ng-model="searchCriteria"/>
+                <input type="submit"/>
+            </form>
+        </div>
+        <div>Response: {{response}}</div>
+
+        <div ng-repeat="item in items">
+            <div>
+                <form ng-submit="updateItem(item.id, item.creator)">
+                    <input type="hidden" name="id" value="{{item.id}}"/>
+                    Title: "{{item.title}}"
+                    Creator: <input type="textbox" ng-model="item.creator"/>
+                    <input type="submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
