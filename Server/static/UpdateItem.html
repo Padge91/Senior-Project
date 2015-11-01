@@ -24,8 +24,10 @@
         };
 
         $scope.updateItem = function(id, creator) {
-
-
+            $http.post("/cgi-bin/UpdateItem.py", {"id":id, "creator":creator}).
+            success(function(data, status, headers, config) {
+                $scope.response = data.response;
+            });
         }
     });
 </script>
