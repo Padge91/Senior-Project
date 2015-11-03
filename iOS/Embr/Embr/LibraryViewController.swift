@@ -4,6 +4,19 @@ class LibraryViewController: UITableViewController {
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     var library = [MediaItem]()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.allowsMultipleSelectionDuringEditing = false
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            // Todo: Delete from datasource
+            library.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellId = "cellId"
         var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellId)
