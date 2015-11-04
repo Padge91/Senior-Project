@@ -35,10 +35,6 @@ public class ItemView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle item_bundle = getIntent().getExtras();
-        String item_name = "";
-        try {
-            item_name = item_bundle.getString("Book Title");
-        } catch (Exception e) {}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_view_layout);
         title = (TextView) findViewById(R.id.itemView_title_textView);
