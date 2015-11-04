@@ -147,7 +147,6 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.results_Image = (ImageView) convertView.findViewById(R.id.results_Image);
                 viewHolder.results_Title = (TextView) convertView.findViewById(R.id.results_Title);
                 viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Director_Author);
                 convertView.setTag(viewHolder);
@@ -162,7 +161,6 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
     }
 
     public class ViewHolder {
-        ImageView results_Image;
         TextView results_Title;
         TextView results_Director_Author;
     }

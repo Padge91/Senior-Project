@@ -1,8 +1,12 @@
 package com.afe.pc.embr;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +19,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.InputStream;
 
 public class ItemView extends AppCompatActivity {
 
@@ -33,48 +39,18 @@ public class ItemView extends AppCompatActivity {
         try {
             item_name = item_bundle.getString("Book Title");
         } catch (Exception e) {}
-        if (item_name != null && item_name.equalsIgnoreCase("The Lord of the Rings: The Fellowship of the Ring")) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.item_view_layout);
-            title = (TextView) findViewById(R.id.itemView_title_textView);
-            author = (TextView) findViewById(R.id.itemView_author_textView);
-            releaseDate = (TextView) findViewById(R.id.itemView_releaseDate_textView);
-            pageCount = (TextView) findViewById(R.id.itemView_pageCount_textView);
-            coverPicture = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-            title.setText(item_bundle.getString("Book Title"));
-            author.setText(item_bundle.getString("Book Author"));
-            releaseDate.setText("June 19, 1957");
-            pageCount.setText("437");
-            coverPicture.setImageResource(getResources().getIdentifier("@drawable/lotr1", null, getPackageName()));
-        }
-        else if (item_name != null && item_name.equalsIgnoreCase("The Lord of the Rings: The Two Towers")) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.item_view_layout);
-            title = (TextView) findViewById(R.id.itemView_title_textView);
-            author = (TextView) findViewById(R.id.itemView_author_textView);
-            releaseDate = (TextView) findViewById(R.id.itemView_releaseDate_textView);
-            pageCount = (TextView) findViewById(R.id.itemView_pageCount_textView);
-            coverPicture = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-            title.setText(item_bundle.getString("Book Title"));
-            author.setText(item_bundle.getString("Book Author"));
-            releaseDate.setText("June 19, 1958");
-            pageCount.setText("438");
-            coverPicture.setImageResource(getResources().getIdentifier("@drawable/lotr2", null, getPackageName()));
-        }
-        else if (item_name != null && item_name.equalsIgnoreCase("The Lord of the Rings: The Return of the King")) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.item_view_layout);
-            title = (TextView) findViewById(R.id.itemView_title_textView);
-            author = (TextView) findViewById(R.id.itemView_author_textView);
-            releaseDate = (TextView) findViewById(R.id.itemView_releaseDate_textView);
-            pageCount = (TextView) findViewById(R.id.itemView_pageCount_textView);
-            coverPicture = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-            title.setText(item_bundle.getString("Book Title"));
-            author.setText(item_bundle.getString("Book Author"));
-            releaseDate.setText("June 19, 1959");
-            pageCount.setText("439");
-            coverPicture.setImageResource(getResources().getIdentifier("@drawable/lotr3", null, getPackageName()));
-        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.item_view_layout);
+        title = (TextView) findViewById(R.id.itemView_title_textView);
+        author = (TextView) findViewById(R.id.itemView_author_textView);
+        releaseDate = (TextView) findViewById(R.id.itemView_releaseDate_textView);
+        pageCount = (TextView) findViewById(R.id.itemView_pageCount_textView);
+        coverPicture = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
+        title.setText(item_bundle.getString("Book Title"));
+        author.setText(item_bundle.getString("Book Author"));
+        releaseDate.setText("June 19, 1957");
+        pageCount.setText("437");
+        new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item_bundle.getString("Book Picture"));
 
         // Comments list view
         listView = (ListView) findViewById(R.id.itemView_comments_listView);
@@ -176,5 +152,30 @@ public class ItemView extends AppCompatActivity {
         Intent intent = new Intent(this, CommentView.class);
         intent.putExtra("Comment ID", s);
         startActivity(intent);
+    }
+
+    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

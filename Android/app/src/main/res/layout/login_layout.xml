@@ -7,55 +7,61 @@
     tools:context="com.afe.pc.embr.EMBR">
 
 
+    // username text view
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="User Name"
-        android:id="@+id/textView9"
+        android:id="@+id/login_username_textView"
         android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true" />
 
+    // username edit text
     <EditText
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_button_min_height_material"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/user_name"
-        android:layout_below="@+id/textView9"
+        android:id="@+id/login_username_editText"
+        android:layout_below="@+id/login_username_textView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="#ffa740" />
 
+    // password text view
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Password"
-        android:id="@+id/textView10"
-        android:layout_below="@+id/user_name"
-        android:layout_alignLeft="@+id/textView9"
-        android:layout_alignStart="@+id/textView9" />
+        android:id="@+id/login_password_textView"
+        android:layout_below="@+id/login_username_editText"
+        android:layout_alignLeft="@+id/login_username_textView"
+        android:layout_alignStart="@+id/login_username_textView" />
 
+    // password edit text
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="@dimen/abc_action_button_min_height_material"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/user_password"
-        android:layout_below="@+id/textView10"
+        android:id="@+id/login_password_editText"
+        android:layout_below="@+id/login_password_textView"
         android:layout_centerHorizontal="true"
         android:background="#ffa740"
         android:autoText="true" />
 
+    // login button
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:id="@+id/login_button"
-        android:layout_below="@+id/user_password"
-        android:layout_alignRight="@+id/textView10"
-        android:layout_alignEnd="@+id/textView10"
+        android:id="@+id/login_login_button"
+        android:layout_below="@+id/login_password_editText"
+        android:layout_alignRight="@+id/login_password_textView"
+        android:layout_alignEnd="@+id/login_password_textView"
         android:layout_marginTop="42dp" />
 
+    // logo
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,5 +70,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp"
         android:src="@drawable/logo" />
+
+    // skip login button
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Skip Login"
+        android:id="@+id/login_skipLogin_button"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/login_login_button"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
