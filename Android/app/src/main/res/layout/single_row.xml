@@ -16,7 +16,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/results_Title"
             android:layout_alignParentTop="true"
-            android:text="Name of book: ..."
+            android:text=""
             android:layout_marginLeft="2dp"
             android:layout_marginTop="1dp" />
 
@@ -24,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/results_Director_Author"
-            android:text="Author: J. R. R. Tolkien"
+            android:id="@+id/results_Creator"
+            android:text="Creator"
             android:layout_below="@+id/results_Title"
             android:layout_alignLeft="@+id/results_Title"
             android:layout_alignStart="@+id/results_Title"

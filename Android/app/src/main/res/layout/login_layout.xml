@@ -47,8 +47,7 @@
         android:id="@+id/login_password_editText"
         android:layout_below="@+id/login_password_textView"
         android:layout_centerHorizontal="true"
-        android:background="#ffa740"
-        android:autoText="true" />
+        android:background="#ffa740" />
 
     // login button
     <Button

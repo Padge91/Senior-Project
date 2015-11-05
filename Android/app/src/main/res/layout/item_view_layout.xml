@@ -17,11 +17,7 @@
         android:src="@drawable/lotr1"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentStart="true" />
 
     // Title
     <TextView
@@ -33,41 +29,19 @@
         android:layout_toRightOf="@+id/itemView_coverPicture_imageView"
         android:layout_toEndOf="@+id/itemView_coverPicture_imageView"
         android:layout_marginBottom="10dp"
-        android:textColor="#010101" />
+        android:textColor="#010101"
+        android:layout_marginLeft="15dp" />
 
     // Author
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Author: J. R. R. Tolkien"
-        android:id="@+id/itemView_author_textView"
+        android:id="@+id/itemView_creator_textView"
         android:layout_below="@+id/itemView_title_textView"
         android:layout_alignLeft="@+id/itemView_title_textView"
         android:layout_alignStart="@+id/itemView_title_textView"
         android:layout_marginBottom="10dp"
-        android:textColor="#010101" />
-
-    // Release Date
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Published: 29 July 1954"
-        android:id="@+id/itemView_releaseDate_textView"
-        android:layout_below="@+id/itemView_author_textView"
-        android:layout_alignLeft="@+id/itemView_author_textView"
-        android:layout_alignStart="@+id/itemView_author_textView"
-        android:layout_marginBottom="10dp"
-        android:textColor="#010101" />
-
-    // Page count
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page Count: 423"
-        android:id="@+id/itemView_pageCount_textView"
-        android:layout_below="@+id/itemView_releaseDate_textView"
-        android:layout_alignLeft="@+id/itemView_releaseDate_textView"
-        android:layout_alignStart="@+id/itemView_releaseDate_textView"
         android:textColor="#010101" />
 
     // My Review
@@ -77,10 +51,11 @@
         android:text="My Review:"
         android:id="@+id/itemView_myReview_textView"
         android:textColor="#020202"
-        android:layout_below="@+id/itemView_coverPicture_imageView"
-        android:layout_alignLeft="@+id/itemView_coverPicture_imageView"
-        android:layout_alignStart="@+id/itemView_coverPicture_imageView"
-        android:layout_marginTop="24dp" />
+        android:textSize="10pt"
+        android:layout_alignBottom="@+id/itemView_myReviews_ratingBar"
+        android:layout_alignLeft="@+id/itemView_reviewHeader_textView"
+        android:layout_alignStart="@+id/itemView_reviewHeader_textView"
+        android:layout_marginBottom="17dp" />
 
     // Add to libraries
     <Button
@@ -88,44 +63,103 @@
         android:layout_height="25dp"
         android:text="Add to My Libraries"
         android:id="@+id/itemView_addToLibrary_button"
-        android:background="#565676"
+        android:background="#ffa740"
         android:onClick="showLibraryPopUp"
-        android:layout_below="@+id/itemView_pageCount_textView"
-        android:layout_toRightOf="@+id/itemView_coverPicture_imageView"
-        android:layout_toEndOf="@+id/itemView_coverPicture_imageView"
-        android:layout_marginTop="10dp"/>
-
-    // Friends Reviews
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Friends Reviews:"
-        android:id="@+id/itemView_friendsReview_textView"
-        android:layout_below="@+id/itemView_myReview_textView"
-        android:layout_alignLeft="@+id/itemView_myReview_textView"
-        android:layout_alignStart="@+id/itemView_myReview_textView"
         android:layout_marginTop="10dp"
-        android:textColor="#010101" />
+        android:layout_below="@+id/itemView_creator_textView"
+        android:layout_alignLeft="@+id/itemView_creator_textView"
+        android:layout_alignStart="@+id/itemView_creator_textView" />
 
     // All Reviews
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="All Reviews:"
-        android:id="@+id/itemView_allReviews_textView"
-        android:layout_below="@+id/itemView_friendsReview_textView"
-        android:layout_alignLeft="@+id/itemView_friendsReview_textView"
-        android:layout_alignStart="@+id/itemView_friendsReview_textView"
-        android:layout_marginTop="10dp"
-        android:textColor="#010101" />
+        android:text="Average Embr User Review:"
+        android:id="@+id/itemView_allReviewsPreText_textView"
+        android:layout_marginTop="42dp"
+        android:textColor="#010101"
+        android:layout_below="@+id/itemView_myReviews_ratingBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="10pt" />
 
     // Comments
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/itemView_comments_listView"
-        android:layout_below="@+id/itemView_allReviews_textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp" />
+        android:layout_below="@+id/itemView_description_textView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    // My review rating bar
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemView_myReviews_ratingBar"
+        android:layout_below="@+id/itemView_coverPicture_imageView"
+        android:layout_toRightOf="@+id/itemView_coverPicture_imageView"
+        android:layout_toEndOf="@+id/itemView_coverPicture_imageView"
+        android:layout_marginTop="30dp" />
+
+    // Review header
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reviews"
+        android:id="@+id/itemView_reviewHeader_textView"
+        android:layout_below="@+id/itemView_myReview_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:textSize="8pt" />
+
+    // Description header
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:id="@+id/itemView_descriptionHeader_textView"
+        android:layout_below="@+id/itemView_allReviewsPreText_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp"
+        android:textSize="8pt" />
+
+    // Description
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Description"
+        android:id="@+id/itemView_description_textView"
+        android:layout_below="@+id/itemView_descriptionHeader_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    // Add comment button
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="25dp"
+        android:text="Comment"
+        android:id="@+id/itemView_addComment_button"
+        android:background="#ffa740"
+        android:onClick="showLibraryPopUp"
+        android:layout_below="@+id/itemView_addToLibrary_button"
+        android:layout_alignLeft="@+id/itemView_addToLibrary_button"
+        android:layout_alignStart="@+id/itemView_addToLibrary_button"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemView_allReviews_textView"
+        android:layout_above="@+id/itemView_descriptionHeader_textView"
+        android:layout_toRightOf="@+id/itemView_allReviewsPreText_textView"
+        android:layout_toEndOf="@+id/itemView_allReviewsPreText_textView"
+        android:textSize="10pt"
+        android:text="5.0"
+        android:layout_marginLeft="10dp"
+        android:textColor="#010101" />
 
 </RelativeLayout>

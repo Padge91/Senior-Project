@@ -13,12 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,8 @@ import utilities.HttpConnect;
 public class Search extends AppCompatActivity {
 
     private boolean isLoggedIn = false;
+    private String loggedIn_status = "";
+    private String sessionID = "";
     private String[] emptyStrings = new String[]{"", "", "", "", "", "", "", "", "", "", "", ""};
     private ArrayList<String> genres = new ArrayList<>();
     private ArrayList<String> description = new ArrayList<>();
@@ -47,13 +51,16 @@ public class Search extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle search_bundle = getIntent().getExtras();
-        String loggedIn_status = "";
         try {
             loggedIn_status = search_bundle.getString("LoggedIn");
         } catch (Exception e) {
         }
+        try {
+            sessionID = search_bundle.getString("sessionID");
+        } catch (Exception e) {
+        }
         super.onCreate(savedInstanceState);
-        if (loggedIn_status.equalsIgnoreCase("true"))
+        if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.search_layout);
         populate_listview_on_start(appendStrings(listview_values_temp, emptyStrings), (ListView) findViewById(R.id.search_listview));
@@ -75,21 +82,8 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 return true;
             }
-
             public boolean onQueryTextSubmit(String query) {
-                // there is a known issue, I think it is based on timing of the query and the call
-                // of populate_listview. basically you need to have a value in each arraylist
-                // before you call getData or it will crash saying that it has a size of 0.
-                description.add("");
-                creator.add("");
-                image.add("");
-                title.add("");
-                listview_values.add(description);
-                listview_values.add(creator);
-                listview_values.add(image);
-                listview_values.add(title);
                 getData(query);
-                populate_listview(listview_values, (ListView) findViewById(R.id.search_listview));
                 return true;
             }
         };
@@ -103,20 +97,20 @@ public class Search extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String s = item.getTitle().toString();
-        if (s.equals("Recommended Items")) {
-            Intent intent = new Intent(this, RecommendedItems.class);
-            startActivity(intent);
-        } else if (s.equals("Home")) {
-            Intent intent = new Intent(this, Search.class);
-            startActivity(intent);
-        } else if (s.equals("Profile")) {
+        if (s.equals("Profile")) {
             Intent intent = new Intent(this, Profile.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, Library.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
             startActivity(intent);
-        } else if (s.equals("SearchResults")) {
-            Intent intent = new Intent(this, SearchResults.class);
+        } else if (s.equals("Recommended Items")) {
+            Intent intent = new Intent(this, RecommendedItems.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -130,7 +124,7 @@ public class Search extends AppCompatActivity {
         return;
     }
 
-    public void populate_listview(final ArrayList<ArrayList<String>> values, final ListView listView) {
+    public void populate_listview(final ArrayList<ArrayList<String>> values, final ArrayList<Integer> ids, final ListView listView) {
 
         // Define a new Adapter
         // First parameter - Context
@@ -138,15 +132,13 @@ public class Search extends AppCompatActivity {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.single_row, R.id.results_Title, values.get(3));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.single_row, R.id.results_Title, values.get(0));
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = values.get(3).get(position);
-                String author = values.get(1).get(position);
-                String picture = values.get(2).get(position);
-                openItemViewActivity(title, author, picture);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long notUsed) {
+                int id = ids.get(position);
+                openItemViewActivity(id);
             }
         });
     }
@@ -163,11 +155,11 @@ public class Search extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    public void openItemViewActivity(String title, String author, String picture) {
+    public void openItemViewActivity(int itemID) {
         Intent intent = new Intent(this, ItemView.class);
-        intent.putExtra("Book Title", title);
-        intent.putExtra("Book Author", author);
-        intent.putExtra("Book Picture", picture);
+        intent.putExtra("LoggedIn", loggedIn_status);
+        intent.putExtra("sessionID", sessionID);
+        intent.putExtra("itemID", itemID);
         startActivity(intent);
     }
 
@@ -183,24 +175,21 @@ public class Search extends AppCompatActivity {
             @Override
             public void onCallback(JSONObject response, boolean success) {
                 if (!success) {
-                    Toast.makeText(Search.this, "Success = false", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                    Toast.makeText(Search.this, "No Response", Toast.LENGTH_SHORT).show();
+                } else {
                     try {
                         JSONArray jsonArray = response.getJSONArray("response");
                         clearAll();
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            description.add(jsonArray.getJSONObject(i).getString("description"));
-                            creator.add(jsonArray.getJSONObject(i).getString("creator"));
-                            image.add(jsonArray.getJSONObject(i).getString("image"));
                             title.add(jsonArray.getJSONObject(i).getString("title"));
+                            creator.add(jsonArray.getJSONObject(i).getString("creator"));
+                            id.add(jsonArray.getJSONObject(i).getInt("id"));
                         }
-                        listview_values.add(description);
-                        listview_values.add(creator);
-                        listview_values.add(image);
                         listview_values.add(title);
-                        populate_listview(listview_values, (ListView) findViewById(R.id.search_listview));
-                    } catch (Exception e) {}
+                        listview_values.add(creator);
+                        populate_listview(listview_values, id, (ListView) findViewById(R.id.search_listview));
+                    } catch (Exception e) {
+                    }
                 }
             }
         });

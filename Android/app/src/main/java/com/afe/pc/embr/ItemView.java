@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,33 +19,72 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import utilities.HttpConnect;
 
 public class ItemView extends AppCompatActivity {
 
+    private boolean isLoggedIn = false;
+    private String loggedIn_status = "";
+    private String sessionID = "";
+    private int itemID = 0; // id from the search
+
+    private ArrayList<String> genres = new ArrayList<>(); // genres for this item
+
+    private ArrayList<String> comments = new ArrayList<>(); // array that stores data for comments
+    // each comment in the comments arrayList will have all of these parameters
+    private int comment_rating; // rating of one comment
+    private String content; // content of one comment
+    private String create_date; // created date of one comment
+    private int comment_id; // id of one comment
+    private int item_id; // id of the item a comment is associated with
+    private int user_id; // id of user who posted the comment
+    private String user_name; // name of the user who posted the comment
+    private int user_review; // review of the user who posted the comment
+
+    private double average_score; // average score of the item
+    private int id; // id of the item
+    private int user_score; // users score
+    private String title; // title of item
+    private String image; // image of item
+    private String description; // description of item
+    private String creator; // creator of item
+
     ListView listView;
     Button addToLibraryButton;
-    TextView title;
-    TextView author;
-    TextView releaseDate;
-    TextView pageCount;
-    ImageView coverPicture;
+    Button addCommentButton;
+    TextView titleView;
+    TextView creatorView;
+    TextView userScoreView;
+    TextView descriptionView;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle item_bundle = getIntent().getExtras();
+        unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
+        if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
+            isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
-        title = (TextView) findViewById(R.id.itemView_title_textView);
-        author = (TextView) findViewById(R.id.itemView_author_textView);
-        releaseDate = (TextView) findViewById(R.id.itemView_releaseDate_textView);
-        pageCount = (TextView) findViewById(R.id.itemView_pageCount_textView);
-        coverPicture = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-        title.setText(item_bundle.getString("Book Title"));
-        author.setText(item_bundle.getString("Book Author"));
-        releaseDate.setText("June 19, 1957");
-        pageCount.setText("437");
-        new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item_bundle.getString("Book Picture"));
+        getData(itemID);
+        titleView = (TextView) findViewById(R.id.itemView_title_textView);
+        creatorView = (TextView) findViewById(R.id.itemView_creator_textView);
+        userScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
+        descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
+        imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
+        titleView.setText(title);
+        creatorView.setText(creator);
+        userScoreView.setText(Integer.toString(user_score));
+        descriptionView.setText(description);
+        //new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(image);
 
         // Comments list view
         listView = (ListView) findViewById(R.id.itemView_comments_listView);
@@ -79,50 +117,45 @@ public class ItemView extends AppCompatActivity {
                 popup.show();
             }
         });
+
+        // PopUp for the add comment button
+        addCommentButton = (Button) findViewById(R.id.itemView_addComment_button);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item_view, menu);
+        if (isLoggedIn)
+            menu.getItem(4).setTitle("Logout");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getTitle().toString()) {
-            case "Recommended Items": {
-                Intent intent = new Intent(this, RecommendedItems.class);
-                startActivity(intent);
-                break;
-            }
-            case "Home": {
-                Intent intent = new Intent(this, Search.class);
-                startActivity(intent);
-                break;
-            }
-            case "Profile": {
-                Intent intent = new Intent(this, Profile.class);
-                startActivity(intent);
-                break;
-            }
-            case "Libraries": {
-                Intent intent = new Intent(this, Library.class);
-                startActivity(intent);
-                break;
-            }
-            case "SearchResults": {
-                Intent intent = new Intent(this, SearchResults.class);
-                startActivity(intent);
-                break;
-            }
-            case "Login": {
-                Intent intent = new Intent(this, Login.class);
-                startActivity(intent);
-                break;
-            }
-            default: {
-                break;
-            }
+        String s = item.getTitle().toString();
+        if (s.equals("Profile")) {
+            Intent intent = new Intent(this, Profile.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+        } else if (s.equals("Search")) {
+            Intent intent = new Intent(this, Search.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+        } else if (s.equals("Libraries")) {
+            Intent intent = new Intent(this, Library.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+        } else if (s.equals("Recommended Items")) {
+            Intent intent = new Intent(this, RecommendedItems.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+        } else if (s.equals("Login") || s.equals("Logout")) {
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -144,6 +177,21 @@ public class ItemView extends AppCompatActivity {
         }
     }
 
+    public void unpackBundle(Bundle bundle) {
+        try {
+            loggedIn_status = bundle.getString("LoggedIn");
+        } catch (Exception e) {
+        }
+        try {
+            sessionID = bundle.getString("sessionID");
+        } catch (Exception e) {
+        }
+        try {
+            itemID = bundle.getInt("itemID");
+        } catch (Exception e) {
+        }
+    }
+
     public void openCommentActivity(String s) {
         Intent intent = new Intent(this, CommentView.class);
         intent.putExtra("Comment ID", s);
@@ -152,11 +200,9 @@ public class ItemView extends AppCompatActivity {
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
-
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
-
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
@@ -173,5 +219,56 @@ public class ItemView extends AppCompatActivity {
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+    }
+
+    public void getData(final int itemID) {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetItemInfo.py?id=" + Integer.toString(itemID), Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                    Toast.makeText(ItemView.this, "No Response", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        // String[] genres = response.getString("genres");
+
+                        JSONArray jsonArray = response.getJSONArray("comments");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            // child comments array
+                            comment_rating = jsonArray.getJSONObject(i).getInt("comment_rating");
+                            content = jsonArray.getJSONObject(i).getString("content");
+                            create_date = jsonArray.getJSONObject(i).getString("create_date");
+                            comment_id = jsonArray.getJSONObject(i).getInt("id");
+                            item_id = jsonArray.getJSONObject(i).getInt("item_id");
+                            user_id = jsonArray.getJSONObject(i).getInt("user_id");
+                            user_name = jsonArray.getJSONObject(i).getString("user_name");
+                            user_review = jsonArray.getJSONObject(i).getInt("user_review");
+                            addCommentDetails();
+                        }
+
+                        average_score = response.getDouble("average_score");
+                        id = response.getInt("id");
+                        user_score = response.getInt("user_score");
+                        title = response.getString("title");
+                        image = response.getString("image");
+                        description = response.getString("description");
+                        creator = response.getString("creator");
+
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        });
+    }
+
+    public void addCommentDetails() {
+        comments.add(Integer.toString(comment_rating));
+        comments.add(content);
+        comments.add(create_date);
+        comments.add(Integer.toString(comment_id));
+        comments.add(Integer.toString(item_id));
+        comments.add(Integer.toString(user_id));
+        comments.add(user_name);
+        comments.add(Integer.toString(user_review));
     }
 }

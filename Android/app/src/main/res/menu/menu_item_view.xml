@@ -9,13 +9,19 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/Home"
-        android:title="Home" />
+        android:id="@+id/Profile"
+        android:title="Profile" />
+    <item
+        android:id="@+id/Search"
+        android:title="Search" />
+    <item
+        android:id="@+id/Libraries"
+        android:title="Libraries" />
     <item
         android:id="@+id/Recommended_Items"
         android:title="Recommended Items" />
     <item
-        android:id="@+id/Libraries"
-        android:title="Libraries" />
+        android:id="@+id/Login"
+        android:title="Login" />
 
 </menu>

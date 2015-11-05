@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -148,7 +147,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
                 convertView = inflater.inflate(layout, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.results_Title = (TextView) convertView.findViewById(R.id.results_Title);
-                viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Director_Author);
+                viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Creator);
                 convertView.setTag(viewHolder);
             }
             else {
