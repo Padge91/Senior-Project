@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import utilities.HttpConnect;
+import utilities.HttpResult;
 
 public class Login extends AppCompatActivity implements Button.OnClickListener {
 

@@ -22,40 +22,23 @@ import android.widget.Toast;
 import com.android.volley.Request;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
+import common.Item;
 import utilities.HttpConnect;
+import utilities.HttpResult;
 
 public class ItemView extends AppCompatActivity {
 
     private boolean isLoggedIn = false;
     private String loggedIn_status = "";
     private String sessionID = "";
-    private int itemID = 0; // id from the search
+    private long itemID = 0; // id from the search
 
-    private ArrayList<String> genres = new ArrayList<>(); // genres for this item
-
-    private ArrayList<String> comments = new ArrayList<>(); // array that stores data for comments
-    // each comment in the comments arrayList will have all of these parameters
-    private int comment_rating; // rating of one comment
-    private String content; // content of one comment
-    private String create_date; // created date of one comment
-    private int comment_id; // id of one comment
-    private int item_id; // id of the item a comment is associated with
-    private int user_id; // id of user who posted the comment
-    private String user_name; // name of the user who posted the comment
-    private int user_review; // review of the user who posted the comment
-
-    private double average_score; // average score of the item
-    private int id; // id of the item
-    private int user_score; // users score
-    private String title; // title of item
-    private String image; // image of item
-    private String description; // description of item
-    private String creator; // creator of item
+    private Item item;
 
     ListView listView;
     Button addToLibraryButton;
@@ -74,16 +57,12 @@ public class ItemView extends AppCompatActivity {
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
-        getData(itemID);
+        getData();
         titleView = (TextView) findViewById(R.id.itemView_title_textView);
         creatorView = (TextView) findViewById(R.id.itemView_creator_textView);
         userScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-        titleView.setText(title);
-        creatorView.setText(creator);
-        userScoreView.setText(Integer.toString(user_score));
-        descriptionView.setText(description);
         //new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(image);
 
         // Comments list view
@@ -221,18 +200,21 @@ public class ItemView extends AppCompatActivity {
         }
     }
 
-    public void getData(final int itemID) {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetItemInfo.py?id=" + Integer.toString(itemID), Request.Method.GET, null, new HttpResult() {
+    public void getData() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetItemInfo.py?id=" + Long.toString(itemID) + "&session=" + sessionID, Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
+                Log.i("in oncallback", "response: ");
                 if (!success) {
                     Toast.makeText(ItemView.this, "No Response", Toast.LENGTH_SHORT).show();
+                    Log.i("not success", "response: ");
                 } else {
+                    Log.i("in else", "response: ");
                     try {
-                        // String[] genres = response.getString("genres");
-
-                        JSONArray jsonArray = response.getJSONArray("comments");
+                        Log.i("trying", "response: ");
+                        //JSONArray jsonArray = response.getJSONArray("comments");
+                        /*
                         for (int i = 0; i < jsonArray.length(); i++) {
                             // child comments array
                             comment_rating = jsonArray.getJSONObject(i).getInt("comment_rating");
@@ -244,31 +226,34 @@ public class ItemView extends AppCompatActivity {
                             user_name = jsonArray.getJSONObject(i).getString("user_name");
                             user_review = jsonArray.getJSONObject(i).getInt("user_review");
                             addCommentDetails();
-                        }
+                        } */
 
-                        average_score = response.getDouble("average_score");
-                        id = response.getInt("id");
-                        user_score = response.getInt("user_score");
-                        title = response.getString("title");
-                        image = response.getString("image");
-                        description = response.getString("description");
-                        creator = response.getString("creator");
 
-                    } catch (Exception e) {
+                        //item.setAverage_score((double) response.getInt("average_score"));
+                        //Log.i("average score", "response: " + item.getAverage_score());
+                        //item.setItem_id(response.getLong("id"));
+                        //Log.i("item id", "response: " + item.getItem_id());
+                        //item.setUser_score(response.getInt("user_score"));
+                        //Log.i("user score", "response: " + item.getUser_score());
+                        item.setTitle(response.getJSONObject("title").toString());
+                        Log.i("title", "response: " + item.getTitle());
+                        item.setCreator(response.getString("creator"));
+                        Log.i("creator", "response: " + item.getCreator());
+                        item.setDescription(response.getString("description"));
+                        Log.i("description", "response: " + item.getDescription());
+                        item.setImageURI(response.getString("image"));
+                        Log.i("image uri", "response: " + item.getImageURI());
+
+                        // populate textViews in itemView layout
+                        titleView.setText(item.getTitle());
+                        creatorView.setText(item.getCreator());
+                        userScoreView.setText(Integer.toString(item.getUser_score()));
+                        descriptionView.setText(item.getDescription());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }
         });
-    }
-
-    public void addCommentDetails() {
-        comments.add(Integer.toString(comment_rating));
-        comments.add(content);
-        comments.add(create_date);
-        comments.add(Integer.toString(comment_id));
-        comments.add(Integer.toString(item_id));
-        comments.add(Integer.toString(user_id));
-        comments.add(user_name);
-        comments.add(Integer.toString(user_review));
     }
 }

@@ -13,19 +13,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-import common.Strings;
 import utilities.HttpConnect;
+import utilities.HttpResult;
 
 /*
 *  Making this view be a temporary Search on start, to maintain consistency with the iOS version
