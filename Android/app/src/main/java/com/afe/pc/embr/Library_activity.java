@@ -46,7 +46,7 @@ public class Library_activity extends AppCompatActivity {
         unpackBundle(library_bundle);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.library_layout);
-        getLibararies();
+        getLibraries();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Library_activity extends AppCompatActivity {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.single_row, R.id.library_listView, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -118,8 +118,8 @@ public class Library_activity extends AppCompatActivity {
         });
     }
 
-    public void getLibararies() {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id" + Integer.toString(userID), Request.Method.GET, null, new HttpResult() {
+    public void getLibraries() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id=2"/* + Integer.toString(userID)*/, Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
@@ -136,7 +136,7 @@ public class Library_activity extends AppCompatActivity {
                         }
                         setLibrary_names();
                         setLibrary_ids();
-                        populate_listview(library_names, library_ids, (ListView) findViewById(R.id.search_listview));
+                        populate_listview(library_names, library_ids, (ListView) findViewById(R.id.library_listView));
                     } catch (Exception e) {
                     }
                 }

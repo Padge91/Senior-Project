@@ -269,7 +269,7 @@ public class ItemView extends AppCompatActivity {
     }
 
     public void getLibraries() {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id" + Integer.toString(userID), Request.Method.GET, null, new HttpResult() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id=" + Integer.toString(userID), Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
