@@ -14,13 +14,66 @@ create table items (
     type varchar(15) not null,
     title varchar(100) not null,
     description text not null,
-    creator varchar(50) not null,
     primary key(id)
 );
 
-create table genres (
+create table movies (
     id bigint not null auto_increment,
-    name varchar(15) unique,
+    item_id bigint not null,
+    rating varchar(10) not null,
+    release_date varchar(20) not null,
+    runtime_minutes int not null,
+    director varchar(50) not null,
+    writer varchar(50) not null,
+    studio varchar(50) not null,
+    actors varchar(400) not null,
+    primary key(id)
+);
+
+create table books (
+    id bigint not null auto_increment,
+    item_id bigint not null,
+    publish_date varchar(20) not null,
+    num_pages int not null,
+    authors varchar(400) not null,
+    publisher varchar(100) not null,
+    edition varchar(50) not null,
+    primary key(id)
+);
+
+create table games (
+    id bigint not null auto_increment,
+    item_id bigint not null,
+    publisher varchar(100) not null,
+    studio varchar(50) not null,
+    release_date varchar(20) not null,
+    rating varchar(10) not null,
+    game_length int not null,
+    multiplayer boolean not null,
+    singleplayer boolean not null,
+    primary key(id)
+);
+
+create table music (
+    id bigint not null auto_increment,
+    item_id bigint not null,
+    release_date varchar(20) not null,
+    recording_company varchar(50) not null,
+    artist varchar(50) not null,
+    time_length varchar(10) not null,
+    primary key(id)
+);
+
+create table television (
+    id bigint not null auto_increment,
+    item_id bigint not null,
+    time_length varchar(20) not null,
+    air_date varchar(20) not null,
+    channel varchar(30) not null,
+    actors varchar(400) not null,
+    director varchar(50) not null,
+    writer varchar(50) not null,
+    rating varchar(10) not null,
     primary key(id)
 );
 
@@ -88,10 +141,9 @@ create table item_images (
 create table item_genres (
     id bigint not null auto_increment,
     item_id bigint not null,
-    genre_id bigint not null,
+    genre varchar(20) not null,
     primary key(id),
-    foreign key(item_id) references items(id),
-    foreign key(genre_id) references genres(id)
+    foreign key(item_id) references items(id)
 );
 
 create table item_reviews (
@@ -145,7 +197,6 @@ create table user_parental_controls (
     genre_id bigint not null,
     primary key(id),
     foreign key(user_id) references users(id),
-    foreign key(genre_id) references genres(id)
 );
 
 create table item_children (
