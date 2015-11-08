@@ -1,18 +1,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.afe.pc.embr.Library">
+    tools:context="com.afe.pc.embr.Library_activity">
 
     <item
-        android:id="@+id/Owned_Library"
-        android:title="@string/owned_library" />
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/Wishlist_Library"
-        android:title="@string/wishlist_library" />
-
+        android:id="@+id/Add_Library"
+        android:title="Add Library" />
     <item
-        android:id="@+id/Custom_Libraries"
-        android:title="@string/custom_library" />
+        android:id="@+id/Remove_Library"
+        android:title="Remove Library" />
+    <item
+        android:id="@+id/Profile"
+        android:title="Profile" />
+    <item
+        android:id="@+id/Search"
+        android:title="Search" />
+    <item
+        android:id="@+id/Recommended_Items"
+        android:title="Recommended Items" />
+    <item
+        android:id="@+id/Login"
+        android:title="Logout" />
 
 </menu>

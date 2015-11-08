@@ -51,7 +51,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search_results, menu);
+        getMenuInflater().inflate(R.menu.menu_library_button, menu);
         return true;
     }
 
@@ -84,7 +84,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
             }
             case "Libraries": {
                 //if () {
-                Intent intent = new Intent(this, Library.class);
+                Intent intent = new Intent(this, Library_activity.class);
                 startActivity(intent);
                 break;
                 //}

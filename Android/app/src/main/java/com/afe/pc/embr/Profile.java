@@ -74,7 +74,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             }
             case "Libraries": {
                 //if () {
-                Intent intent = new Intent(this, Library.class);
+                Intent intent = new Intent(this, Library_activity.class);
                 startActivity(intent);
                 break;
                 //}
@@ -106,8 +106,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             Intent intent = new Intent(this, RecommendedItems.class);
             startActivity(intent);
         }
-        else if (S.equals("Library")){
-            Intent intent = new Intent(this, Library.class);
+        else if (S.equals("Library_activity")){
+            Intent intent = new Intent(this, Library_activity.class);
             startActivity(intent);
         }
         else if (S.equals("SearchResults")){

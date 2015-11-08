@@ -68,8 +68,12 @@ public class Search extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        if (isLoggedIn)
-            menu.getItem(4).setTitle("Logout");
+        if (!isLoggedIn) {
+            menu.getItem(4).setTitle("Login");
+            menu.getItem(3).setVisible(false);
+            menu.getItem(2).setVisible(false);
+            menu.getItem(1).setVisible(false);
+        }
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         if (null != searchView) {
@@ -101,7 +105,7 @@ public class Search extends AppCompatActivity {
             intent.putExtra("sessionID", sessionID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
-            Intent intent = new Intent(this, Library.class);
+            Intent intent = new Intent(this, Library_activity.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             startActivity(intent);
