@@ -1,25 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
-    tools:context="com.afe.pc.embr.Signup">
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.afe.pc.embr.EMBR">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+    // username edit text
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_button_min_height_material"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/signup_username_editText"
+        android:background="#ffa740"
+        android:selectAllOnFocus="false"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp"
+        android:hint="  Username" />
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+    // email edit text
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_button_min_height_material"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/signup_email_editText"
+        android:background="#ffa740"
+        android:layout_below="@+id/signup_username_editText"
+        android:textAlignment="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:hint="  Email"        />
 
-    </android.support.design.widget.AppBarLayout>
+    // login button
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/signup_submit_button"
+        android:layout_below="@+id/signup_confirmpassword_editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
 
-    <include layout="@layout/content_signup" />
+    // logo
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+    // password edit text
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/abc_action_button_min_height_material"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/signup_password_editText"
+        android:background="#ffa740"
+        android:textAlignment="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:hint="  Password"
+        android:layout_below="@+id/signup_email_editText" />
 
-</android.support.design.widget.CoordinatorLayout>
+    // confirm password edit text
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/abc_action_button_min_height_material"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/signup_confirmpassword_editText"
+        android:background="#ffa740"
+        android:textAlignment="center"
+        android:layout_below="@+id/signup_password_editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:hint="  Confirm Password" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sign Up"
+        android:id="@+id/textView"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:textColor="#0a0909" />
+
+</RelativeLayout>

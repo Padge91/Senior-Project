@@ -19,7 +19,7 @@ import utilities.HttpResult;
 
 public class Login extends AppCompatActivity implements Button.OnClickListener {
 
-    Button loginButton, skipLoginButton;
+    Button loginButton, skipLoginButton, signUpButton;
     EditText username, password;
     String usernameEntry, passwordEntry;
     private String sessionID = "";
@@ -36,6 +36,8 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
         loginButton.setOnClickListener(this);
         skipLoginButton = (Button) findViewById(R.id.login_skipLogin_button);
         skipLoginButton.setOnClickListener(this);
+        signUpButton = (Button) findViewById(R.id.signup_button);
+        signUpButton.setOnClickListener(this);
     }
 
     @Override
@@ -72,6 +74,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
             case R.id.signup_button:
                 Intent intent = new Intent(this, Signup.class);
                 startActivity(intent);
+                break;
         }
     }
 
