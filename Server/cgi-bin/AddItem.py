@@ -5,11 +5,11 @@ import cgi
 
 from Utilities import *
 from ItemORM import *
-movie_fields = ["type","title", "description","rating","releaseDate","runTime","director","writer","studio","actors","genres","url"]
-book_fields = ["type","title", "description","publishDate","numberOfPages","authors","publisher","edition","genres","url"]
-game_fields = ["type","title","description","publisher","studio","releaseDate","rating","length","multiplayer","singleplayer", "genres","url"]
-music_fields = ["type","title","description","releaseDate","recordingCo","artist","genres","length","url"]
-tv_fields = ["type","title","description","length","airDate","channel","genres","actors","director","writer","rating","url"]
+movie_fields = ["type","title", "description","rating","releaseDate","runTime","director","writer","studio","actors","genres","url", "parentId"]
+book_fields = ["type","title", "description","publishDate","numberOfPages","authors","publisher","edition","genres","url", "parentId"]
+game_fields = ["type","title","description","publisher","studio","releaseDate","rating","length","multiplayer","singleplayer", "genres","url", "parentId"]
+music_fields = ["type","title","description","releaseDate","recordingCo","artist","genres","length","url", "parentId"]
+tv_fields = ["type","title","description","length","airDate","channel","genres","actors","director","writer","rating","url", "parentId"]
 types = ["Movie","TV","Game","Music","Book"]
 
 def main():

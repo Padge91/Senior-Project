@@ -48,7 +48,7 @@
         z-index:3000;
         position:fixed;
         width:400px;
-        height:300px;
+        height:400px;
         overflow:scroll;
         background-color:white;
         border: 1px solid black;
@@ -132,7 +132,7 @@
         <div ng-show="viewedObject" class="background"></div>
         <div id="ViewItem" ng-show="viewedObject">
             <div class="window">
-                <div><a ng-click="closeView()" style="cursor:pointer;color:#ff0000;float:right;">X</a></div>
+                <div><a ng-click="closeView()" style="margin-left:370px;position:fixed;cursor:pointer;color:#ff0000;">X</a></div>
                 <div ng-repeat="(key,value) in viewedObject" ng-hide="key == 'comments'">{{key}}: {{value}}</div>
                 comments: <div ng-repeat="comment in viewedObject.comments">{{comment}}</div>
             </div>
@@ -188,6 +188,7 @@
                     <tr><td>Main Actors:</td><td><input type="textbox" value="" ng-model="newMovieItem.actors"/>(ex. "Elijah Wood, Viggo Mortensen, Orlando Bloom, Andy Serkis, Ian McKellen")</td></tr>
                     <tr><td>Genres:</td><td><select ng-model="newMovieItem.genres" multiple><option ng-repeat="movieGenre in movieGenres">{{movieGenre}}</option></select>(Select multiple fields if possible)</td></tr>
                     <tr><td>Image URL:</td><td><input type="textbox" ng-init="newMovieItem.url = 'notfound.png'" ng-model="newMovieItem.url"/></td></tr>
+                        <tr><td>Parent ID:</td><td><input type="textbox" ng-init="newMovieItem.parentId = 'None'" ng-model="newMovieItem.parentId"/>(default is None)</td></tr>
                         <tr><td><input type="submit" value="Submit"/></td></tr>
                     </table>
                 </form>
@@ -207,6 +208,7 @@
                     <tr><td>Edition:</td><td><input type="textbox" value="" ng-model="newBookItem.edition"/>(ex. 1st Edition)</td></tr>
                     <tr><td>Genres:</td><td><select ng-model="newBookItem.genres" multiple><option ng-repeat="bookGenre in bookGenres">{{bookGenre}}</option></select>(Select multiple fields if possible)</td></tr>
                     <tr><td>Image URL:</td><td><input type="textbox" ng-init="newBookItem.url = 'notfound.png'" ng-model="newBookItem.url"/></td></tr>
+                        <tr><td>Parent ID:</td><td><input type="textbox" ng-init="newBookItem.parentId = 'None'" ng-model="newMovieItem.parentId"/>(default is None)</td></tr>
                     <tr><td><input type="submit" value="Submit"/></td></tr>
                     </table>
                 </form>
@@ -228,6 +230,7 @@
                     <tr><td>Singleplayer:</td><td><input type="checkbox" ng-init="newGameItem.singleplayer = false" value="" ng-model="newGameItem.singleplayer"/>(checked/unchecked)</td></tr>
                     <tr><td>Genres:</td><td><select ng-model="newGameItem.genres" multiple><option ng-repeat="gameGenre in gameGenres">{{gameGenre}}</option></select>(Select multiple fields if possible)</td></tr>
                     <tr><td>Image URL:</td><td><input type="textbox" ng-init="newGameItem.url = 'notfound.png'" ng-model="newGameItem.url"/></td></tr>
+                        <tr><td>Parent ID:</td><td><input type="textbox" ng-init="newGameItem.parentId = 'None'" ng-model="newGameItem.parentId"/>(default is None)</td></tr>
                         <tr><td><input type="submit" value="Submit"/></td></tr>
                     </table>
                 </form>
@@ -246,6 +249,7 @@
                     <tr><td>Genres:</td><td><select ng-model="newMusicItem.genres" multiple><option ng-repeat="musicGenre in musicGenres">{{musicGenre}}</option></select>(Select multiple fields if possible)</td></tr>
                     <tr><td>Song Length/Album Length:</td><td><input type="textbox" value="" ng-model="newMusicItem.length"/>(song ex. 4:30, album ex. 62:39)</td></tr>
                     <tr><td>Image URL:</td><td><input type="textbox" ng-init="newMusicItem.url = 'notfound.png'" ng-model="newMusicItem.url"/></td></tr>
+                        <tr><td>Parent ID:</td><td><input type="textbox" ng-init="newMusicItem.parentId = 'None'" ng-model="newMusicItem.parentId"/>(default is None)</td></tr>
                         <tr><td><input type="submit" value="Submit"/></td></tr>
                     </table>
                 </form>
@@ -267,6 +271,7 @@
                     <tr><td>Writer:</td><td><input type="textbox" value="" ng-model="newTVItem.writer"/>(ex. Mitchell Hurwitz)</td></tr>
                     <tr><td>Rating:</td><td><input type="textbox" value="" ng-model="newTVItem.rating"/>(ex. TV14, TVMA, etc.)</td></tr>
                     <tr><td>Image URL:</td><td><input type="textbox" ng-init="newTVItem.url = 'notfound.png'" ng-model="newTVItem.url"/></td></tr>
+                        <tr><td>Parent ID:</td><td><input type="textbox" ng-init="newTVItem.parentId = 'None'" ng-model="newTVItem.parentId"/>(default is None)</td></tr>
                         <tr><td><input type="submit" value="Submit"/></td></tr>
                     </table>
                 </form>

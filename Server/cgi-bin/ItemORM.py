@@ -21,6 +21,8 @@ class ItemORM(object):
         #add comments to the object
         comment_orm = CommentORM()
         response_object.genres = self.get_item_genres(response_object.id)
+        response_object.parent_id = self.get_parent_id(response_object.id)
+        response_object.child_items = self.get_child_item_ids(response_object.id)
         response_object.comments = comment_orm.get_comments_on_item({"item_id":response_object.id})
 
         #get extra fields
@@ -37,6 +39,26 @@ class ItemORM(object):
             type_query = self.add_book_fields(response_object, query_params["id"])
 
         return response_object
+
+    def get_parent_id(self, id):
+        query = "select parent_item_id from item_children where child_item_id={0}".format(id)
+        results = select_query(query)
+        if len(results) == 0:
+            return None
+        else:
+            return results[0][0]
+
+    def get_child_item_ids(self, id):
+        query = "select child_item_id from item_children where parent_item_id={0}".format(id)
+        results = select_query(query)
+        if len(results) == 0:
+            return []
+
+        ids = []
+        for item in results:
+            ids.append(item[0])
+
+        return ids
 
     def add_movie_fields(self,object,id):
         query = "select rating, release_date, runtime_minutes, director, writer, studio, actors from movies where item_id={0}".format(id)
@@ -289,11 +311,15 @@ class ItemORM(object):
         #make common queries
         queries = []
 
+
         img_query = "insert into item_images (item_id, image_url) values ({0}, '{1}')".format(item_id, item_map["url"])
         queries.append(img_query)
 
         #get id from ^^, use for type_query
         queries.append(type_query.format(item_id))
+
+        if item_map["parentId"] != "None":
+            queries.append("insert into item_children (parent_item_id, child_item_id) values ({0}, {1})".format(item_map["parentId"], item_id))
 
         for genre in item_map["genres"]:
             queries.append("insert into item_genres (item_id, genre) values ("+str(item_id)+",'"+str(genre)+"')")

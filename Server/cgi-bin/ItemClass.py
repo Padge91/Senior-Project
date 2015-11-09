@@ -24,6 +24,8 @@ class FullItem(object):
         self.genres = list()
         self.average_score = 0
         self.user_score = None
+        self.parent_id = None
+        self.child_items = list()
 
     def jsonify(self):
         obj = self.__dict__
