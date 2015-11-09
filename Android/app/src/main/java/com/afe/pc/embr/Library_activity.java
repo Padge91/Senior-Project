@@ -1,5 +1,8 @@
 package com.afe.pc.embr;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +10,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -40,6 +45,8 @@ public class Library_activity extends AppCompatActivity {
     private ArrayList<String> library_names = new ArrayList<>();
     private ArrayList<Integer> library_ids = new ArrayList<>();
 
+    private EditText result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle library_bundle = getIntent().getExtras();
@@ -58,9 +65,11 @@ public class Library_activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String s = item.getTitle().toString();
-        if (s.equals("Add Library")) {
-            // add library logic
-
+        if (s.equals("Create Library")) {
+            result = (EditText) findViewById(R.id.createLibrary_newLibraryName_editText);
+            result.bringToFront();
+            String new_library_name = result.getText().toString();
+            createLibrary(new_library_name);
         } else if (s.equals("Remove Library")) {
             // remove library logic
 
@@ -139,6 +148,19 @@ public class Library_activity extends AppCompatActivity {
                         populate_listview(library_names, library_ids, (ListView) findViewById(R.id.library_listView));
                     } catch (Exception e) {
                     }
+                }
+            }
+        });
+    }
+
+    public void createLibrary(final String library_name) {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&library_name=" + library_name + "&visible=true", Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                } else {
+                    Toast.makeText(Library_activity.this, "Created new Library: " + library_name, Toast.LENGTH_SHORT).show();
                 }
             }
         });
