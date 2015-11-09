@@ -30,9 +30,9 @@ public class PopUpMenuEventHandle implements PopupMenu.OnMenuItemClickListener {
                 Toast.makeText(context, "Recommended Items", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.Libraries:
-                Intent intent2 = new Intent(String.valueOf(Library.class));
+                Intent intent2 = new Intent(String.valueOf(Library_activity.class));
                 context.startActivity(intent2);
-                Toast.makeText(context, "Library", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Library_activity", Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;
