@@ -207,3 +207,12 @@ create table item_children (
     foreign key(parent_item_id) references items(id),
     foreign key(child_item_id) references items(id)
 );
+
+create table comment_flags (
+    id bigint not null auto_increment,
+    comment_id bigint not null,
+    user_id bigint not null,
+    primary key(id),
+    foreign key(comment_id) references comments(id),
+    foreign key(user_id) references users(id)
+);

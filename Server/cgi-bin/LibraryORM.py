@@ -142,3 +142,23 @@ class LibraryORM(object):
         query = "insert into library_items (library_id, item_id) values ({0}, {1})".format(library_id, item_id)
         insert_query(query)
         return True
+
+    def update_library(self, form):
+        library_name = form["new_name"]
+        visibility = form["new_visibility"]
+
+        #get user
+        user_id = get_user_id_from_session(form)
+
+        #make sure user owns library
+        library_id = form["library_id"]
+        query = "select library_name from libraries where id={0} and user_id={1}".format(library_id, user_id)
+        results = select_query(query)
+        if len(results) < 1:
+            raise Exception("You do not have permission to modify this library")
+
+        #update fields
+        update_query = "update libraries set library_name='{0}', visible={1} where id={2}".format(library_name, visibility, library_id)
+        insert_query(update_query)
+
+        return True

@@ -1,23 +1,21 @@
 #!/usr/bin/python
-__author__ = 'ryan'
+__author__ = 'nicholaspadgett'
+
 
 import cgi
-
 from Utilities import *
-from ItemORM import *
+from LibraryORM import *
 
-
-required_params = ["title"]
+required_params = ["session","library_id","new_name","new_visibility"]
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = ItemORM()
-        response = orm.search_items(form)
+        orm = LibraryORM()
+        response = orm.update_library(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

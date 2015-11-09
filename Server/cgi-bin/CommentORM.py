@@ -128,10 +128,10 @@ class CommentORM(object):
         if len(response) < 1:
             raise Exception("Parent object not found")
 
-        query = "insert into comments (user_id, create_date, content) values ({0}, '{1}', '{2}')".format(user_id, datetime.datetime.now().strftime(format), content)
+        query = "insert into comments (user_id, create_date, content) values ({0}, '{1}', '{2}')".format(user_id, datetime.now().strftime(format), content)
         insert_query(query)
 
-        get_id_query = "select id from comments where user_id={0} and create_date='{1}' and content='{2}'".format(user_id, datetime.datetime.now().strftime(format), content)
+        get_id_query = "select id from comments where user_id={0} and create_date='{1}' and content='{2}'".format(user_id, datetime.now().strftime(format), content)
         results = select_query(get_id_query)
         if len(results) < 1:
             raise Exception("Error saving comment.")
@@ -177,4 +177,18 @@ class CommentORM(object):
             new_query="insert into comment_ratings (user_id, comment_id, rating) values ({0}, {1}, {2})".format(user_id, comment_id, rating)
 
         insert_query(new_query)
+        return True
+
+    def flag_comment(self, form):
+        comment_id = form["comment_id"]
+        user_id = get_user_id_from_session(form)
+
+        #check if user has already flagged the comment
+        pre_query = "select id from comment_flags where comment_id={0} and user_id={1}".format(comment_id, user_id)
+        results = select_query(pre_query)
+        if len(results) < 1:
+            #ticket alreadys submitted
+            query = "insert into comment_flags (comment_id, user_id) values ({0}, {1})".format(comment_id, user_id)
+            insert_query(query)
+
         return True

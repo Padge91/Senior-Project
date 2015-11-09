@@ -1,23 +1,19 @@
 #!/usr/bin/python
-__author__ = 'ryan'
-
-import cgi
+__author__ = 'nicholaspadgett'
 
 from Utilities import *
-from ItemORM import *
-
-
-required_params = ["title"]
+import cgi
+from FriendsORM import *
+required_params = ["session", "user_id"]
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = ItemORM()
-        response = orm.search_items(form)
+        orm = FriendsORM()
+        response = orm.list_friends(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

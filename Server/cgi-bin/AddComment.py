@@ -17,7 +17,5 @@ def main():
     except Exception as e:
         failure_response(e.message)
 
-
-
 if __name__=="__main__":
     main()
