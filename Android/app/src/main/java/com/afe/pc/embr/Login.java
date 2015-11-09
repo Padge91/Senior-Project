@@ -1,15 +1,14 @@
 package com.afe.pc.embr;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 
 import org.json.JSONException;
@@ -70,6 +69,9 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
             case R.id.login_skipLogin_button:
                 openSearchActivity("Skip Login");
                 break;
+            case R.id.signup_button:
+                Intent intent = new Intent(this, Signup.class);
+                startActivity(intent);
         }
     }
 
