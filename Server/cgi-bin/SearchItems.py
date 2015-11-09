@@ -9,6 +9,8 @@ from ItemORM import *
 
 required_params = ["title"]
 
+#things to search by: title, type, genre, personel?
+
 def main():
     try:
         form = get_required_parameters(cgi, required_params)

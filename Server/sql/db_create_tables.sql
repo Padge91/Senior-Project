@@ -20,12 +20,12 @@ create table items (
 create table movies (
     id bigint not null auto_increment,
     item_id bigint not null,
-    rating varchar(10) not null,
-    release_date varchar(20) not null,
+    rating varchar(20) not null,
+    release_date varchar(30) not null,
     runtime_minutes int not null,
-    director varchar(50) not null,
-    writer varchar(50) not null,
-    studio varchar(50) not null,
+    director varchar(80) not null,
+    writer varchar(80) not null,
+    studio varchar(80) not null,
     actors varchar(400) not null,
     primary key(id)
 );
@@ -33,11 +33,11 @@ create table movies (
 create table books (
     id bigint not null auto_increment,
     item_id bigint not null,
-    publish_date varchar(20) not null,
+    publish_date varchar(30) not null,
     num_pages int not null,
     authors varchar(400) not null,
     publisher varchar(100) not null,
-    edition varchar(50) not null,
+    edition varchar(80) not null,
     primary key(id)
 );
 
@@ -45,9 +45,9 @@ create table games (
     id bigint not null auto_increment,
     item_id bigint not null,
     publisher varchar(100) not null,
-    studio varchar(50) not null,
-    release_date varchar(20) not null,
-    rating varchar(10) not null,
+    studio varchar(80) not null,
+    release_date varchar(30) not null,
+    rating varchar(30) not null,
     game_length int not null,
     multiplayer boolean not null,
     singleplayer boolean not null,
@@ -57,23 +57,23 @@ create table games (
 create table music (
     id bigint not null auto_increment,
     item_id bigint not null,
-    release_date varchar(20) not null,
-    recording_company varchar(50) not null,
-    artist varchar(50) not null,
-    time_length varchar(10) not null,
+    release_date varchar(30) not null,
+    recording_company varchar(80) not null,
+    artist varchar(80) not null,
+    time_length varchar(20) not null,
     primary key(id)
 );
 
 create table television (
     id bigint not null auto_increment,
     item_id bigint not null,
-    time_length varchar(20) not null,
-    air_date varchar(20) not null,
-    channel varchar(30) not null,
+    time_length varchar(30) not null,
+    air_date varchar(50) not null,
+    channel varchar(50) not null,
     actors varchar(400) not null,
-    director varchar(50) not null,
-    writer varchar(50) not null,
-    rating varchar(10) not null,
+    director varchar(80) not null,
+    writer varchar(80) not null,
+    rating varchar(30) not null,
     primary key(id)
 );
 
