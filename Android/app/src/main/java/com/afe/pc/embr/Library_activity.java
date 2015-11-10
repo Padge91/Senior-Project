@@ -51,6 +51,7 @@ public class Library_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Bundle library_bundle = getIntent().getExtras();
         unpackBundle(library_bundle);
+        System.out.println("userID =" + userID);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.library_layout);
         getLibraries();
@@ -77,16 +78,19 @@ public class Library_activity extends AppCompatActivity {
             Intent intent = new Intent(this, Profile.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -104,7 +108,11 @@ public class Library_activity extends AppCompatActivity {
             sessionID = bundle.getString("sessionID");
         } catch (Exception e) {
         }
-        getUserID();
+        try {
+            userID = bundle.getInt("userID");
+        } catch (Exception e) {
+        }
+
     }
 
     public void populate_listview(final ArrayList<String> values, final ArrayList<Integer> ids, final ListView listView) {
@@ -128,7 +136,7 @@ public class Library_activity extends AppCompatActivity {
     }
 
     public void getLibraries() {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id=2"/* + Integer.toString(userID)*/, Request.Method.GET, null, new HttpResult() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&user_id=" + Integer.toString(userID), Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
@@ -161,22 +169,6 @@ public class Library_activity extends AppCompatActivity {
                 if (!success) {
                 } else {
                     Toast.makeText(Library_activity.this, "Created new Library: " + library_name, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    public void getUserID() {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetUserIdFromSession.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
-
-            @Override
-            public void onCallback(JSONObject response, boolean success) {
-                if (!success) {
-                } else {
-                    try {
-                        userID = response.getInt("response");
-                    } catch (Exception e) {
-                    }
                 }
             }
         });

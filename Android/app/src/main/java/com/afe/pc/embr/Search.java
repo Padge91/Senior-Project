@@ -36,6 +36,7 @@ public class Search extends AppCompatActivity {
     private boolean isLoggedIn = false;
     private String loggedIn_status = "";
     private String sessionID = "";
+    private int userID;
     private String[] emptyStrings = new String[]{"", "", "", "", "", "", "", "", "", "", "", ""};
     private ArrayList<String> genres = new ArrayList<>();
     private ArrayList<String> description = new ArrayList<>();
@@ -49,14 +50,7 @@ public class Search extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle search_bundle = getIntent().getExtras();
-        try {
-            loggedIn_status = search_bundle.getString("LoggedIn");
-        } catch (Exception e) {
-        }
-        try {
-            sessionID = search_bundle.getString("sessionID");
-        } catch (Exception e) {
-        }
+        unpackBundle(search_bundle);
         super.onCreate(savedInstanceState);
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
@@ -103,16 +97,19 @@ public class Search extends AppCompatActivity {
             Intent intent = new Intent(this, Profile.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, Library_activity.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -124,6 +121,21 @@ public class Search extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         return;
+    }
+
+    public void unpackBundle(Bundle bundle) {
+        try {
+            loggedIn_status = bundle.getString("LoggedIn");
+        } catch (Exception e) {
+        }
+        try {
+            sessionID = bundle.getString("sessionID");
+        } catch (Exception e) {
+        }
+        try {
+            userID = bundle.getInt("userID");
+        } catch (Exception e) {
+        }
     }
 
     public void populate_listview(final ArrayList<ArrayList<String>> values, final ArrayList<Integer> ids, final ListView listView) {
@@ -161,6 +173,7 @@ public class Search extends AppCompatActivity {
         Intent intent = new Intent(this, ItemView.class);
         intent.putExtra("LoggedIn", loggedIn_status);
         intent.putExtra("sessionID", sessionID);
+        intent.putExtra("userID", userID);
         intent.putExtra("itemID", itemID);
         startActivity(intent);
     }

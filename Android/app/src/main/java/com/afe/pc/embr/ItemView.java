@@ -147,21 +147,25 @@ public class ItemView extends AppCompatActivity {
             Intent intent = new Intent(this, Profile.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, Library_activity.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -187,7 +191,11 @@ public class ItemView extends AppCompatActivity {
             itemID = bundle.getInt("itemID");
         } catch (Exception e) {
         }
-        getUserID();
+        try {
+            userID = bundle.getInt("userID");
+        } catch (Exception e) {
+        }
+
     }
 
     public void openCommentActivity(String s) {
@@ -229,8 +237,12 @@ public class ItemView extends AppCompatActivity {
                     Toast.makeText(ItemView.this, "No Response", Toast.LENGTH_SHORT).show();
                     Log.i("not success", "response: ");
                 } else {
+                    item = new Item();
                     Log.i("in else", "response: ");
                     try {
+                        System.out.println(response.toString());
+                        response = response.getJSONObject("response");
+                        System.out.println(response.toString());
                         Log.i("trying", "response: ");
                         //JSONArray jsonArray = response.getJSONArray("comments");
                         /*
@@ -246,11 +258,12 @@ public class ItemView extends AppCompatActivity {
                             user_review = jsonArray.getJSONObject(i).getInt("user_review");
                             addCommentDetails();
                         } */
-
-                        item.setAverage_score((double) response.getInt("average_score"));
+                        double avgscore = response.getDouble("average_score");
+                        System.out.println(avgscore);
+                        item.setAverage_score(avgscore);
                         item.setItem_id(response.getLong("id"));
-                        item.setUser_score(response.getInt("user_score"));
-                        item.setTitle(response.getJSONObject("title").toString());
+                        item.setUser_score(response.optInt("user_score", 0));
+                        item.setTitle(response.getString("title"));
                         item.setCreator(response.getString("creator"));
                         item.setDescription(response.getString("description"));
                         item.setImageURI(response.getString("image"));
@@ -306,22 +319,6 @@ public class ItemView extends AppCompatActivity {
                         Toast.makeText(ItemView.this, "Added to " + s + " Library", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void getUserID() {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetUserIdFromSession.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
-
-            @Override
-            public void onCallback(JSONObject response, boolean success) {
-                if (!success) {
-                } else {
-                    try {
-                        userID = response.getInt("response");
-                    } catch (Exception e) {
-                    }
                 }
             }
         });

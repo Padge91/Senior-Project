@@ -23,6 +23,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
     EditText username, password;
     String usernameEntry, passwordEntry;
     private String sessionID = "";
+    private int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +43,13 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -90,12 +82,29 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                     else {
                         try {
                             sessionID = response.getString("response");
-                            openSearchActivity("Login");
+                            getUserID();
                         } catch (Exception e) {
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void getUserID() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetUserIdFromSession.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                } else {
+                    try {
+                        userID = response.getInt("response");
+                        openSearchActivity("Login");
+                    } catch (Exception e) {
+                    }
                 }
             }
         });
@@ -108,6 +117,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                     Intent intent = new Intent(this, Search.class);
                     intent.putExtra("LoggedIn", "true");
                     intent.putExtra("sessionID", sessionID);
+                    intent.putExtra("userID", userID);
                     startActivity(intent);
                     finish();
                 }

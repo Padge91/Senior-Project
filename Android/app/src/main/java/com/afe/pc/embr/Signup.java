@@ -34,7 +34,7 @@ public class Signup extends AppCompatActivity implements Button.OnClickListener{
         signupusername = (EditText) findViewById(R.id.signup_username_editText);
         signupusername.setHint("Username");
         signupemail = (EditText) findViewById(R.id.signup_email_editText);
-        signupemail.setHint("Username");
+        signupemail.setHint("Email");
         signuppassword = (EditText) findViewById(R.id.signup_password_editText);
         signuppassword.setHint("Password");
         signuppasswordconfirm = (EditText) findViewById(R.id.signup_confirmpassword_editText);
@@ -76,21 +76,28 @@ public class Signup extends AppCompatActivity implements Button.OnClickListener{
         }
     }
 
-    public void verifySignUp (String username,String email, String password, String passwordConfirm) {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/CreateAccount.py?username=" + username + "&email" + email + "&password=" + password + "&passwordConfirm" + passwordConfirm, Request.Method.GET, null, new HttpResult() {
+    public void verifySignUp (String username, String email, String password, String passwordConfirm) {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/CreateAccount.py?username=" + username + "&email=" + email + "&password=" + password + "&passwordConfirm=" + passwordConfirm, Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
                 try {
-                    if (success == false) {
+                    if(!response.getBoolean("success")) {
                         Toast.makeText(Signup.this, response.getString("response"), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(Signup.this, response.getString("response"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Signup.this, "Account Created", Toast.LENGTH_SHORT).show();
+                        returnToLogin();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    public void returnToLogin() {
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        finish();
     }
 }
