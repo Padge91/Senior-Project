@@ -7,7 +7,7 @@
         android:title="Owned" />
     <item
         android:id="@+id/Wish_List"
-        android:title="Wish List" />
+        android:title="Wishlist" />
     <item
         android:id="@+id/Viewed"
         android:title="Viewed" />

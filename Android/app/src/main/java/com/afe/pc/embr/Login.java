@@ -118,6 +118,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                     intent.putExtra("LoggedIn", "true");
                     intent.putExtra("sessionID", sessionID);
                     intent.putExtra("userID", userID);
+                    intent.putExtra("isFromLogin", true);
                     startActivity(intent);
                     finish();
                 }
@@ -126,6 +127,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                 Toast.makeText(Login.this, "Some features will be disabled until you Login", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, Search.class);
                 intent.putExtra("LoggedIn", "false");
+                intent.putExtra("isFromLogin", true);
                 startActivity(intent);
                 finish();
                 break;

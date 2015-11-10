@@ -1,25 +1,15 @@
 package com.afe.pc.embr;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,32 +24,33 @@ import common.Library;
 import utilities.HttpConnect;
 import utilities.HttpResult;
 
-public class Library_activity extends AppCompatActivity {
+public class LibraryList extends AppCompatActivity {
 
-    private boolean isLoggedIn = false;
     private String loggedIn_status = "";
     private String sessionID = "";
     private int userID;
+    private String new_library_name = "";
 
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
     private ArrayList<Integer> library_ids = new ArrayList<>();
 
     private EditText result;
+    private Button submitButton;
+    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle library_bundle = getIntent().getExtras();
         unpackBundle(library_bundle);
-        System.out.println("userID =" + userID);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.library_layout);
+        setContentView(R.layout.library_list_layout);
         getLibraries();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_library, menu);
+        getMenuInflater().inflate(R.menu.menu_library_list, menu);
         return true;
     }
 
@@ -67,13 +58,28 @@ public class Library_activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         String s = item.getTitle().toString();
         if (s.equals("Create Library")) {
+            clearAll();
+            setContentView(R.layout.create_library_layout);
             result = (EditText) findViewById(R.id.createLibrary_newLibraryName_editText);
-            result.bringToFront();
-            String new_library_name = result.getText().toString();
-            createLibrary(new_library_name);
+            submitButton = (Button) findViewById(R.id.createLibraryLayout_submit_button);
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new_library_name = result.getText().toString();
+                    createLibrary(new_library_name);
+                }
+            });
+            cancelButton = (Button) findViewById(R.id.createLibraryLayout_cancel_button);
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setContentView(R.layout.library_list_layout);
+                    getLibraries();
+                }
+            });
         } else if (s.equals("Remove Library")) {
+            Toast.makeText(LibraryList.this, "Option not available", Toast.LENGTH_SHORT).show();
             // remove library logic
-
         } else if (s.equals("Profile")) {
             Intent intent = new Intent(this, Profile.class);
             intent.putExtra("LoggedIn", loggedIn_status);
@@ -112,7 +118,6 @@ public class Library_activity extends AppCompatActivity {
             userID = bundle.getInt("userID");
         } catch (Exception e) {
         }
-
     }
 
     public void populate_listview(final ArrayList<String> values, final ArrayList<Integer> ids, final ListView listView) {
@@ -129,8 +134,7 @@ public class Library_activity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long notUsed) {
-                int id = ids.get(position);
-                openLibraryActivity(id);
+                openLibraryViewActivity(ids.get(position), values.get(position));
             }
         });
     }
@@ -153,7 +157,7 @@ public class Library_activity extends AppCompatActivity {
                         }
                         setLibrary_names();
                         setLibrary_ids();
-                        populate_listview(library_names, library_ids, (ListView) findViewById(R.id.library_listView));
+                        populate_listview(library_names, library_ids, (ListView) findViewById(R.id.libraryList_listView));
                     } catch (Exception e) {
                     }
                 }
@@ -162,41 +166,44 @@ public class Library_activity extends AppCompatActivity {
     }
 
     public void createLibrary(final String library_name) {
-        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetLibrariesList.py?session=" + sessionID + "&library_name=" + library_name + "&visible=true", Request.Method.GET, null, new HttpResult() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/CreateLibrary.py?session=" + sessionID + "&library_name=" + library_name + "&visible=true", Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
                 if (!success) {
+                    Toast.makeText(LibraryList.this, "Unable to create Library", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(Library_activity.this, "Created new Library: " + library_name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LibraryList.this, "Created new Library: " + library_name, Toast.LENGTH_SHORT).show();
+                    setContentView(R.layout.library_list_layout);
+                    getLibraries();
                 }
             }
         });
     }
 
-    public void openLibraryActivity(int libraryID) {
-        Intent intent = new Intent(this, Library_activity.class);
+    public void openLibraryViewActivity(int libraryID, String libraryName) {
+        Intent intent = new Intent(this, LibraryView.class);
         intent.putExtra("LoggedIn", loggedIn_status);
         intent.putExtra("sessionID", sessionID);
-        intent.putExtra("libraryID", libraryID);
-        startActivity(intent);
-    }
-
-    public void openItemViewActivity(String s) {
-        Intent intent = new Intent(this, ItemView.class);
-        intent.putExtra("Book Title", s);
-        intent.putExtra("Book Author", "J. R. R. Tolkien");
-        intent.putExtra("Book Picture", "fellowship");
+        intent.putExtra("userID", userID);
+        intent.putExtra("libraryID", Integer.toString(libraryID));
+        intent.putExtra("libraryName", libraryName);
         startActivity(intent);
     }
 
     public void setLibrary_names() {
-        for(int i = 0; i < libraries_list.size(); i++)
+        for (int i = 0; i < libraries_list.size(); i++)
             library_names.add(libraries_list.get(i).getName());
     }
 
     public void setLibrary_ids() {
-        for(int i = 0; i < libraries_list.size(); i++)
+        for (int i = 0; i < libraries_list.size(); i++)
             library_ids.add(libraries_list.get(i).getId());
+    }
+
+    public void clearAll() {
+        library_names.clear();
+        library_ids.clear();
+        libraries_list.clear();
     }
 }

@@ -84,7 +84,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
             }
             case "Libraries": {
                 //if () {
-                Intent intent = new Intent(this, Library_activity.class);
+                Intent intent = new Intent(this, LibraryList.class);
                 startActivity(intent);
                 break;
                 //}
@@ -147,7 +147,7 @@ public class SearchResults extends AppCompatActivity implements View.OnClickList
                 convertView = inflater.inflate(layout, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.results_Title = (TextView) convertView.findViewById(R.id.results_Title);
-                viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Creator);
+                //viewHolder.results_Director_Author = (TextView) convertView.findViewById(R.id.results_Creator);
                 convertView.setTag(viewHolder);
             }
             else {

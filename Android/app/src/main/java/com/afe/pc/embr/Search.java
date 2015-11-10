@@ -34,14 +34,12 @@ import utilities.HttpResult;
 public class Search extends AppCompatActivity {
 
     private boolean isLoggedIn = false;
+    private boolean isFromLogin = false;
     private String loggedIn_status = "";
     private String sessionID = "";
     private int userID;
     private String[] emptyStrings = new String[]{"", "", "", "", "", "", "", "", "", "", "", ""};
-    private ArrayList<String> genres = new ArrayList<>();
-    private ArrayList<String> description = new ArrayList<>();
     private ArrayList<String> creator = new ArrayList<>();
-    private ArrayList<String> image = new ArrayList<>();
     private ArrayList<String> title = new ArrayList<>();
     private ArrayList<Integer> id = new ArrayList<>();
     private ArrayList<ArrayList<String>> listview_values = new ArrayList<>();
@@ -100,7 +98,7 @@ public class Search extends AppCompatActivity {
             intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
-            Intent intent = new Intent(this, Library_activity.class);
+            Intent intent = new Intent(this, LibraryList.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
@@ -120,7 +118,10 @@ public class Search extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        return;
+        if(isFromLogin)
+            return;
+        else
+            super.onBackPressed();
     }
 
     public void unpackBundle(Bundle bundle) {
@@ -134,6 +135,10 @@ public class Search extends AppCompatActivity {
         }
         try {
             userID = bundle.getInt("userID");
+        } catch (Exception e) {
+        }
+        try {
+            isFromLogin = bundle.getBoolean("isFromLogin");
         } catch (Exception e) {
         }
     }
@@ -151,8 +156,7 @@ public class Search extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long notUsed) {
-                int id = ids.get(position);
-                openItemViewActivity(id);
+                openItemViewActivity(ids.get(position), values.get(0).get(position));
             }
         });
     }
@@ -169,12 +173,13 @@ public class Search extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    public void openItemViewActivity(int itemID) {
+    public void openItemViewActivity(int itemID, String itemName) {
         Intent intent = new Intent(this, ItemView.class);
         intent.putExtra("LoggedIn", loggedIn_status);
         intent.putExtra("sessionID", sessionID);
         intent.putExtra("userID", userID);
         intent.putExtra("itemID", itemID);
+        intent.putExtra("itemName", itemName);
         startActivity(intent);
     }
 
@@ -212,10 +217,7 @@ public class Search extends AppCompatActivity {
 
     public void clearAll() {
         listview_values.clear();
-        genres.clear();
-        description.clear();
         creator.clear();
-        image.clear();
         title.clear();
         id.clear();
     }

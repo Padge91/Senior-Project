@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.afe.pc.embr" >
+    package="com.afe.pc.embr">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -9,10 +9,10 @@
         android:allowBackup="true"
         android:icon="@drawable/embr_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,7 @@
         <activity
             android:name=".Search"
             android:label="Search"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
 
@@ -37,10 +37,9 @@
         <activity
             android:name=".SearchResults"
             android:label="@string/title_activity_search_results"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
@@ -51,10 +50,9 @@
         <activity
             android:name=".ItemView"
             android:label="@string/title_activity_item_view"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
@@ -63,9 +61,9 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:theme="@style/Theme.AppCompat.Light"
-            android:name=".Library_activity"
-            android:label="@string/title_activity_library" >
+            android:name=".LibraryList"
+            android:label="@string/title_activity_library"
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -73,28 +71,24 @@
         </activity>
         <activity
             android:name=".RecommendedItems"
-            android:label="@string/title_activity_recommended_items" >
-        </activity>
+            android:label="@string/title_activity_recommended_items" />
         <activity
             android:name=".Profile"
             android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".CommentView"
             android:label="@string/title_activity_comment_view"
-            android:parentActivityName=".ItemView" >
+            android:parentActivityName=".ItemView">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.afe.pc.embr.ItemView" />
@@ -102,7 +96,16 @@
         <activity
             android:name=".Signup"
             android:label="@string/title_activity_signup"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".LibraryView"
+            android:label="@string/title_activity_library"
+            android:theme="@style/Theme.AppCompat.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

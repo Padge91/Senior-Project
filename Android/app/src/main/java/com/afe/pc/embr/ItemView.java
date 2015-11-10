@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,6 +31,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import common.Item;
 import common.Library;
@@ -39,13 +45,16 @@ public class ItemView extends AppCompatActivity {
     private String loggedIn_status = "";
     private String sessionID = "";
     private int userID;
-    private long itemID = 0; // id from the search
-    private int addToLibraryID;
+    private long itemID = 0;
+    private int libraryID = 0;
+    private String libraryName = "";
+    private String itemName = "";
 
     private Item item;
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
     private ArrayList<Integer> library_ids = new ArrayList<>();
+    private Map<String, Integer> library_keys = new HashMap<>();
 
     ListView listView;
     Button addToLibraryButton;
@@ -53,6 +62,7 @@ public class ItemView extends AppCompatActivity {
     TextView titleView;
     TextView creatorView;
     TextView userScoreView;
+    TextView averageScoreView;
     TextView descriptionView;
     ImageView imageView;
 
@@ -64,29 +74,21 @@ public class ItemView extends AppCompatActivity {
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
+        setTitle(itemName);
         getData();
         getLibraries();
         titleView = (TextView) findViewById(R.id.itemView_title_textView);
         creatorView = (TextView) findViewById(R.id.itemView_creator_textView);
-        userScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
+        averageScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
-        //new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(image);
 
         // Comments list view
         listView = (ListView) findViewById(R.id.itemView_comments_listView);
         String[] values = new String[]{"Comment 1", "Comment 2", "Comment 3", "Comment 4",
                 "Comment 5", "Comment 6", "Comment 7", "Comment 8", "Comment 9", "Comment 10",
                 "Comment 11", "Comment 12", "Comment 13", "Comment 14", "Comment 15", "Comment 16"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = (String) listView.getItemAtPosition(position);
-                openCommentActivity(itemValue);
-            }
-        });
+        populate_listview(values, listView);
 
         // PopUp for the add to libraries button
         addToLibraryButton = (Button) findViewById(R.id.itemView_addToLibrary_button);
@@ -98,11 +100,15 @@ public class ItemView extends AppCompatActivity {
                 else {
                     PopupMenu popup = new PopupMenu(ItemView.this, addToLibraryButton);
                     popup.getMenuInflater().inflate(R.menu.menu_library_button, popup.getMenu());
-                    populateMenuLibraryButton(popup.getMenu());
+                    for(int i = 0; i < library_names.size(); i++)
+                        popup.getMenu().getItem(i).setTitle(library_names.get(i));
+                    for(int i = library_names.size(); i < popup.getMenu().size(); i++)
+                        popup.getMenu().getItem(i).setVisible(false);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-                            addToLibraryID = item.getItemId();
-                            addToLibraryButton(item.toString());
+                            libraryName = item.toString();
+                            libraryID = library_keys.get(libraryName);
+                            addToLibrary();
                             return true;
                         }
                     });
@@ -156,7 +162,7 @@ public class ItemView extends AppCompatActivity {
             intent.putExtra("userID", userID);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
-            Intent intent = new Intent(this, Library_activity.class);
+            Intent intent = new Intent(this, LibraryList.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
@@ -172,10 +178,6 @@ public class ItemView extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void addToLibraryButton(String s) {
-        addToLibrary(s);
     }
 
     public void unpackBundle(Bundle bundle) {
@@ -195,7 +197,30 @@ public class ItemView extends AppCompatActivity {
             userID = bundle.getInt("userID");
         } catch (Exception e) {
         }
+        try {
+            itemName = bundle.getString("itemName");
+        } catch (Exception e) {
+        }
+    }
 
+    public void populate_listview(final String[] values, final ListView listView) {
+
+        // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        listView.setAdapter(adapter);
+        setListViewHeightBasedOnChildren(listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = (String) listView.getItemAtPosition(position);
+                openCommentActivity(itemValue);
+            }
+        });
     }
 
     public void openCommentActivity(String s) {
@@ -258,9 +283,8 @@ public class ItemView extends AppCompatActivity {
                             user_review = jsonArray.getJSONObject(i).getInt("user_review");
                             addCommentDetails();
                         } */
-                        double avgscore = response.getDouble("average_score");
-                        System.out.println(avgscore);
-                        item.setAverage_score(avgscore);
+
+                        item.setAverage_score(response.getDouble("average_score"));
                         item.setItem_id(response.getLong("id"));
                         item.setUser_score(response.optInt("user_score", 0));
                         item.setTitle(response.getString("title"));
@@ -271,8 +295,9 @@ public class ItemView extends AppCompatActivity {
                         // populate textViews in itemView layout
                         titleView.setText(item.getTitle());
                         creatorView.setText(item.getCreator());
-                        userScoreView.setText(Integer.toString(item.getUser_score()));
+                        averageScoreView.setText(Double.toString(item.getAverage_score()));
                         descriptionView.setText(item.getDescription());
+                        new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item.getImageURI());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -296,6 +321,7 @@ public class ItemView extends AppCompatActivity {
                             library.setUser_id(jsonArray.getJSONObject(i).getInt("user_id"));
                             library.setName(jsonArray.getJSONObject(i).getString("name"));
                             libraries_list.add(library);
+                            library_keys.put(library.getName(), library.getId());
                         }
                         setLibrary_names();
                         setLibrary_ids();
@@ -306,17 +332,17 @@ public class ItemView extends AppCompatActivity {
         });
     }
 
-    public void addToLibrary(final String s) {
+    public void addToLibrary() {
         HttpConnect.requestJson("http://52.88.5.108/cgi-bin/AddItemToLibrary.py?session=" + sessionID + "&library_id=" +
-                addToLibraryID + "&itemID=" + itemID, Request.Method.GET, null, new HttpResult() {
+                libraryID + "&item_id=" + itemID, Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
                 try {
                     if (!response.getBoolean("success"))
-                        Toast.makeText(ItemView.this, item.getTitle() + " was not added to " + s + " Library", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemView.this, response.getString("response"), Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(ItemView.this, "Added to " + s + " Library", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemView.this, "Added to " + libraryName + " Library", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -337,7 +363,26 @@ public class ItemView extends AppCompatActivity {
     public void populateMenuLibraryButton(Menu menu) {
 //        for(int i = 0; i < library_names.size(); i++)
 //            menu.getItem(i + 3).setTitle(library_names.get(i));
-        for(int i = 3; i < menu.size(); i++)
-            menu.getItem(i).setVisible(false);
+//        for(int i = 3; i < menu.size(); i++)
+//            menu.getItem(i).setVisible(false);
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

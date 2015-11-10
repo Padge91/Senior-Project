@@ -12,24 +12,23 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="26dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceListItem"
             android:id="@+id/results_Title"
             android:layout_alignParentTop="true"
             android:text=""
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="1dp" />
+            android:layout_margin="3dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/results_Creator"
-            android:text=""
-            android:layout_below="@+id/results_Title"
-            android:layout_alignLeft="@+id/results_Title"
-            android:layout_alignStart="@+id/results_Title"
-            android:layout_margin="2dp" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:id="@+id/results_Creator"-->
+            <!--android:text=""-->
+            <!--android:layout_below="@+id/results_Title"-->
+            <!--android:layout_alignLeft="@+id/results_Title"-->
+            <!--android:layout_alignStart="@+id/results_Title"-->
+            <!--android:layout_margin="2dp" />-->
 
     </RelativeLayout>
 
