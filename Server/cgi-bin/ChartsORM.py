@@ -36,13 +36,13 @@ class ChartsORM(object):
         type_query = "select type from items where id={0}".format(item_id)
         type_results = select_query(type_query)
 
-        if len(type_results < 1):
+        if len(type_results) < 1:
             raise Exception("Error occurred in finding similar genres")
 
-        type = type_results[0][1]
+        type = type_results[0][0]
 
         #pick items from that genre & type
-        item_query = "select id, title, description, type from items, item_genres where items.id = item_genres.item_id and items.type='{0}' and item_genres.genre = '{1}' limit 10".format(type, genre)
+        item_query = "select items.id, items.title, items.description, items.type from items, item_genres where items.id = item_genres.item_id and items.type='{0}' and item_genres.genre = '{1}' limit 10".format(type, genre)
         item_results = select_query(item_query)
 
         #instantiate chart with title and return it
@@ -103,7 +103,7 @@ class ChartsORM(object):
 
     def popular(self):
         #get highest number of reviews on items
-        comments_query = "select id, title, description, type from items where id in (select item_id from item_comments group by (item_id) asc limit 10)"
+        comments_query = "select id, title, description, type from items where id in (select item_id from item_comments group by (item_id) asc) limit 10"
         results = select_query(comments_query)
         return self.instantiate_chart("Popular Items",results)
 
@@ -121,5 +121,5 @@ class ChartsORM(object):
     def instantiate_chart(self, title, rows):
         orm = ItemORM()
         items = orm.convert_rows_to_SimpleItem(rows)
-        chart = Chart(title, items)
+        chart = [Chart(title, items)]
         return chart

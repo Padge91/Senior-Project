@@ -9,7 +9,7 @@ from ChartsORM import *
 required_params = ["session"]
 
 def main():
-    try:
+    #try:
         form = get_required_parameters(cgi, required_params)
         orm = ChartsORM()
 
@@ -22,8 +22,8 @@ def main():
             results = orm.get_all_charts(form)
 
         success_response(results)
-    except Exception as e:
-        failure_response(e.message)
+    #except Exception as e:
+    #    failure_response(e.message)
 
 
 if __name__ == "__main__":
