@@ -9,16 +9,27 @@
 import Foundation
 
 public class CommentsDataSource {
-    private static var instance: CommentsDataSource?;
     
-    static func getInstance() -> CommentsDataSource {
-        if instance == nil {
-            instance = CommentsDataSource()
-        }
-        return instance!
+    static func insertComment(parentType: CommentParentType, parentId: Int, body: String) {
+        EmbrConnection.put("/cgi-bin/AddComment.py", httpBody:
+            "parent_type=\(parentType.value())&" +
+            "parent_id=\(parentId)&" +
+            "session=\(SessionModel.getSession())&" +
+            "content=\(body)"
+            , completionHandler: {data, response, error in print(NSString(data: data!, encoding: NSUTF8StringEncoding))})
     }
+}
+
+enum CommentParentType {
+    case Item
+    case Comment
     
-    func insertComment(subject: String, body: String) {
-        // Insert comment into the database
+    func value() -> String {
+        switch (self) {
+        case Item:
+            return "item"
+        case Comment:
+            return "comment"
+        }
     }
 }

@@ -1,18 +1,9 @@
-//
-//  LoginViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 10/3/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    private let userDataSource = UserDataSource.getInstance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,20 +31,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func attemptLogin() {
-        userDataSource.attemptLogin(usernameTextField.text!, password: passwordTextField.text!, completionHandler: loginCompletionHandler)
+        UserDataSource.attemptLogin(usernameTextField.text!, password: passwordTextField.text!, completionHandler: loginCompletionHandler)
     }
     
     private func alertError(errorMessage error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+        dispatch_async(dispatch_get_main_queue()) {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
     private func succesfulLogin(sessionId session: String) {
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.userDataSource.storeSession(sessionId: session)
+        dispatch_async(dispatch_get_main_queue()) {
+            SessionModel.storeSession(sessionId: session)
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
     }
@@ -61,11 +52,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func loginCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
         if data != nil {
             do {
-                let response = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if let sessionResponse = response["success"], session = sessionResponse["session"] as? String {
-                    succesfulLogin(sessionId: session)
-                } else if let sessionResponse = response["error"] {
-                    alertError(errorMessage: sessionResponse as? String ?? "Invalid session")
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if jsonResponse["success"] as! Bool {
+                    if let session = jsonResponse["response"] as? String {
+                        succesfulLogin(sessionId: session)
+                    }
+                } else if let error = jsonResponse["response"] {
+                    alertError(errorMessage: error as? String ?? "Invalid session")
                 }
             } catch {
                 alertError(errorMessage: "Invalid response")

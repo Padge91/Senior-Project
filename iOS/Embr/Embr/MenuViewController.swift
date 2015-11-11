@@ -6,13 +6,38 @@ class MenuViewController: UITableViewController {
     private let settingsSegueIdentifier = "segueToSettings"
     private let loginString = "Login"
     private let logoutString = "Logout"
-    private let signUpString = "SignUp"
+    private let signUpString = "Sign Up"
     var menu = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableHeaderView = nil
-        menu = [loginString, logoutString, signUpString]
+        setupMenu()
+    }
+    
+    func setupMenu() {
+        let session = SessionModel.getSession()
+        SessionModel.validateSession(session, completionHandler: setupMenuCompletionHandler)
+    }
+    
+    func setupMenuCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        do {
+            if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                if jsonResponse["success"] as! Bool {
+                    if jsonResponse["response"] as! Bool {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.menu = [self.logoutString]
+                            self.tableView.reloadData()
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.menu = [self.loginString, self.signUpString]
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        } catch {}
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -30,15 +55,19 @@ class MenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch indexPath.row {
-        case menu.indexOf(loginString)!:
-            performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
-        case menu.indexOf(logoutString)!:
-            confirmLogout()
-        case menu.indexOf(signUpString)!:
-            performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
-        default:
-            break;
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let cellText = cell.textLabel?.text {
+                switch cellText {
+                    case loginString:
+                        performSegueWithIdentifier(loginSegueIdentifier, sender: nil)
+                    case logoutString:
+                        confirmLogout()
+                    case signUpString:
+                        performSegueWithIdentifier(signUpSegueIdentifier, sender: nil)
+                    default:
+                        break;
+                }
+            }
         }
     }
     
@@ -52,8 +81,8 @@ class MenuViewController: UITableViewController {
     }
     
     func logout(action: UIAlertAction) {
-        UserDataSource.getInstance().removeSession()
-        self.navigationController?.popViewControllerAnimated(true)
+        SessionModel.removeSession()
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
