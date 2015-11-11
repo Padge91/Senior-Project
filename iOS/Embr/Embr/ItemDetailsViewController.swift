@@ -173,7 +173,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                 if data != nil {
                     let message = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
-                    log(logType: EmbrLogType.Debug, message: message)
+                    print(message)
                 }
             })
         } else {
@@ -214,16 +214,16 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                                             } else {
                                                 let jsonError = jsonResponse["response"]
                                                 let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                                log(logType: .Error, message: errorMsg)
+                                                print(errorMsg)
                                             }
                                         } else {
                                             let jsonError = jsonResponse["response"]
                                             let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                            log(logType: .Error, message: errorMsg)
+                                            print(errorMsg)
                                         }
                                     } catch {
                                         let errorMsg = "Invalid data from GetLibrariesList.py"
-                                        log(logType: .Error, message: errorMsg)
+                                        print(errorMsg)
                                     }
                                     dispatch_async(dispatch_get_main_queue()) {
                                         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -236,7 +236,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                 } catch {
                     let errorMsg = "Invalid data from GetUserIdFromSession.py"
-                    log(logType: .Error, message: errorMsg)
+                    print(errorMsg)
                 }
             }
         }
@@ -275,16 +275,16 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                                             } else {
                                                 let jsonError = jsonResponse["response"]
                                                 let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                                log(logType: .Error, message: errorMsg)
+                                                print(errorMsg)
                                             }
                                         } else {
                                             let jsonError = jsonResponse["response"]
                                             let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                            log(logType: .Error, message: errorMsg)
+                                            print(errorMsg)
                                         }
                                     } catch {
                                         let errorMsg = "Invalid data from GetLibrariesList.py"
-                                        log(logType: .Error, message: errorMsg)
+                                        print(errorMsg)
                                     }
                                 }
                             })
@@ -292,7 +292,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                 } catch {
                     let errorMsg = "Invalid data from GetUserIdFromSession.py"
-                    log(logType: .Error, message: errorMsg)
+                    print(errorMsg)
                 }
             }
         }
@@ -320,7 +320,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     if let session = response["response"] as? String {
                         succesfulLogin(sessionId: session)
                     }
-                } else if response["error"] != nil {
+                } else if response["response"] != nil {
                     alertError(errorMessage: "Invalid login")
                 }
             } catch {

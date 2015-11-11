@@ -123,16 +123,16 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                                             } else {
                                                 let jsonError = jsonResponse["response"]
                                                 let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                                log(logType: .Error, message: errorMsg)
+                                                print(errorMsg)
                                             }
                                         } else {
                                             let jsonError = jsonResponse["response"]
                                             let errorMsg = "Invalid response from GetLibrariesList.py:\n\(jsonError)"
-                                            log(logType: .Error, message: errorMsg)
+                                            print(errorMsg)
                                         }
                                     } catch {
                                         let errorMsg = "Invalid data from GetLibrariesList.py"
-                                        log(logType: .Error, message: errorMsg)
+                                        print(errorMsg)
                                     }
                                 }
                             })
@@ -140,7 +140,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                     }
                 } catch {
                     let errorMsg = "Invalid data from GetUserIdFromSession.py"
-                    log(logType: .Error, message: errorMsg)
+                    print(errorMsg)
                 }
             }
         }
@@ -191,7 +191,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                     if let session = response["response"] as? String {
                         succesfulLogin(sessionId: session)
                     }
-                } else if response["error"] != nil {
+                } else if response["response"] != nil {
                     alertError(errorMessage: "Invalid login")
                 }
             } catch {
