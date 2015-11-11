@@ -57,8 +57,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     if let session = jsonResponse["response"] as? String {
                         succesfulLogin(sessionId: session)
                     }
-                } else {
-                    alertError(errorMessage: jsonResponse["response"] as! String)
+                } else if let error = jsonResponse["response"] {
+                    alertError(errorMessage: error as? String ?? "Invalid session")
                 }
             } catch {
                 alertError(errorMessage: "Invalid response")

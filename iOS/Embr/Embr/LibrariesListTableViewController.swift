@@ -35,17 +35,17 @@ class LibrariesListTableViewController: UITableViewController {
                                 self.performSegueWithIdentifier(self.librarySegueIdentifier, sender: libraryItemsArray)
                             }
                         } else {
-                            log(logType: EmbrLogType.Error, message: "Invalid response from GetLibraryItems.py\nResponse not NSArray")
+                            print("Invalid response from GetLibraryItems.py\nResponse not NSArray")
                         }
                     } else {
                         let error = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                        log(logType: EmbrLogType.Error, message: "Invalid response from GetLibraryItems.py\n\(error!)")
+                        print("Invalid response from GetLibraryItems.py\n\(error!)")
                     }
                 } catch {
-                    log(logType: EmbrLogType.Error, message: "Invalid response from GetLibraryItems.py")
+                    print("Invalid response from GetLibraryItems.py")
                 }
             } else {
-                log(logType: EmbrLogType.Error, message: "No data from GetLibraryItems.py")
+                print("No data from GetLibraryItems.py")
             }
         })
     }
