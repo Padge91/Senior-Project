@@ -162,3 +162,28 @@ class LibraryORM(object):
         insert_query(update_query)
 
         return True
+
+    def search_library(self, form):
+        library_id = form["library_id"]
+        search_title = form["title"]
+        user_id = get_user_id_from_session(form)
+        orm = ItemORM()
+
+        #make sure library is visible(or owned)
+        visible_query = "select user_id, visible from libraries where id={0}".format(library_id)
+        results = select_query(visible_query)
+
+        if len(results) < 1:
+            raise Exception("library not found")
+
+        owner_id= results[0][0]
+        visibility = bool(results[0][1])
+        if visibility is not True:
+            if int(owner_id) != int(user_id):
+                raise Exception("This library is not visible to you")
+
+        #join query to get names
+        items_query = "select id, title, description, type from items where title like '%{0}%' and id in (select item_id from library_items where library_id={1})".format(search_title, library_id)
+        results = select_query(items_query)
+        items = orm.convert_rows_to_SimpleItem(results)
+        return items
