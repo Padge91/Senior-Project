@@ -18,9 +18,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import common.Library;
 import utilities.HttpConnect;
 import utilities.HttpResult;
+
+import static utilities.Activity.putExtraForMenuItem;
 
 public class LibraryView extends AppCompatActivity {
 
@@ -60,31 +61,19 @@ public class LibraryView extends AppCompatActivity {
         String s = item.getTitle().toString();
         if (s.equals("Profile")) {
             Intent intent = new Intent(this, Profile.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, LibraryList.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);

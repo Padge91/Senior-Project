@@ -3,14 +3,12 @@ package com.afe.pc.embr;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,9 +17,10 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import common.Item;
 import utilities.HttpConnect;
 import utilities.HttpResult;
+
+import static utilities.Activity.putExtraForMenuItem;
 
 public class Profile extends AppCompatActivity {
 
@@ -93,24 +92,19 @@ public class Profile extends AppCompatActivity {
         String s = item.getTitle().toString();
         if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, LibraryList.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
-            intent.putExtra("LoggedIn", loggedIn_status);
-            intent.putExtra("sessionID", sessionID);
-            intent.putExtra("userID", userID);
-            intent.putExtra("username", username);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
+            startActivity(intent);
+        } else if (s.equals("Friends")) {
+            Intent intent = new Intent(this, FriendsList.class);
+            putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);

@@ -1,11 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appcompat="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_search_friends_list"
+        android:title="@string/menu_search"
+        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        appcompat:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/Search"
@@ -17,8 +24,8 @@
         android:id="@+id/Recommended_Items"
         android:title="Recommended Items" />
     <item
-        android:id="@+id/Friends"
-        android:title="Friends" />
+        android:id="@+id/Profile"
+        android:title="Profile" />
     <item
         android:id="@+id/Login"
         android:title="Logout" />

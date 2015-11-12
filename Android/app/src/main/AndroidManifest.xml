@@ -57,6 +57,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:resource="@xml/searchable"
+                android:value=".SearchResults" />
         </activity>
         <activity
             android:name=".RecommendedItems"
@@ -100,8 +104,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Friends"
-            android:label="@string/title_activity_friends" >
+            android:name=".FriendsList"
+            android:label="@string/title_activity_friends"
+            android:theme="@style/Theme.AppCompat.Light" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:resource="@xml/searchable"
+                android:value=".SearchResults" />
         </activity>
     </application>
 
