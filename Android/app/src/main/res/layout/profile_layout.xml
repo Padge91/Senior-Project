@@ -1,41 +1,85 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.afe.pc.embr.Profile">
+    android:layout_height="match_parent" >
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/search_for_items"
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:id="@+id/profile_picture_imageView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="searchButton (View v)" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu"
-        android:id="@+id/Navigation_Button"
-        android:layout_alignTop="@+id/search_for_Item"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="showPopUp" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="#123456" />
 
-    <SearchView
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:text="My Libraries"
+        android:id="@+id/profile_libraries_button"
+        android:layout_alignTop="@+id/profile_picture_imageView"
+        android:layout_toRightOf="@+id/profile_picture_imageView"
+        android:layout_toEndOf="@+id/profile_picture_imageView"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="42dp"
+        android:textAlignment="center"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:text="My Friends"
+        android:id="@+id/profile_friends_button"
+        android:layout_below="@+id/profile_libraries_button"
+        android:layout_alignLeft="@+id/profile_libraries_button"
+        android:layout_alignStart="@+id/profile_libraries_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:text="Recommended Items"
+        android:id="@+id/profile_recommendedItems_button"
+        android:layout_below="@+id/profile_friends_button"
+        android:layout_alignLeft="@+id/profile_friends_button"
+        android:layout_alignStart="@+id/profile_friends_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:text="Progress"
+        android:id="@+id/profile_progress_button"
+        android:layout_below="@+id/profile_recommendedItems_button"
+        android:layout_alignLeft="@+id/profile_recommendedItems_button"
+        android:layout_alignStart="@+id/profile_recommendedItems_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="12dp" />
+
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/search_for_Item"
-        android:layout_toRightOf="@+id/Navigation_Button"
-        android:layout_toLeftOf="@+id/search_for_items"
-        android:layout_toStartOf="@+id/search_for_items"
-        android:queryHint="Search for Media" />
+        android:id="@+id/profile_updates_listView"
+        android:layout_below="@+id/profile_updatesHeader_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Updates"
+        android:id="@+id/profile_updatesHeader_textView"
+        android:layout_below="@+id/profile_picture_imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
 
 </RelativeLayout>

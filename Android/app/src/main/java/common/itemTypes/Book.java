@@ -1,4 +1,6 @@
-package common;
+package common.itemTypes;
+
+import common.Item;
 
 /**
  * Created by Tyler on 11/6/2015.

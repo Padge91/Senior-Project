@@ -119,6 +119,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                     intent.putExtra("sessionID", sessionID);
                     intent.putExtra("userID", userID);
                     intent.putExtra("isFromLogin", true);
+                    intent.putExtra("username", username.getText().toString());
                     startActivity(intent);
                     finish();
                 }

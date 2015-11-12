@@ -28,6 +28,7 @@ public class LibraryView extends AppCompatActivity {
     private String sessionID = "";
     private String libraryID = "";
     private String libraryName = "";
+    private String username = "";
     private int userID;
 
     private ArrayList<String> creator = new ArrayList<>();
@@ -62,24 +63,28 @@ public class LibraryView extends AppCompatActivity {
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, LibraryList.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -107,6 +112,10 @@ public class LibraryView extends AppCompatActivity {
         }
         try {
             libraryName = bundle.getString("libraryName");
+        } catch (Exception e) {
+        }
+        try {
+            username = bundle.getString("username");
         } catch (Exception e) {
         }
     }

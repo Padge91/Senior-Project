@@ -3,127 +3,175 @@ package com.afe.pc.embr;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.SearchView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class Profile extends AppCompatActivity implements View.OnClickListener {
+import com.android.volley.Request;
 
-    Button button1;
-    SearchView search_text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    public static final String SEARCH_QUERY_KEY = "SEARCH_QUERY";
+import common.Item;
+import utilities.HttpConnect;
+import utilities.HttpResult;
+
+public class Profile extends AppCompatActivity {
+
+    private String loggedIn_status = "";
+    private String sessionID = "";
+    private String username = "";
+    private int userID;
+
+    Button libraries;
+    Button friends;
+    Button recommendedItems;
+    Button progress;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle item_bundle = getIntent().getExtras();
+        unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_layout);
-        button1 = (Button)findViewById(R.id.search_for_items);
-        button1.setOnClickListener(this);
-        search_text = (SearchView)findViewById(R.id.search_for_Item);
-    }
+        setTitle(username);
 
-    public void showPopUp(View view){
-        PopupMenu popupMenu = new PopupMenu(this,view);
-        MenuInflater menuInflater=popupMenu.getMenuInflater();
-        PopUpMenuEventHandle popUpMenuEventHandle=new PopUpMenuEventHandle(getApplicationContext());
-        popupMenu.setOnMenuItemClickListener(popUpMenuEventHandle);
-        menuInflater.inflate(R.menu.menu_profile,popupMenu.getMenu());
-        popupMenu.show();
+        listView = (ListView) findViewById(R.id.profile_updates_listView);
+        String[] values = new String[]{"Update 1", "Update 2", "Update 3", "Update 4", "Update 5",
+                "Update 6", "Update 7", "Update 8", "Update 9", "Update 10", "Update 11", "Update 12"};
+        populate_listview(values, listView);
+
+        libraries = (Button) findViewById(R.id.profile_libraries_button);
+        libraries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Profile.this, libraries.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        friends = (Button) findViewById(R.id.profile_friends_button);
+        friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Profile.this, friends.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recommendedItems = (Button) findViewById(R.id.profile_recommendedItems_button);
+        recommendedItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Profile.this, recommendedItems.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        progress = (Button) findViewById(R.id.profile_progress_button);
+        progress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Profile.this, progress.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profile, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        String s = item.getTitle().toString();
+        if (s.equals("Search")) {
+            Intent intent = new Intent(this, Search.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
+            startActivity(intent);
+        } else if (s.equals("Libraries")) {
+            Intent intent = new Intent(this, LibraryList.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
+            startActivity(intent);
+        } else if (s.equals("Recommended Items")) {
+            Intent intent = new Intent(this, RecommendedItems.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
+            startActivity(intent);
+        } else if (s.equals("Login") || s.equals("Logout")) {
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
         }
-        switch (item.getTitle().toString()) {
-            case "Recommended Items": {
-                Intent intent = new Intent(this, RecommendedItems.class);
-                startActivity(intent);
-                break;
-            }
-            case "Home": {
-                Intent intent = new Intent(this, Search.class);
-                startActivity(intent);
-                break;
-            }
-            case "Profile": {
-                Intent intent = new Intent(this, Profile.class);
-                startActivity(intent);
-                break;
-            }
-            case "Libraries": {
-                //if () {
-                Intent intent = new Intent(this, LibraryList.class);
-                startActivity(intent);
-                break;
-                //}
-            }
-            case "Go to SearchResults": {
-                Intent intent = new Intent(this, SearchResults.class);
-                startActivity(intent);
-                break;
-            }
-            case "Login": {
-                Intent intent = new Intent(this, Login.class);
-                startActivity(intent);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void openActivity(String S){
-        if (S.equals("Home")){
-            Intent intent = new Intent(this, Search.class);
-            startActivity(intent);
+    public void unpackBundle(Bundle bundle) {
+        try {
+            loggedIn_status = bundle.getString("LoggedIn");
+        } catch (Exception e) {
         }
-        else if (S.equals("RecommendedItems")){
-            Intent intent = new Intent(this, RecommendedItems.class);
-            startActivity(intent);
+        try {
+            sessionID = bundle.getString("sessionID");
+        } catch (Exception e) {
         }
-        else if (S.equals("LibraryList")){
-            Intent intent = new Intent(this, LibraryList.class);
-            startActivity(intent);
+        try {
+            userID = bundle.getInt("userID");
+        } catch (Exception e) {
         }
-        else if (S.equals("SearchResults")){
-            CharSequence search_query = search_text.getQuery();
-            Intent intent = new Intent(this, SearchResults.class);
-            intent.putExtra(SEARCH_QUERY_KEY, search_query);
-            startActivity(intent);
+        try {
+            username = bundle.getString("username");
+        } catch (Exception e) {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.search_for_items:
-                openActivity("SearchResults");
-                break;
-        }
+    public void populate_listview(final String[] values, final ListView listView) {
+
+        // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = (String) listView.getItemAtPosition(position);
+                Toast.makeText(Profile.this, itemValue, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getData() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetProfileInfo.py?id=" + "" + "&session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                    Toast.makeText(Profile.this, "No Response", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        response = response.getJSONObject("response");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }

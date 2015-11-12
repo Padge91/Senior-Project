@@ -44,6 +44,7 @@ public class ItemView extends AppCompatActivity {
     private boolean isLoggedIn = false;
     private String loggedIn_status = "";
     private String sessionID = "";
+    private String username = "";
     private int userID;
     private long itemID = 0;
     private int libraryID = 0;
@@ -154,24 +155,28 @@ public class ItemView extends AppCompatActivity {
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Search")) {
             Intent intent = new Intent(this, Search.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Libraries")) {
             Intent intent = new Intent(this, LibraryList.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Recommended Items")) {
             Intent intent = new Intent(this, RecommendedItems.class);
             intent.putExtra("LoggedIn", loggedIn_status);
             intent.putExtra("sessionID", sessionID);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             startActivity(intent);
         } else if (s.equals("Login") || s.equals("Logout")) {
             Intent intent = new Intent(this, Login.class);
@@ -199,6 +204,10 @@ public class ItemView extends AppCompatActivity {
         }
         try {
             itemName = bundle.getString("itemName");
+        } catch (Exception e) {
+        }
+        try {
+            username = bundle.getString("username");
         } catch (Exception e) {
         }
     }
@@ -358,13 +367,6 @@ public class ItemView extends AppCompatActivity {
     public void setLibrary_ids() {
         for(int i = 0; i < libraries_list.size(); i++)
             library_ids.add(libraries_list.get(i).getId());
-    }
-
-    public void populateMenuLibraryButton(Menu menu) {
-//        for(int i = 0; i < library_names.size(); i++)
-//            menu.getItem(i + 3).setTitle(library_names.get(i));
-//        for(int i = 3; i < menu.size(); i++)
-//            menu.getItem(i).setVisible(false);
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
