@@ -18,6 +18,10 @@ class UserDataSource {
         EmbrConnection.get("/cgi-bin/GetUserIdFromSession.py", params: ["session": SessionModel.getSession()], completionHandler: completionHandler)
     }
     
+    static func getUser(id: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetUserInfo.py", params: ["user_id": "\(id)"], completionHandler: completionHandler)
+    }
+    
     static func signUp(username: String, email: String, password: String, confirmPassword: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         EmbrConnection.post("/cgi-bin/CreateAccount.py", httpBody:
             "username=\(username)&" +

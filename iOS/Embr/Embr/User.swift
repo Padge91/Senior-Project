@@ -3,14 +3,23 @@ import Foundation
 class User {
     private(set) var id: Int
     private(set) var username: String
+    private(set) var email: String
     private(set) var friends: [User]
     private(set) var parentalControls: ParentalControls?
     
-    init(id: Int, username: String, parentalControls: ParentalControls?, friends: [User] = []) {
+    init(id: Int, username: String, email: String = "No Email", parentalControls: ParentalControls?, friends: [User] = []) {
         self.id = id
         self.username = username
         self.friends = friends
+        self.email = email
         self.parentalControls = parentalControls
+    }
+    
+    static func parseUser(dict: NSDictionary) -> User {
+        let id = dict["id"] as! Int
+        let username = dict["username"] as! String
+        let email = dict["email"] as! String
+        return User(id: id, username: username, email: email, parentalControls: nil)
     }
     
     func addFriend(friend: User) {

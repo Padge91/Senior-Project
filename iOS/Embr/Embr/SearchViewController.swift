@@ -5,6 +5,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     private let menuSegueIdentifier = "segueToMenu"
     private let librariesSegueIdentifier = "segueToLibraries"
+    private let profileSegueIdentifier = "segueToProfile"
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!
@@ -16,7 +17,8 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         definesPresentationContext = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
         let librariesButton = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "attemptToOpenLibraries")
-        toolbarItems = [librariesButton]
+        let profileButton = UIBarButtonItem(title: "Profile", style: .Plain, target: self, action: "attemptToOpenProfile")
+        toolbarItems = [librariesButton, profileButton]
     }
     
     func goToMenu() {
@@ -146,25 +148,41 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         }
     }
     
+    func displayLoginAlert() {
+        let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
+        alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in
+            textfield.secureTextEntry = true
+            textfield.placeholder = "Password"
+        })
+        let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
+            if let username = alert.textFields![0].text, password = alert.textFields![1].text {
+                UserDataSource.attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
+            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alert.addAction(loginAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func goToProfile() {
+        performSegueWithIdentifier(profileSegueIdentifier, sender: nil)
+    }
+    
+    func attemptToOpenProfile() {
+        if SessionModel.getSession() != SessionModel.noSession {
+            goToProfile()
+        } else {
+            displayLoginAlert()
+        }
+    }
+    
     func attemptToOpenLibraries() {
         if SessionModel.getSession() != SessionModel.noSession {
             goToLibraries()
         } else {
-            let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
-            alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in
-                textfield.secureTextEntry = true
-                textfield.placeholder = "Password"
-            })
-            let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
-                if let username = alert.textFields![0].text, password = alert.textFields![1].text {
-                    UserDataSource.attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
-                }
-            })
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            alert.addAction(loginAction)
-            alert.addAction(cancelAction)
-            presentViewController(alert, animated: true, completion: nil)
+            displayLoginAlert()
         }
     }
     
