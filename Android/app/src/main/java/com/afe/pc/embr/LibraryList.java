@@ -41,7 +41,6 @@ public class LibraryList extends AppCompatActivity {
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
     private ArrayList<Integer> library_ids = new ArrayList<>();
-    private ArrayList<String> searched_libraries = new ArrayList<>();
 
     private EditText result;
 
