@@ -3,6 +3,9 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     private let librariesSegueIdentifier = "segueToLibraries"
+    
+    var user: User?
+    var notMe = false
 
     @IBOutlet weak var updates: UITableView!
     @IBOutlet weak var username: UILabel!
@@ -10,38 +13,33 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var friendsButton: UIButton!
 
     override func viewDidLoad() {
-        if SessionModel.getSession() != SessionModel.noSession {
-            UserDataSource.getUserId(getUserIdCompletionHandler)
+        if user != nil {
+            self.username.text = user!.username
+            self.email.text = user!.email
+            if notMe {
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
+            }
         } else {
-            navigationController?.popToRootViewControllerAnimated(true)
+            navigationController!.popToRootViewControllerAnimated(true)
         }
     }
     
-    func getUserIdCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
-        if data != nil {
-            do {
-                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                if jsonResponse["success"] as! Bool {
-                    if let userId = jsonResponse["response"] as? Int {
-                        UserDataSource.getUser(userId, completionHandler: { (data, response, error) -> Void in
-                            if data != nil {
-                                do {
-                                    let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                                    if jsonResponse["success"] as! Bool {
-                                        if let userDict = jsonResponse["response"] as? NSDictionary {
-                                            let user = User.parseUser(userDict)
-                                            dispatch_async(dispatch_get_main_queue()) {
-                                                self.username.text = user.username
-                                                self.email.text = user.email
-                                            }
-                                        }
-                                    }
-                                } catch {}
-                            }
-                        })
+    func addFriend() {
+        UserDataSource.addFriend(user!.id) { (data, response, error) -> Void in
+            if data != nil {
+                do {
+                    let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                    if jsonResponse["success"] as! Bool == false {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.alertError(errorMessage: jsonResponse["response"] as? String ?? "Friend not added")
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.navigationItem.rightBarButtonItem = nil
+                        }
                     }
-                }
-            } catch {}
+                } catch {}
+            }
         }
     }
     

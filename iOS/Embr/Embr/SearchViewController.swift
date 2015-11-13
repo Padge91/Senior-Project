@@ -67,6 +67,11 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
+        } else if segue.identifier == profileSegueIdentifier && sender is User {
+            let user = sender as! User
+            if let destination = segue.destinationViewController as? ProfileViewController {
+                destination.user = user
+            }
         }
     }
     
@@ -167,8 +172,36 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     }
     
     func goToProfile() {
-        performSegueWithIdentifier(profileSegueIdentifier, sender: nil)
+        UserDataSource.getUserId(getUserIdCompletionHandler)
     }
+    
+    func getUserIdCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                if jsonResponse["success"] as! Bool {
+                    if let userId = jsonResponse["response"] as? Int {
+                        UserDataSource.getUser(userId, completionHandler: { (data, response, error) -> Void in
+                            if data != nil {
+                                do {
+                                    let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                                    if jsonResponse["success"] as! Bool {
+                                        if let userDict = jsonResponse["response"] as? NSDictionary {
+                                            let user = User.parseUser(userDict)
+                                            dispatch_async(dispatch_get_main_queue()) {
+                                                self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: user)
+                                            }
+                                        }
+                                    }
+                                } catch {}
+                            }
+                        })
+                    }
+                }
+            } catch {}
+        }
+    }
+
     
     func attemptToOpenProfile() {
         if SessionModel.getSession() != SessionModel.noSession {

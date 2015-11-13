@@ -2,6 +2,7 @@ import UIKit
 
 class CommentsViewController: UITableViewController {
     let menuSegueIdentifier = "segueToMenu"
+    let profileSegueIdentifier = "segueToProfile"
     var comments = [Comment]()
     
     override func viewDidLoad() {
@@ -33,4 +34,33 @@ class CommentsViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        
+        let moreAction = UITableViewRowAction(style: .Normal, title: "More") { (rowAction: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+            let moreAction = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let viewUserAction = UIAlertAction(title: "View User Profile", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                let comment = self.comments[indexPath.row]
+                self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            moreAction.addAction(viewUserAction)
+            moreAction.addAction(cancelAction)
+            self.presentViewController(moreAction, animated: true, completion: nil)
+        }
+        
+        return [moreAction]
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == profileSegueIdentifier {
+            if let destination = segue.destinationViewController as? ProfileViewController {
+                if let user = sender as? User? {
+                    destination.user = user
+                    destination.notMe = true
+                }
+            }
+        }
+    }
+    
 }
