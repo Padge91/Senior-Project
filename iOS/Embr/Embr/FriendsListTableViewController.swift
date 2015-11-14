@@ -13,6 +13,7 @@ class FriendsListTableViewController: UITableViewController {
     private let profileSegueIdentifier = "segueToProfile"
     
     var friends = [User]()
+    var isMe = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +37,20 @@ class FriendsListTableViewController: UITableViewController {
         return cell!
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            let friendToDelete = friends[indexPath.row]
-            friends.removeAtIndex(indexPath.row)
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return isMe
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete") { (rowAction: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+            let friendToDelete = self.friends[indexPath.row]
+            self.friends.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             UserDataSource.removeFriend(friendToDelete.id, completionHandler: { (data, response, error) -> Void in
                 // Do Nothing
             })
         }
+        return [deleteAction]
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

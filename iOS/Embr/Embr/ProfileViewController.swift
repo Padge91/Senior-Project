@@ -191,6 +191,7 @@ class ProfileViewController: UIViewController {
                     let friendDict = friend as! NSDictionary
                     let user = User.parseUser(friendDict)
                     destination.friends.append(user)
+                    destination.isMe = !notMe
                 }
             }
         }
