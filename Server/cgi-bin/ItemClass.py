@@ -22,7 +22,7 @@ class FullItem(object):
         self.image = "http://52.88.5.108/notfound.png"
         self.comments = list()
         self.genres = list()
-        self.average_score = 0
+        self.average_score = None
         self.user_score = None
         self.parent_id = None
         self.child_items = list()

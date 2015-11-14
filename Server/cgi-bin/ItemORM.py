@@ -49,14 +49,14 @@ class ItemORM(object):
             return results[0][0]
 
     def get_child_item_ids(self, id):
-        query = "select child_item_id from item_children where parent_item_id={0}".format(id)
+        query = "select item_children.child_item_id, items.title from item_children, items where item_children.parent_item_id={0} and items.id = item_children.child_item_id".format(id)
         results = select_query(query)
         if len(results) == 0:
             return []
 
         ids = []
         for item in results:
-            ids.append(item[0])
+            ids.append({"id":item[0], "title":item[1]})
 
         return ids
 
@@ -137,7 +137,7 @@ class ItemORM(object):
     def get_scores(self, item_id, user_id=None):
         item_query = "select item_id,AVG(review_value) from item_reviews where item_id={0}".format(item_id)
 
-        average_score = 0
+        average_score = None
         user_score = None
         item_results = select_query(item_query)
         if len(item_results) > 0 and item_results[0][1] != None:
