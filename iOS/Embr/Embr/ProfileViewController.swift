@@ -3,6 +3,7 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     private let librariesSegueIdentifier = "segueToLibraries"
+    private let friendsSegueIdentifier = "segueToFriends"
     
     var user: User?
     var notMe = false
@@ -10,7 +11,6 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var updates: UITableView!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var email: UILabel!
-    @IBOutlet weak var friendsButton: UIButton!
 
     override func viewDidLoad() {
         if user != nil {
@@ -58,7 +58,29 @@ class ProfileViewController: UIViewController {
         return cell!
     }
 
-    @IBAction func attemptOpenLibraries(sender: AnyObject) {
+    @IBAction func viewFriends(sender: UIButton) {
+        UserDataSource.getFriendsList(user!.id) { (data, response, error) -> Void in
+            if data != nil {
+                do {
+                    let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                    if jsonResponse["success"] as! Bool {
+                        
+                        if let friendsArray = jsonResponse["response"] as? NSArray {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.performSegueWithIdentifier(self.friendsSegueIdentifier, sender: friendsArray)
+                            }
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.alertError(errorMessage: jsonResponse["response"] as! String)
+                        }
+                    }
+                } catch {}
+            }
+        }
+    }
+    
+    @IBAction func attemptOpenLibraries(sender: UIButton) {
         let session = SessionModel.getSession()
         if session != SessionModel.noSession {
             print(session)
@@ -157,12 +179,20 @@ class ProfileViewController: UIViewController {
             SessionModel.storeSession(sessionId: session)
         }
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == librariesSegueIdentifier && sender is NSArray {
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
+        } else if segue.identifier == friendsSegueIdentifier && sender is NSArray {
+            if let destination = segue.destinationViewController as? FriendsListTableViewController {
+                for friend in sender as! NSArray {
+                    let friendDict = friend as! NSDictionary
+                    let user = User.parseUser(friendDict)
+                    destination.friends.append(user)
+                }
+            }
         }
     }
 }
