@@ -5,6 +5,10 @@ class LibrariesListTableViewController: UITableViewController {
     let librarySegueIdentifier = "segueToLibrary"
     var librariesList = [Library]()
     
+    override func viewDidLoad() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "createLibrary")
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellId = "cellId"
         var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellId)
@@ -60,6 +64,29 @@ class LibrariesListTableViewController: UITableViewController {
             }
             destination.library = library
         }
+    }
+    
+    func createLibrary() {
+        let alert = UIAlertController(title: "Create New Library", message: "", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Custom Library Name"})
+        let createAction = UIAlertAction(title: "Create", style: .Default, handler: {(action: UIAlertAction) in
+            if let libraryName = alert.textFields![0].text {
+                LibrariesDataSource.createLibrary(libraryName, completionHandler: { (data, response, error) -> Void in
+                    if data != nil {
+                        do {
+                            let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                            if jsonResponse["success"] as! Bool {
+                                print("\(jsonResponse["response"])")
+                            }
+                        } catch {}
+                    }
+                })
+            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alert.addAction(createAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
 
 }

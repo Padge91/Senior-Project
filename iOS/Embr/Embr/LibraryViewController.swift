@@ -6,14 +6,14 @@ class LibraryViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.allowsMultipleSelectionDuringEditing = false
+        self.tableView.allowsMultipleSelectionDuringEditing = false        
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            // Todo: Delete from datasource
             library.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
         }
     }
     
