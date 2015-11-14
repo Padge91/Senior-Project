@@ -23,4 +23,11 @@ class LibrariesDataSource {
             "library_id=\(libraryId)&" +
             "item_id=\(itemId)", completionHandler: completionHandler)
     }
+    
+    static func createLibrary(library: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.put("/cgi-bin/CreateLibrary.py", httpBody:
+            "session=\(SessionModel.getSession())&" +
+            "library_name=\(library)&" +
+            "visible=true", completionHandler: completionHandler)
+    }
 }
