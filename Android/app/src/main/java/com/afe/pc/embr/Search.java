@@ -207,11 +207,11 @@ public class Search extends AppCompatActivity {
                         JSONArray jsonArray = response.getJSONArray("response");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             title.add(jsonArray.getJSONObject(i).getString("title"));
-                            creator.add(jsonArray.getJSONObject(i).getString("creator"));
+                            //creator.add(jsonArray.getJSONObject(i).getString("creator"));
                             id.add(jsonArray.getJSONObject(i).getInt("id"));
                         }
                         listview_values.add(title);
-                        listview_values.add(creator);
+                        //listview_values.add(creator);
                         populate_listview(listview_values, id, (ListView) findViewById(R.id.search_listview));
                     } catch (Exception e) {
                     }
