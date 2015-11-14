@@ -76,20 +76,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CommentView"
-            android:label="@string/title_activity_comment_view"
-            android:parentActivityName=".ItemView" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.afe.pc.embr.ItemView" />
-        </activity>
-        <activity
             android:name=".Signup"
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme" />

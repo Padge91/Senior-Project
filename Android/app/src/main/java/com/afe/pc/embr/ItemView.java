@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,6 +27,7 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -67,10 +69,14 @@ public class ItemView extends AppCompatActivity {
     Button addCommentButton;
     TextView titleView;
     TextView creatorView;
-    TextView userScoreView;
     TextView averageScoreView;
     TextView descriptionView;
     ImageView imageView;
+
+    TextView commentView;
+    ListView commentsList;
+    Button returnButton;
+    Button newCommentButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,20 +87,16 @@ public class ItemView extends AppCompatActivity {
             isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
         setTitle(itemName);
-        getData();
-        getLibraries();
         titleView = (TextView) findViewById(R.id.itemView_title_textView);
         creatorView = (TextView) findViewById(R.id.itemView_creator_textView);
         averageScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
+        getData();
+        getLibraries();
 
         // Comments list view
         listView = (ListView) findViewById(R.id.itemView_comments_listView);
-        String[] values = new String[]{"Comment 1", "Comment 2", "Comment 3", "Comment 4",
-                "Comment 5", "Comment 6", "Comment 7", "Comment 8", "Comment 9", "Comment 10",
-                "Comment 11", "Comment 12", "Comment 13", "Comment 14", "Comment 15", "Comment 16"};
-        populate_listview(values, listView);
 
         // PopUp for the add to libraries button
         addToLibraryButton = (Button) findViewById(R.id.itemView_addToLibrary_button);
@@ -205,30 +207,32 @@ public class ItemView extends AppCompatActivity {
         }
     }
 
-    public void populate_listview(final String[] values, final ListView listView) {
+    public void populate_listview(final ArrayList<Comment> comments, final ListView listView) {
 
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        String[] comments_content = new String[comments.size()];
+        for (int i = 0; i < comments.size(); i++) {
+            if (comments.get(i).getContent().length() > 60)
+                comments_content[i] = comments.get(i).getContent().substring(0, 50) + "...";
+            else
+                comments_content[i] = comments.get(i).getContent();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, comments_content);
         listView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = (String) listView.getItemAtPosition(position);
-                openCommentActivity(itemValue);
+                openCommentLayout(comments.get(position));
             }
         });
     }
 
-    public void openCommentActivity(String s) {
-        Intent intent = new Intent(this, CommentView.class);
-        intent.putExtra("Comment ID", s);
-        startActivity(intent);
+    public void openCommentLayout(Comment comment) {
+        setContentView(R.layout.create_library_layout);
+        commentView = (TextView) findViewById(R.id.commentView_text_textView);
+        commentsList = (ListView) findViewById(R.id.commentView_subContent_listView);
+        commentView.setText(comment.getContent());
+        populate_listview(comment.getChild_comments(), commentsList);
     }
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -282,10 +286,10 @@ public class ItemView extends AppCompatActivity {
                                 Game game = new Game();
                                 setItemDetails(response, game);
                                 game.setPublisher(response.getString("publisher"));
-                                game.setDeveloper_studio(response.getString("developer_studio"));
-                                game.setRelease_date(response.getString("release_date"));
+                                game.setDeveloper_studio(response.getString("studio"));
+                                game.setRelease_date(response.getString("releaseDate"));
                                 game.setRating(response.getString("rating"));
-                                game.setAverage_length_of_play(response.getInt("average_length_of_play"));
+                                game.setAverage_length_of_play(response.getInt("gameLength"));
                                 game.setIs_multiplayer(response.getBoolean("multiplayer"));
                                 game.setIs_singleplayer(response.getBoolean("singleplayer"));
                                 setItemLayout(game);
@@ -400,7 +404,10 @@ public class ItemView extends AppCompatActivity {
             for (int i = 0; i < item_genres.length(); i++)
                 item_temp_genres[i] = item_genres.get(i).toString();
             item.setGenres(item_temp_genres);
-            item.setAverage_score(response.getDouble("average_score"));
+            if (!response.isNull("average_score"))
+                item.setAverage_score(response.getDouble("average_score"));
+            else
+                item.setAverage_score(-1);
             item.setDescription(response.getString("description"));
             item.setTitle(response.getString("title"));
             item.setImage_URL(response.getString("image"));
@@ -408,44 +415,18 @@ public class ItemView extends AppCompatActivity {
                 item.setParent_id(response.getInt("parent_id"));
             else
                 item.setParent_id(-1);
-            JSONArray item_child_items = response.getJSONArray("child_items");
-            long[] item_temp_child_items = new long[item_child_items.length()];
-            for (int i = 0; i < item_child_items.length(); i++)
-                item_temp_child_items[i] = item_child_items.getInt(i);
-            item.setChild_items(item_temp_child_items);
+//            JSONArray item_child_items = response.getJSONArray("child_items");
+//            long[] item_temp_child_items = new long[item_child_items.length()];
+//            for (int i = 0; i < item_child_items.length(); i++)
+//                item_temp_child_items[i] = item_child_items.getInt(i);
+//            item.setChild_items(item_temp_child_items);
             item.setMedia_type(response.getString("type"));
             item.setItem_id(response.getLong("id"));
             ArrayList<Comment> comments_array = new ArrayList<>();
             item.setComments(parseComments(response.getJSONArray("comments"), comments_array));
-        } catch (Exception e) {
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void setItemLayout(Item item) {
-
-        switch (item.getMedia_type()) {
-            case "Book":
-
-                break;
-            case "Game":
-
-                break;
-            case "Movie":
-
-                break;
-            case "Music":
-
-                break;
-            case "TV":
-
-                break;
-            default:
-                break;
-        }
-        // userscore, itemrating, genres, averagescore, description, title, image, parentid, childitems, mediatype, itemid, comments
-        
-
-        // new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item.getImage_URL());
     }
 
     public ArrayList<Comment> parseComments(JSONArray comments, ArrayList<Comment> comments_array) {
@@ -463,14 +444,46 @@ public class ItemView extends AppCompatActivity {
                 comment.setUser_id(comments.getJSONObject(i).getInt("user_id"));
                 comment.setComment_rating(comments.getJSONObject(i).getInt("comment_rating"));
                 comment.setUser_name(comments.getJSONObject(i).getString("user_name"));
-                comment.setComment_id(comments.getJSONObject(i).getLong("comment_id"));
-                if (comments.getJSONObject(i).getJSONArray("child_comments").length() != 0)
+                comment.setComment_id(comments.getJSONObject(i).getLong("id"));
+                if (comments.getJSONObject(i).getJSONArray("child_comments").length() != 0) {
+                    comment.setChild_comments(new ArrayList<Comment>());
                     parseComments(comments.getJSONObject(i).getJSONArray("child_comments"), comment.getChild_comments());
+                }
                 comments_array.add(comment);
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return comments_array;
+    }
+
+    public void setItemLayout(Item item) {
+
+//        switch (item.getMedia_type()) {
+//            case "Book":
+//
+//                break;
+//            case "Game":
+//
+//                break;
+//            case "Movie":
+//
+//                break;
+//            case "Music":
+//
+//                break;
+//            case "TV":
+//
+//                break;
+//            default:
+//                break;
+//        }
+        populate_listview(item.getComments(), listView);
+        // userscore, itemrating, genres, averagescore, description, title, image, parentid, childitems, mediatype, itemid, comments
+        //averageScoreView.setText((int) item.getAverage_score());
+        descriptionView.setText(item.getDescription());
+        titleView.setText(item.getTitle());
+        new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item.getImage_URL());
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

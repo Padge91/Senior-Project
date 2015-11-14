@@ -58,6 +58,7 @@ public class Search extends AppCompatActivity {
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.search_layout);
+        setTitle("Item Search");
         populate_listview_on_start(appendStrings(listview_values_temp, emptyStrings), (ListView) findViewById(R.id.search_listview));
     }
 

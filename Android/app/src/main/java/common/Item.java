@@ -24,6 +24,11 @@ public class Item {
 
     }
 
+    public Item(long item_id, String title) {
+        this.item_id = item_id;
+        this.title = title;
+    }
+
     public Item(int user_score, String item_rating, String[] genres, double average_score,
                 String description, String title, String image_URL, int parent_id,
                 long[] child_items, String media_type, long item_id, ArrayList<Comment> comments) {
