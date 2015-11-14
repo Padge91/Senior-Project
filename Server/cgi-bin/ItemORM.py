@@ -290,7 +290,7 @@ class ItemORM(object):
         type = item_map["type"]
 
         item_id=None
-        item_query = "insert into items (type, title, description) values ('{0}', '{1}', '{2}')".format(item_map["type"], item_map["title"], item_map["description"])
+        item_query = "insert into items (type, title, description) values ('{0}', '{1}', '{2}')".format(item_map["type"].replace("'", "\'"), item_map["title"].replace("'", "\'"), item_map["description"].replace("'", "\'"))
         item_id = insert_query(item_query)
 
         type_query = None
@@ -312,17 +312,17 @@ class ItemORM(object):
         queries = []
 
 
-        img_query = "insert into item_images (item_id, image_url) values ({0}, '{1}')".format(item_id, item_map["url"])
+        img_query = "insert into item_images (item_id, image_url) values ({0}, '{1}')".format(item_id, item_map["url"].replace("'", "\'"))
         queries.append(img_query)
 
         #get id from ^^, use for type_query
         queries.append(type_query.format(item_id))
 
         if item_map["parentId"] != "None":
-            queries.append("insert into item_children (parent_item_id, child_item_id) values ({0}, {1})".format(item_map["parentId"], item_id))
+            queries.append("insert into item_children (parent_item_id, child_item_id) values ({0}, {1})".format(item_map["parentId"].replace("'", "\'"), item_id))
 
         for genre in item_map["genres"]:
-            queries.append("insert into item_genres (item_id, genre) values ("+str(item_id)+",'"+str(genre)+"')")
+            queries.append("insert into item_genres (item_id, genre) values ("+str(item_id).replace("'", "\'")+",'"+str(genre).replace("'", "\'")+"')")
 
         #execute all the queries
         string = ""
@@ -334,20 +334,20 @@ class ItemORM(object):
 
     def add_movie(self, fields, item_id):
         #add fields into movie
-        return "insert into movies (item_id, rating, release_date, runtime_minutes, director, writer, studio, actors) values ({0},'{1}','{2}',{3},'{4}','{5}','{6}','{7}')".format(item_id, fields["rating"], fields["releaseDate"], fields["runTime"], fields["director"], fields["writer"], fields["studio"], fields["actors"])
+        return "insert into movies (item_id, rating, release_date, runtime_minutes, director, writer, studio, actors) values ({0},'{1}','{2}',{3},'{4}','{5}','{6}','{7}')".format(item_id, fields["rating"].replace("'", "\'"), fields["releaseDate"].replace("'", "\'"), fields["runTime"], fields["director"], fields["writer"].replace("'", "\'"), fields["studio"].replace("'", "\'"), fields["actors"].replace("'", "\'"))
 
     def add_tv(self, fields, item_id):
         #add fields into tv
-        return "insert into television (item_id, time_length, air_date, channel, actors, director, writer, rating) values ({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}')".format(item_id, fields["length"], fields["airDate"], fields["channel"], fields["actors"], fields["director"], fields["writer"], fields["rating"])
+        return "insert into television (item_id, time_length, air_date, channel, actors, director, writer, rating) values ({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}')".format(item_id, fields["length"].replace("'", "\'"), fields["airDate"].replace("'", "\'"), fields["channel"].replace("'", "\'"), fields["actors"].replace("'", "\'"), fields["director"].replace("'", "\'"), fields["writer"].replace("'", "\'"), fields["rating"].replace("'", "\'"))
 
     def add_game(self, fields, item_id):
         #add fields into game
-        return "insert into games (item_id, publisher, studio, release_date, rating, game_length, multiplayer, singleplayer) values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7})".format(item_id, fields["publisher"], fields["studio"], fields["releaseDate"], fields["rating"], fields["length"], fields["multiplayer"], fields["singleplayer"])
+        return "insert into games (item_id, publisher, studio, release_date, rating, game_length, multiplayer, singleplayer) values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7})".format(item_id, fields["publisher"].replace("'", "\'"), fields["studio"].replace("'", "\'"), fields["releaseDate"].replace("'", "\'"), fields["rating"].replace("'", "\'"), fields["length"].replace("'", "\'"), fields["multiplayer"], fields["singleplayer"])
 
     def add_music(self, fields, item_id):
         #add fields into music
-        return "insert into music (item_id, release_date, recording_company, artist, time_length) values ({0}, '{1}','{2}','{3}','{4}')".format(item_id, fields["releaseDate"], fields["recordingCo"], fields["artist"], fields["length"])
+        return "insert into music (item_id, release_date, recording_company, artist, time_length) values ({0}, '{1}','{2}','{3}','{4}')".format(item_id, fields["releaseDate"].replace("'", "\'"), fields["recordingCo"].replace("'", "\'"), fields["artist"].replace("'", "\'"), fields["length"].replace("'", "\'"))
 
     def add_book(self, fields, item_id):
         #add fields into book
-        return "insert into books (item_id, publish_date, num_pages, authors, publisher, edition) values ({0},'{1}',{2},'{3}','{4}','{5}')".format(item_id, fields["publishDate"], fields["numberOfPages"], fields["authors"], fields["publisher"], fields["edition"])
+        return "insert into books (item_id, publish_date, num_pages, authors, publisher, edition) values ({0},'{1}',{2},'{3}','{4}','{5}')".format(item_id, fields["publishDate"].replace("'", "\'"), fields["numberOfPages"], fields["authors"].replace("'", "\'"), fields["publisher"].replace("'", "\'"), fields["edition"].replace("'", "\'"))

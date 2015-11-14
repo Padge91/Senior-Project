@@ -43,7 +43,8 @@ def json_request(form, required_params):
 
 #get all json parameters
 def get_json_params(form):
-    response = str(form)[str(form).index("{"):str(form).index("}")+1]
+    #raise Exception(form)
+    response = str(form)[str(form).index("{"):str(form).index("}")+1].encode("string-escape")
     response = json.loads(response)
     return response
 
