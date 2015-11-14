@@ -32,6 +32,12 @@ class UserDataSource {
         EmbrConnection.get("/cgi-bin/GetFriendsList.py", params: ["session": SessionModel.getSession(), "user_id": "\(user)"], completionHandler: completionHandler)
     }
     
+    static func removeFriend (user: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.put("/cgi-bin/RemoveFriend.py", httpBody:
+            "session=\(SessionModel.getSession())&" +
+            "user_id=\(user)", completionHandler: completionHandler)
+    }
+    
     static func signUp(username: String, email: String, password: String, confirmPassword: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         EmbrConnection.post("/cgi-bin/CreateAccount.py", httpBody:
             "username=\(username)&" +

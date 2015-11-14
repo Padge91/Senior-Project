@@ -36,6 +36,17 @@ class FriendsListTableViewController: UITableViewController {
         return cell!
     }
     
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            let friendToDelete = friends[indexPath.row]
+            friends.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            UserDataSource.removeFriend(friendToDelete.id, completionHandler: { (data, response, error) -> Void in
+                // Do Nothing
+            })
+        }
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let user = friends[indexPath.row]
         performSegueWithIdentifier(profileSegueIdentifier, sender: user)
