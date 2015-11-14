@@ -44,7 +44,12 @@ class FriendsORM(object):
         other_user_id = form["user_id"]
 
         if int(curr_user_id) == int(other_user_id):
-            raise Exception("You can not be a friend to yourself.")
+            raise Exception("You can not be a friend to yourself")
+
+        alrdy_f_query = "select user_id, friend_id from user_friends where user_id={0} and friend_id={1}".format(curr_user_id, other_user_id)
+        results = select_query(alrdy_f_query)
+        if len(results) > 0:
+            raise Exception("You are already friends with this user")
 
         query = "insert into user_friends (user_id, friend_id) values ({0},{1})".format(curr_user_id, other_user_id)
         insert_query(query)
@@ -61,11 +66,7 @@ class FriendsORM(object):
         return True
 
     def list_friends(self, form):
-        curr_usr = get_user_id_from_session(form)
         view_user = form["user_id"]
-
-        if view_user == "None":
-            view_user = curr_usr
 
         #get user ids from friends list
         get_ids_query = "select id, username, email, image from users where id in (select friend_id from user_friends where user_id={0})".format(view_user)

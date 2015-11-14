@@ -5,6 +5,7 @@ import cgi
 from Utilities import *
 from FriendsORM import *
 
+
 #email_string and name_string should be "None" by default
 required_fields = ["email_string", "name_string"]
 

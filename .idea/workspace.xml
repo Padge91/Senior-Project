@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/static/InsertItem.html" afterPath="$PROJECT_DIR$/Server/static/InsertItem.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Senior-Project.iws" />
@@ -31,10 +33,20 @@
         <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetTopCharts.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
-              <caret line="18" column="48" selection-start-line="18" selection-start-column="48" selection-end-line="18" selection-end-column="48" />
+              <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
               <folding>
                 <element signature="e#50#60#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChartsORM.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/ChartsORM.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1095" max-vertical-offset="1920">
+              <caret line="113" column="45" selection-start-line="113" selection-start-column="45" selection-end-line="113" selection-end-column="45" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -73,11 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InsertItem.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InsertItem.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/static/InsertItem.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5038168" vertical-offset="750" max-vertical-offset="4335">
-              <caret line="72" column="81" selection-start-line="72" selection-start-column="81" selection-end-line="72" selection-end-column="81" />
+            <state vertical-scroll-proportion="-6.25" vertical-offset="750" max-vertical-offset="4335">
+              <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
               <folding>
                 <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -85,21 +97,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+      <file leaf-file-name="SearchForFriends.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3345">
-              <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+              <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userUtils.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/userUtils.py">
+      <file leaf-file-name="GetFriendsList.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.777779" vertical-offset="195" max-vertical-offset="2880">
-              <caret line="50" column="50" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.13461539" vertical-offset="0" max-vertical-offset="780">
+              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FriendsORM.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1200">
+              <caret line="70" column="37" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddFriend.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/AddFriend.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+              <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -141,12 +173,9 @@
         <option value="$PROJECT_DIR$/Server/cgi-bin/UpdateLibrary.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/AddComment.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/CommentORM.py" />
-        <option value="$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/AddFriend.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/RemoveFriend.py" />
-        <option value="$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/UserClass.py" />
-        <option value="$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/AddItem.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/ItemClass.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/ItemORM.py" />
@@ -164,14 +193,17 @@
         <option value="$PROJECT_DIR$/Server/cgi-bin/GetUserInfo.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/UserORM.py" />
         <option value="$PROJECT_DIR$/Server/static/InsertItem.html" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="46" />
-    <option name="y" value="31" />
+    <option name="x" value="38" />
+    <option name="y" value="23" />
     <option name="width" value="1376" />
-    <option name="height" value="776" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -538,7 +570,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="31" width="1376" height="776" extended-state="0" />
+    <frame x="38" y="23" width="1376" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -681,7 +713,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1305">
           <caret line="27" column="45" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
           <folding>
-            <element signature="e#32#43#0" expanded="true" />
+            <element signature="e#32#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -768,44 +800,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3755523" vertical-offset="0" max-vertical-offset="679">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75699556" vertical-offset="536" max-vertical-offset="1215">
-          <caret line="70" column="36" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
-          <folding>
-            <element signature="e#32#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
-          <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
-          <folding>
-            <element signature="e#50#73#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/AddFriend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28718704" vertical-offset="0" max-vertical-offset="679">
-          <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
-          <folding>
-            <element signature="e#50#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/cgi-bin/AddItem.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48600882" vertical-offset="0" max-vertical-offset="780">
@@ -858,9 +852,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22091311" vertical-offset="0" max-vertical-offset="679">
           <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-          <folding>
-            <element signature="e#50#60#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -896,16 +888,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/ChartsORM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1271" max-vertical-offset="1950">
-          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
-          <folding>
-            <element signature="e#33#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/cgi-bin/Login.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="679">
@@ -926,9 +908,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22091311" vertical-offset="0" max-vertical-offset="679">
           <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-          <folding>
-            <element signature="e#50#60#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -945,7 +925,7 @@
         <state vertical-scroll-proportion="0.24300441" vertical-offset="0" max-vertical-offset="679">
           <caret line="11" column="60" selection-start-line="11" selection-start-column="60" selection-end-line="11" selection-end-column="60" />
           <folding>
-            <element signature="e#50#60#0" expanded="true" />
+            <element signature="e#50#60#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -955,17 +935,7 @@
         <state vertical-scroll-proportion="0.110456556" vertical-offset="0" max-vertical-offset="679">
           <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
           <folding>
-            <element signature="e#50#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetTopCharts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
-          <caret line="18" column="48" selection-start-line="18" selection-start-column="48" selection-end-line="18" selection-end-column="48" />
-          <folding>
-            <element signature="e#50#60#0" expanded="true" />
+            <element signature="e#50#60#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -983,17 +953,7 @@
         <state vertical-scroll-proportion="0.24300441" vertical-offset="0" max-vertical-offset="679">
           <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
           <folding>
-            <element signature="e#50#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetUserInfo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding>
-            <element signature="e#50#60#0" expanded="true" />
+            <element signature="e#50#60#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1010,11 +970,71 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/static/InsertItem.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5038168" vertical-offset="750" max-vertical-offset="4335">
-          <caret line="72" column="81" selection-start-line="72" selection-start-column="81" selection-end-line="72" selection-end-column="81" />
+        <state vertical-scroll-proportion="-6.25" vertical-offset="750" max-vertical-offset="4335">
+          <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
           <folding>
             <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetTopCharts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding>
+            <element signature="e#50#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/ChartsORM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1095" max-vertical-offset="1920">
+          <caret line="113" column="45" selection-start-line="113" selection-start-column="45" selection-end-line="113" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/SearchForFriends.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/AddFriend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+          <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetUserInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+          <folding>
+            <element signature="e#50#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/FriendsORM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1200">
+          <caret line="70" column="37" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetFriendsList.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13461539" vertical-offset="0" max-vertical-offset="780">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -4,7 +4,7 @@ __author__ = 'nicholaspadgett'
 from Utilities import *
 import cgi
 from FriendsORM import *
-required_params = ["session", "user_id"]
+required_params = ["user_id"]
 
 def main():
     try:
