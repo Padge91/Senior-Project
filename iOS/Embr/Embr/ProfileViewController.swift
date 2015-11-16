@@ -6,7 +6,7 @@ class ProfileViewController: UIViewController {
     private let friendsSegueIdentifier = "segueToFriends"
     
     var user: User?
-    var notMe = true
+    var isMe = false
 
     @IBOutlet weak var updates: UITableView!
     @IBOutlet weak var username: UILabel!
@@ -16,8 +16,23 @@ class ProfileViewController: UIViewController {
         if user != nil {
             self.username.text = user!.username
             self.email.text = user!.email
-            if notMe {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
+            SessionModel.getUserIdFromSession { (data, response, error) -> Void in
+                if data != nil {
+                    do {
+                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                        if jsonResponse["success"] as! Bool {
+                            let userId = jsonResponse["response"] as! Int
+                            if userId != self.user!.id {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
+                                    self.isMe = false
+                                }
+                            } else {
+                                self.isMe = true
+                            }
+                        }
+                    } catch {}
+                }
             }
         } else {
             navigationController!.popToRootViewControllerAnimated(true)
@@ -157,7 +172,7 @@ class ProfileViewController: UIViewController {
                     let friendDict = friend as! NSDictionary
                     let user = User.parseUser(friendDict)
                     destination.friends.append(user)
-                    destination.isMe = !notMe
+                    destination.isMe = isMe
                 }
             }
         }

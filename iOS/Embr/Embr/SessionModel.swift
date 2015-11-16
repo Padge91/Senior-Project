@@ -20,4 +20,8 @@ class SessionModel {
         let session = NSUserDefaults.standardUserDefaults().objectForKey(userDefaultSessionKey) as? String
         return session ?? noSession
     }
+    
+    static func getUserIdFromSession(completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetUserIdFromSession.py", params: ["session": getSession()], completionHandler: completionHandler)
+    }
 }

@@ -57,7 +57,6 @@ class CommentsViewController: UITableViewController {
             if let destination = segue.destinationViewController as? ProfileViewController {
                 if let user = sender as? User? {
                     destination.user = user
-                    destination.notMe = true
                 }
             }
         }

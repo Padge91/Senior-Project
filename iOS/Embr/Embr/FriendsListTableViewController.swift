@@ -13,7 +13,8 @@ class FriendsListTableViewController: UITableViewController {
     private let profileSegueIdentifier = "segueToProfile"
     
     var friends = [User]()
-    var isMe = true
+    var user: User?
+    var isMe = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,6 @@ class FriendsListTableViewController: UITableViewController {
         if segue.identifier == profileSegueIdentifier && sender is User {
             let destination = segue.destinationViewController as! ProfileViewController
             destination.user = (sender as! User)
-            destination.notMe = true
         }
     }
 
