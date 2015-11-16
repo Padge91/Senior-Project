@@ -4,9 +4,12 @@ class LibrariesListTableViewController: UITableViewController {
 
     let librarySegueIdentifier = "segueToLibrary"
     var librariesList = [Library]()
+    var isMe = false
     
     override func viewDidLoad() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "createLibrary")
+        if isMe {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "createLibrary")
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

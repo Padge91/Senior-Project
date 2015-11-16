@@ -166,6 +166,7 @@ class ProfileViewController: UIViewController {
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
+            destination.isMe = isMe
         } else if segue.identifier == friendsSegueIdentifier && sender is NSArray {
             if let destination = segue.destinationViewController as? FriendsListTableViewController {
                 for friend in sender as! NSArray {
