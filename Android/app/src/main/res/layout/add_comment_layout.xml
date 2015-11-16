@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_comment_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:background="#123456"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:id="@+id/addComment_text_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment: "
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/addComment_newComment_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addComment_text_textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <requestFocus />
+
+        </EditText>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/addComment_submit_button"
+            android:layout_below="@+id/addComment_newComment_editText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/addComment_cancel_button"
+            android:layout_below="@+id/addComment_newComment_editText"
+            android:layout_alignRight="@+id/addComment_newComment_editText"
+            android:layout_alignEnd="@+id/addComment_newComment_editText"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/add_comment_layout"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:padding="10dp" >-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/addComment_text_textView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Comment: "-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/addComment_newComment_editText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/addComment_text_textView"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true">-->
+
+        <!--<requestFocus />-->
+
+    <!--</EditText>-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Submit"-->
+        <!--android:id="@+id/addComment_submit_button"-->
+        <!--android:layout_below="@+id/addComment_newComment_editText"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginLeft="60dp"-->
+        <!--android:layout_marginTop="10dp" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Cancel"-->
+        <!--android:id="@+id/addComment_cancel_button"-->
+        <!--android:layout_below="@+id/addComment_newComment_editText"-->
+        <!--android:layout_alignRight="@+id/addComment_newComment_editText"-->
+        <!--android:layout_alignEnd="@+id/addComment_newComment_editText"-->
+        <!--android:layout_marginRight="60dp"-->
+        <!--android:layout_marginTop="10dp" />-->
+
+<!--</RelativeLayout>-->

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemView_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -72,7 +73,6 @@
         android:layout_below="@+id/itemView_creator_textView"
         android:layout_marginTop="10dp"
         android:background="#ffa740"
-        android:onClick="showLibraryPopUp"
         android:text="Add to Libraries" />
 
     // Add comment button
@@ -86,7 +86,6 @@
         android:layout_below="@+id/itemView_addToLibrary_button"
         android:layout_marginTop="20dp"
         android:background="#ffa740"
-        android:onClick="showLibraryPopUp"
         android:text="Comment" />
 
     <ScrollView

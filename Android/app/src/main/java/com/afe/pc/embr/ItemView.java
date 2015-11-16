@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 import common.Comment;
 import common.Item;
@@ -58,6 +59,8 @@ public class ItemView extends AppCompatActivity {
     private int libraryID = 0;
     private String libraryName = "";
     private String itemName = "";
+    private String parent_type = "item";
+    private long parent_id;
 
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
@@ -75,8 +78,7 @@ public class ItemView extends AppCompatActivity {
 
     TextView commentView;
     ListView commentsList;
-    Button returnButton;
-    Button newCommentButton;
+    EditText result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,10 +135,27 @@ public class ItemView extends AppCompatActivity {
                 if (!isLoggedIn)
                     Toast.makeText(ItemView.this, "Please login to use this feature", Toast.LENGTH_SHORT).show();
                 else {
-                    // logic for adding comments
-                    // probably create a separate layout for this
-                    // take to layout, enter comment, submit comment, return to item with the updated comment
-                    // or create a popup for them to enter comment into, submit comment (requires page refresh...)
+                    //setContentView(R.layout.add_comment_layout);
+                    final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.itemView_relative_layout);
+                    final View commentLayout = getLayoutInflater().inflate(R.layout.add_comment_layout, viewGroup);
+                    //viewGroup.addView(commentLayout);
+                    result = (EditText) findViewById(R.id.addComment_newComment_editText);
+                    Button submitButton = (Button) findViewById(R.id.addComment_submit_button);
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String comment = result.getText().toString();
+                            addComment(comment.replaceAll(" ", " "));
+                            viewGroup.removeView(commentLayout);
+                        }
+                    });
+                    Button cancelButton = (Button) findViewById(R.id.addComment_cancel_button);
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewGroup.removeView(commentLayout);
+                        }
+                    });
                 }
             }
         });
@@ -228,6 +247,8 @@ public class ItemView extends AppCompatActivity {
     }
 
     public void openCommentLayout(Comment comment) {
+        parent_type = "comment";
+        parent_id = comment.getComment_id();
         setContentView(R.layout.create_library_layout);
         commentView = (TextView) findViewById(R.id.commentView_text_textView);
         commentsList = (ListView) findViewById(R.id.commentView_subContent_listView);
@@ -270,61 +291,66 @@ public class ItemView extends AppCompatActivity {
                 } else {
                     try {
                         response = response.getJSONObject("response");
-                        String item_type = response.getString("type");
+                        String item_type = response.optString("type", "type");
                         switch (item_type) {
                             case "Book":
                                 Book book = new Book();
                                 setItemDetails(response, book);
-                                book.setPublish_date(response.getString("publish_date"));
-                                book.setNumber_of_pages(response.getInt("pages"));
-                                book.setAuthor(response.getString("author"));
-                                book.setPublisher(response.getString("publisher"));
-                                book.setEdition(response.getString("edition"));
+                                book.setPublish_date(response.optString("publish_date", "publish_date"));
+                                book.setNumber_of_pages(response.optInt("pages", -1));
+                                book.setAuthor(response.optString("author", "author"));
+                                book.setPublisher(response.optString("publisher", "publisher"));
+                                book.setEdition(response.optString("edition", "edition"));
                                 setItemLayout(book);
+                                parent_id = book.getItem_id();
                                 break;
                             case "Game":
                                 Game game = new Game();
                                 setItemDetails(response, game);
-                                game.setPublisher(response.getString("publisher"));
-                                game.setDeveloper_studio(response.getString("studio"));
-                                game.setRelease_date(response.getString("releaseDate"));
-                                game.setRating(response.getString("rating"));
-                                game.setAverage_length_of_play(response.getInt("gameLength"));
-                                game.setIs_multiplayer(response.getBoolean("multiplayer"));
-                                game.setIs_singleplayer(response.getBoolean("singleplayer"));
+                                game.setPublisher(response.optString("publisher", "publisher"));
+                                game.setDeveloper_studio(response.optString("studio", "studio"));
+                                game.setRelease_date(response.optString("releaseDate", "releaseDate"));
+                                game.setRating(response.optString("rating", "rating"));
+                                game.setAverage_length_of_play(response.optInt("gameLength", -1));
+                                game.setIs_multiplayer(response.optBoolean("multiplayer", false));
+                                game.setIs_singleplayer(response.optBoolean("singleplayer", false));
                                 setItemLayout(game);
+                                parent_id = game.getItem_id();
                                 break;
                             case "Movie":
                                 Movie movie = new Movie();
                                 setItemDetails(response, movie);
-                                movie.setRating(response.getString("rating"));
-                                movie.setRelease_date(response.getString("release_date"));
-                                movie.setRuntime(response.getString("runtime"));
-                                movie.setDirector(response.getString("director"));
-                                movie.setWriter(response.getString("writer"));
-                                movie.setStudio(response.getString("studio"));
-                                movie.setActors(response.getString("actors").split(" "));
+                                movie.setRating(response.optString("rating", "rating"));
+                                movie.setRelease_date(response.optString("release_date", "release_date"));
+                                movie.setRuntime(response.optString("runtime", "runtime"));
+                                movie.setDirector(response.optString("director", "director"));
+                                movie.setWriter(response.optString("writer", "writer"));
+                                movie.setStudio(response.optString("studio", "studio"));
+                                movie.setActors(response.optString("actors", "actors").split(", "));
                                 setItemLayout(movie);
+                                parent_id = movie.getItem_id();
                                 break;
                             case "Music":
                                 Music music = new Music();
                                 setItemDetails(response, music);
-                                music.setRelease_date(response.getString("release_date"));
-                                music.setRecording_company(response.getString("recording_company"));
-                                music.setArtist(response.getString("artist"));
-                                music.setLength(response.getString("length"));
+                                music.setRelease_date(response.optString("release_date", "release_date"));
+                                music.setRecording_company(response.optString("recording_company", "recording_company"));
+                                music.setArtist(response.optString("artist", "artist"));
+                                music.setLength(response.optString("length", "length"));
                                 setItemLayout(music);
+                                parent_id = music.getItem_id();
                                 break;
                             case "TV":
                                 TV tv = new TV();
                                 setItemDetails(response, tv);
-                                tv.setAir_date(response.getString("airDate"));
-                                tv.setDirectors(response.getString("director"));
-                                tv.setRuntime(response.getString("length"));
-                                tv.setActors(response.getString("actors").split(" "));
-                                tv.setWriters(response.getString("writer"));
-                                tv.setChannel(response.getString("channel"));
+                                tv.setAir_date(response.optString("airDate", "airDate"));
+                                tv.setDirectors(response.optString("director", "director"));
+                                tv.setRuntime(response.optString("length", "length"));
+                                tv.setActors(response.optString("actors", "actors").split(", "));
+                                tv.setWriters(response.optString("writer", "writer"));
+                                tv.setChannel(response.optString("channel", "channel"));
                                 setItemLayout(tv);
+                                parent_id = tv.getItem_id();
                                 break;
                             default:
                                 break;
@@ -332,6 +358,7 @@ public class ItemView extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    parent_type = "item";
                 }
             }
         });
@@ -358,6 +385,25 @@ public class ItemView extends AppCompatActivity {
                         setLibrary_ids();
                     } catch (Exception e) {
                     }
+                }
+            }
+        });
+    }
+
+    public void addComment(String comment) {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/AddComment.py?parent_type=" + parent_type + "&parent_id=" + Double.toString(parent_id) +
+                "&session=" + sessionID + "&content=" + comment, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                try {
+                    if (!response.getBoolean("success"))
+                        Toast.makeText(ItemView.this, "Unable to add comment", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(ItemView.this, "Added Comment", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -394,34 +440,25 @@ public class ItemView extends AppCompatActivity {
     public void setItemDetails(JSONObject response, Item item) {
 
         try {
-            if (!response.isNull("user_score"))
-                item.setUser_score(response.getInt("user_score"));
-            else
-                item.setUser_score(-1);
-            item.setItem_rating(response.getString("rating"));
+            item.setUser_score(response.optInt("user_score", -1));
+            item.setItem_rating(response.optString("rating", "rating"));
             JSONArray item_genres = response.getJSONArray("genres");
             String[] item_temp_genres = new String[item_genres.length()];
             for (int i = 0; i < item_genres.length(); i++)
                 item_temp_genres[i] = item_genres.get(i).toString();
             item.setGenres(item_temp_genres);
-            if (!response.isNull("average_score"))
-                item.setAverage_score(response.getDouble("average_score"));
-            else
-                item.setAverage_score(-1);
-            item.setDescription(response.getString("description"));
-            item.setTitle(response.getString("title"));
-            item.setImage_URL(response.getString("image"));
-            if (!response.isNull("parent_id"))
-                item.setParent_id(response.getInt("parent_id"));
-            else
-                item.setParent_id(-1);
+            item.setAverage_score(response.optDouble("average_score", -1));
+            item.setDescription(response.optString("description", "description"));
+            item.setTitle(response.optString("title", "title"));
+            item.setImage_URL(response.optString("image", "image.png"));
+            item.setParent_id(response.optInt("parent_id", -1));
 //            JSONArray item_child_items = response.getJSONArray("child_items");
 //            long[] item_temp_child_items = new long[item_child_items.length()];
 //            for (int i = 0; i < item_child_items.length(); i++)
 //                item_temp_child_items[i] = item_child_items.getInt(i);
 //            item.setChild_items(item_temp_child_items);
-            item.setMedia_type(response.getString("type"));
-            item.setItem_id(response.getLong("id"));
+            item.setMedia_type(response.optString("type", "type"));
+            item.setItem_id(response.optLong("id", -1));
             ArrayList<Comment> comments_array = new ArrayList<>();
             item.setComments(parseComments(response.getJSONArray("comments"), comments_array));
         } catch (JSONException e) {
@@ -434,17 +471,14 @@ public class ItemView extends AppCompatActivity {
         try {
             for (int i = 0; i < comments.length(); i++) {
                 Comment comment = new Comment();
-                comment.setCreate_date(comments.getJSONObject(i).getString("create_date"));
-                comment.setContent(comments.getJSONObject(i).getString("content"));
-                if (!comments.getJSONObject(i).isNull("user_review"))
-                    comment.setUser_score(comments.getJSONObject(i).getInt("user_review"));
-                else
-                    comment.setUser_score(-1);
-                comment.setItem_id(comments.getJSONObject(i).getLong("item_id"));
-                comment.setUser_id(comments.getJSONObject(i).getInt("user_id"));
-                comment.setComment_rating(comments.getJSONObject(i).getInt("comment_rating"));
-                comment.setUser_name(comments.getJSONObject(i).getString("user_name"));
-                comment.setComment_id(comments.getJSONObject(i).getLong("id"));
+                comment.setCreate_date(comments.getJSONObject(i).optString("create_date", "create_date"));
+                comment.setContent(comments.getJSONObject(i).optString("content", "content"));
+                comment.setUser_score(comments.getJSONObject(i).optInt("user_review", -1));
+                comment.setItem_id(comments.getJSONObject(i).optLong("item_id", -1));
+                comment.setUser_id(comments.getJSONObject(i).optInt("user_id", -1));
+                comment.setComment_rating(comments.getJSONObject(i).optInt("comment_rating", -1));
+                comment.setUser_name(comments.getJSONObject(i).optString("user_name", "user_name"));
+                comment.setComment_id(comments.getJSONObject(i).optLong("id", -1));
                 if (comments.getJSONObject(i).getJSONArray("child_comments").length() != 0) {
                     comment.setChild_comments(new ArrayList<Comment>());
                     parseComments(comments.getJSONObject(i).getJSONArray("child_comments"), comment.getChild_comments());
@@ -480,7 +514,7 @@ public class ItemView extends AppCompatActivity {
 //        }
         populate_listview(item.getComments(), listView);
         // userscore, itemrating, genres, averagescore, description, title, image, parentid, childitems, mediatype, itemid, comments
-        //averageScoreView.setText((int) item.getAverage_score());
+        averageScoreView.setText(item.getAverage_score());
         descriptionView.setText(item.getDescription());
         titleView.setText(item.getTitle());
         new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item.getImage_URL());

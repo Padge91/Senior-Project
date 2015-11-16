@@ -71,12 +71,15 @@ public class Item {
         this.genres = genres;
     }
 
-    public double getAverage_score() {
-        return average_score;
+    public String getAverage_score() {
+        return Double.toString(average_score);
     }
 
     public void setAverage_score(double average_score) {
-        this.average_score = average_score;
+        if(average_score < 0 || average_score > 5)
+            this.average_score = 0;
+        else
+            this.average_score = average_score;
     }
 
     public String getDescription() {
