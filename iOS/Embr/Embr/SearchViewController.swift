@@ -41,7 +41,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let itemToView = self.searchResults[indexPath.row]
-        ItemDataSource.getItem(SessionModel.getSession(), id: itemToView.id, completionHandler: self.getItemCompletionHandler)
+        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
     }
     
     func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
@@ -51,7 +51,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                     if jsonResponse["success"] as! Bool {
                         if let response = jsonResponse["response"] as? NSDictionary {
                             dispatch_async(dispatch_get_main_queue()) {
-                                let itemToView = GenericMediaItem.parseGenericMediaItem(response)
+                                let itemToView = parseMediaItem(response)
                                 self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
                             }
                         }
@@ -266,7 +266,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         
         let mediaItem = searchResults[indexPath.row]
         cell!.textLabel!.text = mediaItem.title
-        cell!.detailTextLabel?.text = mediaItem.creator
         
         return cell!
     }

@@ -69,15 +69,12 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func loadTopAttribute() {
         assert(mediaItem != nil)
-        topAttributeLabel.text = mediaItem!.creator
     }
     
     private func loadBottomAttribute() {
         assert(mediaItem != nil)
         if mediaItem is Movie {
-            bottomAttributeLabel.text = (mediaItem as! Movie).cast.first
-        } else if mediaItem is Book {
-            bottomAttributeLabel.text = "Page Count: \((mediaItem as! Book).pageCount)"
+            bottomAttributeLabel.text = (mediaItem as! Movie).cast
         } else {
             bottomAttributeLabel.hidden = true
         }

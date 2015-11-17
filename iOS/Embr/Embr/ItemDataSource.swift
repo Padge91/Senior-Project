@@ -13,8 +13,8 @@ class ItemDataSource {
             "score=\(review)", completionHandler: completionHandler)
     }
     
-    static func getItem(session: String, id: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
-        EmbrConnection.get("/cgi-bin/GetItemInfo.py", params: ["session": session, "id": "\(id)"], completionHandler: completionHandler)
+    static func getItem(id: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetItemInfo.py", params: ["session": SessionModel.getSession(), "id": "\(id)"], completionHandler: completionHandler)
     }
     
 }

@@ -27,7 +27,7 @@ class LibraryViewController: UITableViewController {
         
         let mediaItem = library[indexPath.row]
         cell!.textLabel!.text = mediaItem.title
-        cell!.detailTextLabel?.text = mediaItem.creator
+        //cell!.detailTextLabel?.text = mediaItem.creator
         if let imageName = mediaItem.imageName {
             if let imageURL = NSURL(string: imageName) {
                 if let imageData = NSData(contentsOfURL: imageURL) {
@@ -45,7 +45,7 @@ class LibraryViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let itemToView = self.library[indexPath.row]
-        ItemDataSource.getItem(SessionModel.getSession(), id: itemToView.id, completionHandler: self.getItemCompletionHandler)
+        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
     }
     
     func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
