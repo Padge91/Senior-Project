@@ -6,6 +6,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private let menuSegueIdentifier = "segueToMenu"
     private let librariesSegueIdentifier = "segueToLibraries"
     private let profileSegueIdentifier = "segueToProfile"
+    private let topChartsSegueIdentifier = "segueToTopCharts"
     private var searchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!
@@ -18,7 +19,8 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
         let librariesButton = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "attemptToOpenLibraries")
         let profileButton = UIBarButtonItem(title: "Profile", style: .Plain, target: self, action: "attemptToOpenProfile")
-        toolbarItems = [librariesButton, profileButton]
+        let topChartsButton = UIBarButtonItem(title: "Top Charts", style: .Plain, target: self, action: "openTopCharts")
+        toolbarItems = [librariesButton, profileButton, topChartsButton]
     }
     
     func goToMenu() {
@@ -73,6 +75,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                 destination.user = user
             }
         }
+    }
+    
+    func openTopCharts() {
+        performSegueWithIdentifier(topChartsSegueIdentifier, sender: nil)
     }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
