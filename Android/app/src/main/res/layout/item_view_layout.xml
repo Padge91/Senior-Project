@@ -4,10 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ItemView">
 
     // Cover Picture
@@ -18,12 +14,14 @@
         android:layout_height="180dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp" />
 
     // Title
 
     <TextView
-        android:id="@+id/itemView_title_textView"
+        android:id="@+id/itemView_1_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/itemView_coverPicture_imageView"
@@ -31,23 +29,31 @@
         android:layout_marginLeft="15dp"
         android:layout_toEndOf="@+id/itemView_coverPicture_imageView"
         android:layout_toRightOf="@+id/itemView_coverPicture_imageView"
-        android:text=""
         android:textColor="#010101" />
 
     // Author
 
     <TextView
-        android:id="@+id/itemView_creator_textView"
+        android:id="@+id/itemView_2_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/itemView_title_textView"
-        android:layout_alignStart="@+id/itemView_title_textView"
-        android:layout_below="@+id/itemView_title_textView"
+        android:layout_alignLeft="@+id/itemView_1_textView"
+        android:layout_alignStart="@+id/itemView_1_textView"
+        android:layout_below="@+id/itemView_1_textView"
         android:layout_marginBottom="10dp"
-        android:text=""
         android:textColor="#010101" />
 
     // My Review
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemView_3_textView"
+        android:layout_below="@+id/itemView_2_textView"
+        android:layout_alignLeft="@+id/itemView_2_textView"
+        android:layout_alignStart="@+id/itemView_2_textView"
+        android:layout_marginBottom="10dp"
+        android:textColor="#010101" />
 
     <TextView
         android:id="@+id/itemView_myReview_textView"
@@ -60,7 +66,8 @@
         android:layout_marginTop="20dp"
         android:text="My Review:"
         android:textColor="#020202"
-        android:textSize="8pt" />
+        android:textSize="8pt"
+        android:layout_marginLeft="16dp" />
 
     // Add to libraries
 
@@ -68,12 +75,12 @@
         android:id="@+id/itemView_addToLibrary_button"
         android:layout_width="160dp"
         android:layout_height="25dp"
-        android:layout_alignLeft="@+id/itemView_creator_textView"
-        android:layout_alignStart="@+id/itemView_creator_textView"
-        android:layout_below="@+id/itemView_creator_textView"
-        android:layout_marginTop="10dp"
         android:background="#ffa740"
-        android:text="Add to Libraries" />
+        android:text="Add to Libraries"
+        android:layout_below="@+id/itemView_3_textView"
+        android:layout_alignLeft="@+id/itemView_3_textView"
+        android:layout_alignStart="@+id/itemView_3_textView"
+        android:layout_marginTop="10dp" />
 
     // Add comment button
 
@@ -92,7 +99,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/listView_divider"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -133,7 +143,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/itemView_allReviewsPreText_textView"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="Description"
                 android:textSize="7pt" />
 
@@ -149,8 +159,6 @@
                 android:textColor="#010101"
                 android:textSize="8pt" />
 
-            // All Reviews
-
             <TextView
                 android:id="@+id/itemView_allReviewsPreText_textView"
                 android:layout_width="wrap_content"
@@ -162,7 +170,22 @@
                 android:textColor="#010101"
                 android:textSize="8pt" />
 
-            // Comments
+            <TextView
+                android:id="@+id/itemView_4Header_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/itemView_description_textView"
+                android:text="Additional Information"
+                android:textSize="7pt"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/itemView_4_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/itemView_4Header_textView"
+                android:textSize="6pt"
+                android:textColor="#010101" />
 
             <ListView
                 android:id="@+id/itemView_comments_listView"
@@ -170,7 +193,7 @@
                 android:layout_height="fill_parent"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/itemView_description_textView"
+                android:layout_below="@+id/itemView_4_textView"
                 android:nestedScrollingEnabled="true"
                 android:longClickable="false" />
 
@@ -184,15 +207,16 @@
         android:layout_alignEnd="@+id/relativeLayout"
         android:layout_alignRight="@+id/relativeLayout"
         android:layout_below="@+id/itemView_coverPicture_imageView"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/itemView_myReview_textView" />
 
-    <View style="@style/Divider"
+    <View style="@style/horizontalDivider"
         android:id="@+id/listView_divider"
         android:layout_alignBottom="@id/ratingBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="2dp" />
 
 </RelativeLayout>

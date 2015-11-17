@@ -88,8 +88,22 @@ public class Movie extends Item {
         this.studio = studio;
     }
 
-    public String[] getActors() {
-        return actors;
+    public String getActors() {
+        String formatted_actors = "";
+        if (actors.length == 1)
+            return actors[0];
+        if (actors.length == 2) {
+            formatted_actors = (actors[0] + " and " + actors[1]);
+            return formatted_actors;
+        }
+        else if (actors.length > 2) {
+            for (int i = 0; i < actors.length - 1; i++)
+                formatted_actors += (actors[i] + ", ");
+            formatted_actors += (" and " + actors[actors.length - 1]);
+            return formatted_actors;
+        }
+        else
+            return formatted_actors;
     }
 
     public void setActors(String[] actors) {

@@ -1,12 +1,18 @@
 package com.afe.pc.embr;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,13 +33,11 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 import common.Comment;
 import common.Item;
@@ -50,6 +54,7 @@ import static utilities.Activity.putExtraForMenuItem;
 
 public class ItemView extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     private boolean isLoggedIn = false;
     private String loggedIn_status = "";
     private String sessionID = "";
@@ -70,14 +75,18 @@ public class ItemView extends AppCompatActivity {
     ListView listView;
     Button addToLibraryButton;
     Button addCommentButton;
-    TextView titleView;
-    TextView creatorView;
+    TextView view1;
+    TextView view2;
+    TextView view3;
+    TextView view4;
     TextView averageScoreView;
     TextView descriptionView;
     ImageView imageView;
 
     TextView commentView;
     ListView commentsList;
+    Button returnButton;
+    Button newCommentButton;
     EditText result;
 
     @Override
@@ -85,12 +94,17 @@ public class ItemView extends AppCompatActivity {
         Bundle item_bundle = getIntent().getExtras();
         unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        sessionID = settings.getString("sessionID", "");
+        loggedIn_status = settings.getString("LoggedIn", "");
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
         setTitle(itemName);
-        titleView = (TextView) findViewById(R.id.itemView_title_textView);
-        creatorView = (TextView) findViewById(R.id.itemView_creator_textView);
+        view1 = (TextView) findViewById(R.id.itemView_1_textView);
+        view2 = (TextView) findViewById(R.id.itemView_2_textView);
+        view3 = (TextView) findViewById(R.id.itemView_3_textView);
+        view4 = (TextView) findViewById(R.id.itemView_4_textView);
         averageScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
@@ -134,31 +148,22 @@ public class ItemView extends AppCompatActivity {
             public void onClick(View view) {
                 if (!isLoggedIn)
                     Toast.makeText(ItemView.this, "Please login to use this feature", Toast.LENGTH_SHORT).show();
-                else {
-                    //setContentView(R.layout.add_comment_layout);
-                    final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.itemView_relative_layout);
-                    final View commentLayout = getLayoutInflater().inflate(R.layout.add_comment_layout, viewGroup);
-                    //viewGroup.addView(commentLayout);
-                    result = (EditText) findViewById(R.id.addComment_newComment_editText);
-                    Button submitButton = (Button) findViewById(R.id.addComment_submit_button);
-                    submitButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String comment = result.getText().toString();
-                            addComment(comment.replaceAll(" ", " "));
-                            viewGroup.removeView(commentLayout);
-                        }
-                    });
-                    Button cancelButton = (Button) findViewById(R.id.addComment_cancel_button);
-                    cancelButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            viewGroup.removeView(commentLayout);
-                        }
-                    });
-                }
+                else
+                    addCommentDialogBox();
             }
         });
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (loggedIn_status.equals("true")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", loggedIn_status);
+            editor.apply();
+        }
     }
 
     @Override
@@ -228,12 +233,23 @@ public class ItemView extends AppCompatActivity {
 
     public void populate_listview(final ArrayList<Comment> comments, final ListView listView) {
 
-        String[] comments_content = new String[comments.size()];
-        for (int i = 0; i < comments.size(); i++) {
-            if (comments.get(i).getContent().length() > 60)
-                comments_content[i] = comments.get(i).getContent().substring(0, 50) + "...";
-            else
-                comments_content[i] = comments.get(i).getContent();
+        String[] comments_content;
+        boolean isNotNull = false;
+        try {
+            comments_content = new String[comments.size()];
+            isNotNull = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            isNotNull = false;
+            comments_content = new String[0];
+        }
+        if (isNotNull) {
+            for (int i = 0; i < comments.size(); i++) {
+                if (comments.get(i).getContent().length() > 60)
+                    comments_content[i] = comments.get(i).getContent().substring(0, 50) + "...";
+                else
+                    comments_content[i] = comments.get(i).getContent();
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, comments_content);
         listView.setAdapter(adapter);
@@ -249,9 +265,24 @@ public class ItemView extends AppCompatActivity {
     public void openCommentLayout(Comment comment) {
         parent_type = "comment";
         parent_id = comment.getComment_id();
-        setContentView(R.layout.create_library_layout);
+        setContentView(R.layout.comment_view_layout);
         commentView = (TextView) findViewById(R.id.commentView_text_textView);
         commentsList = (ListView) findViewById(R.id.commentView_subContent_listView);
+        newCommentButton = (Button) findViewById(R.id.commentView_addComment_button);
+        newCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        returnButton = (Button) findViewById(R.id.commentView_return_button);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.item_view_layout);
+                getData();
+            }
+        });
         commentView.setText(comment.getContent());
         populate_listview(comment.getChild_comments(), commentsList);
     }
@@ -282,6 +313,8 @@ public class ItemView extends AppCompatActivity {
     }
 
     public void getData() {
+        if (sessionID.isEmpty())
+            sessionID += "none";
         HttpConnect.requestJson("http://52.88.5.108/cgi-bin/GetItemInfo.py?id=" + Long.toString(itemID) + "&session=" + sessionID, Request.Method.GET, null, new HttpResult() {
 
             @Override
@@ -292,16 +325,29 @@ public class ItemView extends AppCompatActivity {
                     try {
                         response = response.getJSONObject("response");
                         String item_type = response.optString("type", "type");
+                        String builder = "";
+                        boolean isSong = true; // music
+                        boolean isEpisode = true; // tv
+                        boolean isBook = true; // book
                         switch (item_type) {
                             case "Book":
                                 Book book = new Book();
                                 setItemDetails(response, book);
-                                book.setPublish_date(response.optString("publish_date", "publish_date"));
+                                book.setPublish_date(response.optString("publishDate", "publishDate"));
                                 book.setNumber_of_pages(response.optInt("pages", -1));
                                 book.setAuthor(response.optString("author", "author"));
                                 book.setPublisher(response.optString("publisher", "publisher"));
                                 book.setEdition(response.optString("edition", "edition"));
                                 setItemLayout(book);
+                                if (isBook)
+                                    builder += ("<b>Pages:</b> " + book.getNumber_of_pages() + "<br>");
+                                builder += ("<b>Edition:</b> " + book.getEdition() + "<br>");
+                                builder += ("<b>Publisher:</b> " + book.getPublisher() + "<br>");
+                                builder += ("<b>Genres:</b> " + book.getGenres());
+                                builder += ("<br><br><b>User Comments: ");
+                                view2.setText(book.getAuthor());
+                                view3.setText(book.getPublish_date());
+                                view4.setText(Html.fromHtml(builder));
                                 parent_id = book.getItem_id();
                                 break;
                             case "Game":
@@ -315,29 +361,53 @@ public class ItemView extends AppCompatActivity {
                                 game.setIs_multiplayer(response.optBoolean("multiplayer", false));
                                 game.setIs_singleplayer(response.optBoolean("singleplayer", false));
                                 setItemLayout(game);
+                                builder += ("<b>Rating:</b> " + game.getRating() + "<br>");
+                                builder += ("<b>Publisher:</b> " + game.getPublisher() + "<br>");
+                                builder += ("<b>Genres:</b> " + game.getGenres());
+                                builder += ("<br><br><b>User Comments: ");
+                                view2.setText(game.getDeveloper_studio());
+                                view3.setText(game.getRelease_date());
+                                view4.setText(Html.fromHtml(builder));
                                 parent_id = game.getItem_id();
                                 break;
                             case "Movie":
                                 Movie movie = new Movie();
                                 setItemDetails(response, movie);
                                 movie.setRating(response.optString("rating", "rating"));
-                                movie.setRelease_date(response.optString("release_date", "release_date"));
+                                movie.setRelease_date(response.optString("releaseDate", "releaseDate"));
                                 movie.setRuntime(response.optString("runtime", "runtime"));
                                 movie.setDirector(response.optString("director", "director"));
                                 movie.setWriter(response.optString("writer", "writer"));
                                 movie.setStudio(response.optString("studio", "studio"));
                                 movie.setActors(response.optString("actors", "actors").split(", "));
                                 setItemLayout(movie);
+                                builder += ("<b>Rating:</b> " + movie.getRating() + "<br>");
+                                builder += ("<b>Runtime:</b> " + movie.getRuntime() + "<br>");
+                                builder += ("<b>Studio:</b> " + movie.getStudio() + "<br>");
+                                builder += ("<b>Main Actors:</b> " + movie.getActors() + "<br>");
+                                builder += ("<b>Genres:</b> " + movie.getGenres());
+                                builder += ("<br><br><b>User Comments: ");
+                                view2.setText(movie.getDirector());
+                                view3.setText(movie.getRelease_date());
+                                view4.setText(Html.fromHtml(builder));
                                 parent_id = movie.getItem_id();
                                 break;
                             case "Music":
                                 Music music = new Music();
                                 setItemDetails(response, music);
-                                music.setRelease_date(response.optString("release_date", "release_date"));
+                                music.setRelease_date(response.optString("releaseDate", "releaseDate"));
                                 music.setRecording_company(response.optString("recording_company", "recording_company"));
                                 music.setArtist(response.optString("artist", "artist"));
                                 music.setLength(response.optString("length", "length"));
                                 setItemLayout(music);
+                                builder += ("<b>Recording Studio:</b> " + music.getRecording_company() + "<br>");
+                                if (isSong)
+                                    builder += ("<b>Length:</b> " + music.getLength() + "<br>");
+                                builder += ("<b>Genres:</b> " + music.getGenres());
+                                builder += ("<br><br><b>User Comments: ");
+                                view2.setText(music.getArtist());
+                                view3.setText(music.getRelease_date());
+                                view4.setText(Html.fromHtml(builder));
                                 parent_id = music.getItem_id();
                                 break;
                             case "TV":
@@ -349,7 +419,19 @@ public class ItemView extends AppCompatActivity {
                                 tv.setActors(response.optString("actors", "actors").split(", "));
                                 tv.setWriters(response.optString("writer", "writer"));
                                 tv.setChannel(response.optString("channel", "channel"));
+                                tv.setRating(response.optString("rating", "rating"));
                                 setItemLayout(tv);
+                                builder += ("<b>Rating:</b> " + tv.getRating() + "<br>");
+                                if (isEpisode)
+                                    builder += ("<b>Runtime:</b> " + tv.getRuntime() + "<br>");
+                                builder += ("<b>Studio:</b> " + tv.getChannel() + "<br>");
+                                builder += ("<b>Writer:</b> " + tv.getWriters() + "<br>");
+                                builder += ("<b>Main Actors:</b> " + tv.getActors() + "<br>");
+                                builder += ("<b>Genres:</b> " + tv.getGenres());
+                                builder += ("<br><br><b>User Comments: ");
+                                view2.setText(tv.getDirectors());
+                                view3.setText(tv.getAir_date());
+                                view4.setText(Html.fromHtml(builder));
                                 parent_id = tv.getItem_id();
                                 break;
                             default:
@@ -390,9 +472,9 @@ public class ItemView extends AppCompatActivity {
         });
     }
 
-    public void addComment(String comment) {
+    public void addComment(String content) {
         HttpConnect.requestJson("http://52.88.5.108/cgi-bin/AddComment.py?parent_type=" + parent_type + "&parent_id=" + Double.toString(parent_id) +
-                "&session=" + sessionID + "&content=" + comment, Request.Method.GET, null, new HttpResult() {
+                "&session=" + sessionID + "&content=" + content, Request.Method.GET, null, new HttpResult() {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
@@ -492,32 +574,59 @@ public class ItemView extends AppCompatActivity {
     }
 
     public void setItemLayout(Item item) {
-
-//        switch (item.getMedia_type()) {
-//            case "Book":
-//
-//                break;
-//            case "Game":
-//
-//                break;
-//            case "Movie":
-//
-//                break;
-//            case "Music":
-//
-//                break;
-//            case "TV":
-//
-//                break;
-//            default:
-//                break;
-//        }
         populate_listview(item.getComments(), listView);
-        // userscore, itemrating, genres, averagescore, description, title, image, parentid, childitems, mediatype, itemid, comments
+        // done     : average score, description, title, image, comments, genres
+        // not done : user score, child items
         averageScoreView.setText(item.getAverage_score());
         descriptionView.setText(item.getDescription());
-        titleView.setText(item.getTitle());
+        view1.setText(item.getTitle());
         new DownloadImageTask((ImageView) findViewById(R.id.itemView_coverPicture_imageView)).execute(item.getImage_URL());
+    }
+
+    public void addCommentDialogBox() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
+        dialogBuilder.setView(dialogView);
+        result = (EditText) dialogView.findViewById(R.id.edit1);
+        dialogBuilder.setMessage("Enter new comment text below");
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        dialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String comment = result.getText().toString();
+                addComment(comment.replaceAll(" ", "%20"));
+                getData();
+            }
+        });
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public void addCommentDialogBox(Comment comment) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
+        dialogBuilder.setView(dialogView);
+        result = (EditText) dialogView.findViewById(R.id.edit1);
+        dialogBuilder.setMessage("Enter new comment text below");
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        dialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String content = result.getText().toString();
+                addComment(content.replaceAll(" ", "%20"));
+
+            }
+        });
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

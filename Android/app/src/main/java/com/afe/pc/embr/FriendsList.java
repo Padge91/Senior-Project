@@ -1,6 +1,7 @@
 package com.afe.pc.embr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import static utilities.Activity.putExtraForMenuItem;
 
 public class FriendsList extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     private String loggedIn_status = "";
     private String sessionID = "";
     private String username = "";
@@ -20,7 +22,22 @@ public class FriendsList extends AppCompatActivity {
         Bundle item_bundle = getIntent().getExtras();
         unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        sessionID = settings.getString("sessionID", "");
+        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.friends_list_layout);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (loggedIn_status.equals("true")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", loggedIn_status);
+            editor.apply();
+        }
     }
 
     @Override

@@ -63,8 +63,22 @@ public class Item {
         this.item_rating = item_rating;
     }
 
-    public String[] getGenres() {
-        return genres;
+    public String getGenres() {
+        String formatted_genres = "";
+        if (genres.length == 1)
+            return genres[0];
+        if (genres.length == 2) {
+            formatted_genres = (genres[0] + " and " + genres[1]);
+            return formatted_genres;
+        }
+        else if (genres.length > 2) {
+            for (int i = 0; i < genres.length - 1; i++)
+                formatted_genres += (genres[i] + ", ");
+            formatted_genres += (" and " + genres[genres.length - 1]);
+            return formatted_genres;
+        }
+        else
+            return formatted_genres;
     }
 
     public void setGenres(String[] genres) {

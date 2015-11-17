@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="160dp">
+
+        <EditText
+            android:id="@+id/edit1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:background="#00000000"
+            android:focusable="true"
+            android:layout_margin="5dp">
+
+            <requestFocus />
+
+        </EditText>
+
+        <View style="@style/horizontalDivider"
+            android:id="@+id/dialog_dividerH1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <View style="@style/verticalDivider"
+            android:id="@+id/dialog_dividerV1"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/dialog_dividerH1"
+            android:layout_alignStart="@+id/dialog_dividerH1" />
+
+        <View style="@style/horizontalDivider"
+            android:id="@+id/dialog_dividerH2"
+            android:layout_alignBottom="@+id/dialog_dividerV1"
+            android:layout_alignLeft="@+id/dialog_dividerV1"
+            android:layout_alignStart="@+id/dialog_dividerV1" />
+
+        <View style="@style/verticalDivider"
+            android:id="@+id/dialog_dividerV2"
+            android:layout_below="@+id/dialog_dividerH1"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

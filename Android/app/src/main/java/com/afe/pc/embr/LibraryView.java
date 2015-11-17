@@ -1,6 +1,7 @@
 package com.afe.pc.embr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import static utilities.Activity.putExtraForMenuItem;
 
 public class LibraryView extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     private String loggedIn_status = "";
     private String sessionID = "";
     private String libraryID = "";
@@ -44,9 +46,24 @@ public class LibraryView extends AppCompatActivity {
         Bundle search_bundle = getIntent().getExtras();
         unpackBundle(search_bundle);
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        sessionID = settings.getString("sessionID", "");
+        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.library_view_layout);
         setTitle(libraryName);
         getItems();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (loggedIn_status.equals("true")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", loggedIn_status);
+            editor.apply();
+        }
     }
 
     @Override
@@ -123,17 +140,19 @@ public class LibraryView extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long notUsed) {
                 int id = ids.get(position);
-                openItemViewActivity(id);
+                String itemName = values.get(position);
+                openItemViewActivity(id, itemName);
             }
         });
     }
 
-    public void openItemViewActivity(int itemID) {
+    public void openItemViewActivity(int itemID, String itemName) {
         Intent intent = new Intent(this, ItemView.class);
         intent.putExtra("LoggedIn", loggedIn_status);
         intent.putExtra("sessionID", sessionID);
         intent.putExtra("userID", userID);
         intent.putExtra("itemID", itemID);
+        intent.putExtra("itemName", itemName);
         startActivity(intent);
     }
 

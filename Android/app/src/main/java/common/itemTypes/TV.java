@@ -16,6 +16,7 @@ public class TV extends Item {
     private String[] actors;
     private String writers;
     private String channel;
+    private String rating;
 
     public TV() {
         super();
@@ -25,7 +26,7 @@ public class TV extends Item {
               String description, String title, String image_URL, int parent_id,
               long[] child_items, String media_type, long item_id, ArrayList<Comment> comments,
               String air_date, String directors, String runtime, String[] actors, String writers,
-              String channel) {
+              String channel, String rating) {
 
         super(user_score, item_rating, genres, average_score, description, title, image_URL,
                 parent_id, child_items, media_type, item_id, comments);
@@ -36,6 +37,7 @@ public class TV extends Item {
         this.actors = actors;
         this.writers = writers;
         this.channel = channel;
+        this.rating = rating;
     }
 
     public String getAir_date() {
@@ -62,8 +64,22 @@ public class TV extends Item {
         this.runtime = runtime;
     }
 
-    public String[] getActors() {
-        return actors;
+    public String getActors() {
+        String formatted_actors = "";
+        if (actors.length == 1)
+            return actors[0];
+        if (actors.length == 2) {
+            formatted_actors = (actors[0] + " and " + actors[1]);
+            return formatted_actors;
+        }
+        else if (actors.length > 2) {
+            for (int i = 0; i < actors.length - 1; i++)
+                formatted_actors += (actors[i] + ", ");
+            formatted_actors += (" and " + actors[actors.length - 1]);
+            return formatted_actors;
+        }
+        else
+            return formatted_actors;
     }
 
     public void setActors(String[] actors) {
@@ -84,5 +100,13 @@ public class TV extends Item {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }

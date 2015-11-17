@@ -3,6 +3,7 @@ package com.afe.pc.embr;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -32,6 +33,7 @@ import static utilities.Activity.putExtraForMenuItem;
 
 public class LibraryList extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     private String loggedIn_status = "";
     private String sessionID = "";
     private String username = "";
@@ -49,9 +51,24 @@ public class LibraryList extends AppCompatActivity {
         Bundle library_bundle = getIntent().getExtras();
         unpackBundle(library_bundle);
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        sessionID = settings.getString("sessionID", "");
+        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.library_list_layout);
         setTitle("Libraries");
         getLibraries();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (loggedIn_status.equals("true")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", loggedIn_status);
+            editor.apply();
+        }
     }
 
     @Override

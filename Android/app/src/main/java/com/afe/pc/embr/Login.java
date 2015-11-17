@@ -35,8 +35,6 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
         password.setHint("Password");
         loginButton = (Button) findViewById(R.id.login_login_button);
         loginButton.setOnClickListener(this);
-        skipLoginButton = (Button) findViewById(R.id.login_skipLogin_button);
-        skipLoginButton.setOnClickListener(this);
         signUpButton = (Button) findViewById(R.id.signup_button);
         signUpButton.setOnClickListener(this);
     }
@@ -59,9 +57,6 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                 usernameEntry = username.getText().toString();
                 passwordEntry = password.getText().toString();
                 verifyLogin(usernameEntry, passwordEntry);
-                break;
-            case R.id.login_skipLogin_button:
-                openSearchActivity("Skip Login");
                 break;
             case R.id.signup_button:
                 Intent intent = new Intent(this, Signup.class);
@@ -123,14 +118,6 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                     startActivity(intent);
                     finish();
                 }
-                break;
-            case "Skip Login":
-                Toast.makeText(Login.this, "Some features will be disabled until you Login", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, Search.class);
-                intent.putExtra("LoggedIn", "false");
-                intent.putExtra("isFromLogin", true);
-                startActivity(intent);
-                finish();
                 break;
         }
     }

@@ -3,6 +3,7 @@ package com.afe.pc.embr;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import static utilities.Activity.putExtraForMenuItem;
  */
 public class Search extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     private boolean isLoggedIn = false;
     private boolean isFromLogin = false;
     private String loggedIn_status = "";
@@ -55,11 +57,26 @@ public class Search extends AppCompatActivity {
         Bundle search_bundle = getIntent().getExtras();
         unpackBundle(search_bundle);
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        sessionID = settings.getString("sessionID", "");
+        loggedIn_status = settings.getString("LoggedIn", "");
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.search_layout);
         setTitle("Item Search");
         populate_listview_on_start(appendStrings(listview_values_temp, emptyStrings), (ListView) findViewById(R.id.search_listview));
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (loggedIn_status.equals("true")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", loggedIn_status);
+            editor.apply();
+        }
     }
 
     @Override
@@ -80,11 +97,11 @@ public class Search extends AppCompatActivity {
         }
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String query) {
-                getData(query);
+                getData(query.replaceAll(" ", "%20"));
                 return true;
             }
             public boolean onQueryTextSubmit(String query) {
-                getData(query);
+                getData(query.replaceAll(" ", "%20"));
                 return true;
             }
         };
