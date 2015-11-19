@@ -11,6 +11,8 @@ protocol MediaItem : AnyObject {
     var avgReview: Double? { get }
     var comments: [Comment] { get }
     var genres: [String] { get }
+    var childItems: [MediaItem] { get }
+    var parentId: Int? { get }
     
     func getAverageReviewString() -> String
 }
@@ -32,50 +34,37 @@ class TelevisionShow : MediaItem {
     private(set) var director: String
     private(set) var writer: String
     private(set) var rating: String?
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAgeForParentalControls recommendedAge: Int?, currentUserReview myReview: Int?, avgFriendReview: Double?, avgReview: Double?, runtime: String?, dateTheShowFirstAired airDate: String?, channel: String?, genres: [String], actors cast: String?, director: String, writer: String, rating: String?, comments: [Comment]) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgFriendReview = avgFriendReview
-        self.avgReview = avgReview
-        self.runtime = runtime
-        self.airDate = airDate
-        self.channel = channel
-        self.genres = genres
-        self.cast = cast
-        self.director = director
-        self.writer = writer
-        self.rating = rating
-        self.comments = comments
-    }
-    
-    static func parseTvShow(mediaItemDictionary: NSDictionary) -> TelevisionShow {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let myReview = mediaItemDictionary["user_score"] as? Int
-        let avgReview = mediaItemDictionary["average_score"] as? Double
-        let airDate = mediaItemDictionary["airDate"] as? String ?? "Never Aired"
-        let channel = mediaItemDictionary["channel"] as? String ?? "No Channel"
-        let genres = mediaItemDictionary["genres"] as? [String] ?? []
-        let cast = mediaItemDictionary["actors"] as? String? ?? "No Actors"
-        let director = mediaItemDictionary["director"] as! String
-        let writer = mediaItemDictionary["writer"] as! String
-        let rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        myReview = mediaItemDictionary["user_score"] as? Int
+        avgReview = mediaItemDictionary["average_score"] as? Double
+        airDate = mediaItemDictionary["airDate"] as? String ?? "Never Aired"
+        channel = mediaItemDictionary["channel"] as? String ?? "No Channel"
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        cast = mediaItemDictionary["actors"] as? String? ?? "No Actors"
+        director = mediaItemDictionary["director"] as! String
+        writer = mediaItemDictionary["writer"] as! String
+        rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
-        } else {
-            comments = []
         }
-        let tvShow = TelevisionShow(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAgeForParentalControls: nil, currentUserReview: myReview, avgFriendReview: nil, avgReview: avgReview, runtime: nil, dateTheShowFirstAired: airDate, channel: channel, genres: genres, actors: cast, director: director, writer: writer, rating: rating, comments: comments)
-        return tvShow
     }
     
     func getAverageReviewString() -> String {
@@ -101,47 +90,36 @@ class Book : MediaItem {
     private(set) var publisher: String?
     private(set) var edition: String?
     private(set) var genres: [String]
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAgeForParentalControls recommendedAge: Int?, currentUserReview myReview: Int?, avgFriendReview: Double?, avgReview: Double?, publishDate: String?, numPages: Int?, authors: String?, publisher: String?, edition: String?, genres: [String], comments: [Comment]) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgFriendReview = avgFriendReview
-        self.avgReview = avgReview
-        self.publishDate = publishDate
-        self.numPages = numPages
-        self.authors = authors
-        self.publisher = publisher
-        self.edition = edition
-        self.genres = genres
-        self.comments = comments
-    }
-    
-    static func parseBook(mediaItemDictionary: NSDictionary) -> Book {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let myReview = mediaItemDictionary["user_score"] as? Int
-        let avgReview = mediaItemDictionary["average_score"] as? Double
-        let publishDate = mediaItemDictionary["publishDate"] as? String ?? "No Publish Date"
-        let numPages = mediaItemDictionary["numPages"] as? Int
-        let authors = mediaItemDictionary["authors"] as? String ?? "No Author"
-        let publisher = mediaItemDictionary["publisher"] as? String ?? "Publisher"
-        let edition = mediaItemDictionary["edition"] as? String
-        let genres = mediaItemDictionary["genres"] as? [String] ?? []
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        myReview = mediaItemDictionary["user_score"] as? Int
+        avgReview = mediaItemDictionary["average_score"] as? Double
+        publishDate = mediaItemDictionary["publishDate"] as? String ?? "No Publish Date"
+        numPages = mediaItemDictionary["numPages"] as? Int
+        authors = mediaItemDictionary["authors"] as? String ?? "No Author"
+        publisher = mediaItemDictionary["publisher"] as? String ?? "Publisher"
+        edition = mediaItemDictionary["edition"] as? String
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
-        } else {
-            comments = []
         }
-        let book = Book(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAgeForParentalControls: nil, currentUserReview: myReview, avgFriendReview: nil, avgReview: avgReview, publishDate: publishDate, numPages: numPages, authors: authors, publisher: publisher, edition: edition, genres: genres, comments: comments)
-        return book
     }
     
     func getAverageReviewString() -> String {
@@ -169,48 +147,39 @@ class Movie : MediaItem {
     private(set) var cast: String?
     private(set) var genres: [String]
     private(set) var runtime: Int?
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAgeForParentalControls recommendedAge: Int?, currentUserReview myReview: Int?, avgFriendReview: Double?, avgReview: Double?, rating: String?, director: String, writer: String, studio: String?, cast: String?, genres: [String], runtime: Int?, comments: [Comment]) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgFriendReview = avgFriendReview
-        self.avgReview = avgReview
-        self.rating = rating
-        self.director = director
-        self.writer = writer
-        self.studio = studio
-        self.cast = cast
-        self.genres = genres
-        self.runtime = runtime
-        self.comments = comments
-    }
-    
-    static func parseMovie(mediaItemDictionary: NSDictionary) -> Movie {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let myReview = mediaItemDictionary["user_score"] as? Int
-        let avgReview = mediaItemDictionary["average_score"] as? Double
-        let rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
-        let director = mediaItemDictionary["director"] as! String
-        let writer = mediaItemDictionary["writer"] as! String
-        let studio = mediaItemDictionary["studio"] as? String ?? "No Studio"
-        let cast = mediaItemDictionary["actors"] as? String? ?? "No Cast"
-        let genres = mediaItemDictionary["genres"] as? [String] ?? []
-        let runtime = mediaItemDictionary["runtime"] as? Int
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        myReview = mediaItemDictionary["user_score"] as? Int
+        avgReview = mediaItemDictionary["average_score"] as? Double
+        rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
+        director = mediaItemDictionary["director"] as! String
+        writer = mediaItemDictionary["writer"] as! String
+        studio = mediaItemDictionary["studio"] as? String ?? "No Studio"
+        cast = mediaItemDictionary["actors"] as? String? ?? "No Cast"
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        runtime = mediaItemDictionary["runtime"] as? Int
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
         } else {
             comments = []
         }
-        return Movie(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAgeForParentalControls: nil, currentUserReview: myReview, avgFriendReview: nil, avgReview: avgReview, rating: rating, director: director, writer: writer, studio: studio, cast: cast, genres: genres, runtime: runtime, comments: comments)
     }
     
     func getAverageReviewString() -> String {
@@ -238,50 +207,40 @@ class Game : MediaItem {
     private(set) var multiplayer: Bool
     private(set) var singleplayer: Bool
     private(set) var genres: [String]
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAgeForParentalControls recommendedAge: Int?, currentUserReview myReview: Int?, avgFriendReview: Double?, avgReview: Double?, publisher: String?, studio: String?, releaseDate: String?, rating: String?, length: Int?, multiplayer: Bool, singleplayer: Bool, genres: [String], comments: [Comment]) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgFriendReview = avgFriendReview
-        self.avgReview = avgReview
-        self.publisher = publisher
-        self.studio = studio
-        self.releaseDate = releaseDate
-        self.rating = rating
-        self.length = length
-        self.multiplayer = multiplayer
-        self.singleplayer = singleplayer
-        self.genres = genres
-        self.comments = comments
-    }
-    
-    static func parseGame(mediaItemDictionary: NSDictionary) -> Game {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let myReview = mediaItemDictionary["user_score"] as? Int
-        let avgReview = mediaItemDictionary["average_score"] as? Double
-        let publisher = mediaItemDictionary["publisher"] as? String ?? "No Publiser"
-        let studio = mediaItemDictionary["studio"] as? String ?? "No Studio"
-        let releaseDate = mediaItemDictionary["releaseDate"] as? String ?? "No Release Date"
-        let rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
-        let length = mediaItemDictionary["gameLength"] as? Int
-        let multiplayer = mediaItemDictionary["multiplayer"] as! Bool
-        let singleplayer = mediaItemDictionary["singleplayer"] as! Bool
-        let genres = mediaItemDictionary["genres"] as? [String] ?? []
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        myReview = mediaItemDictionary["user_score"] as? Int
+        avgReview = mediaItemDictionary["average_score"] as? Double
+        publisher = mediaItemDictionary["publisher"] as? String ?? "No Publiser"
+        studio = mediaItemDictionary["studio"] as? String ?? "No Studio"
+        releaseDate = mediaItemDictionary["releaseDate"] as? String ?? "No Release Date"
+        rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
+        length = mediaItemDictionary["gameLength"] as? Int
+        multiplayer = mediaItemDictionary["multiplayer"] as! Bool
+        singleplayer = mediaItemDictionary["singleplayer"] as! Bool
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
         } else {
             comments = []
         }
-        return Game(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAgeForParentalControls: nil, currentUserReview: myReview, avgFriendReview: nil, avgReview: avgReview, publisher: publisher, studio: studio, releaseDate: releaseDate, rating: rating, length: length, multiplayer: multiplayer, singleplayer: singleplayer, genres: genres, comments: comments)
     }
     
     func getAverageReviewString() -> String {
@@ -306,44 +265,37 @@ class Music : MediaItem {
     private(set) var artist: String?
     private(set) var genres: [String]
     private(set) var length: String?
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var comments: [Comment]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAgeForParentalControls recommendedAge: Int?, currentUserReview myReview: Int?, avgFriendReview: Double?, avgReview: Double?, releaseDate: String?, recordingCompany: String?, artist: String?, genres: [String], length: String?, comments: [Comment]) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgFriendReview = avgFriendReview
-        self.avgReview = avgReview
-        self.releaseDate = releaseDate
-        self.recordingCompany = recordingCompany
-        self.artist = artist
-        self.genres = genres
-        self.length = length
-        self.comments = comments
-    }
-    
-    static func parseMusic(mediaItemDictionary: NSDictionary) -> Music {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let myReview = mediaItemDictionary["user_score"] as? Int
-        let avgReview = mediaItemDictionary["average_score"] as? Double
-        let releaseDate = mediaItemDictionary["releaseDate"] as? String
-        let recordingCompany = mediaItemDictionary["recordingCompany"] as? String
-        let artist = mediaItemDictionary["artist"] as? String
-        let genres = mediaItemDictionary["genres"] as? [String] ?? []
-        let length = mediaItemDictionary["length"] as? String
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        myReview = mediaItemDictionary["user_score"] as? Int
+        avgReview = mediaItemDictionary["average_score"] as? Double
+        releaseDate = mediaItemDictionary["releaseDate"] as? String
+        recordingCompany = mediaItemDictionary["recordingCompany"] as? String
+        artist = mediaItemDictionary["artist"] as? String
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        length = mediaItemDictionary["length"] as? String
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
         } else {
             comments = []
         }
-        return Music(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAgeForParentalControls: nil, currentUserReview: myReview, avgFriendReview: nil, avgReview: avgReview, releaseDate: releaseDate, recordingCompany: recordingCompany, artist: artist, genres: genres, length: length, comments: comments)
     }
     
     func getAverageReviewString() -> String {
@@ -352,7 +304,6 @@ class Music : MediaItem {
         }
         return "\(avgReview!)"
     }
-
 }
 
 class GenericMediaItem: MediaItem {
@@ -364,41 +315,36 @@ class GenericMediaItem: MediaItem {
     private(set) var myReview: Int?
     private(set) var avgFriendReview: Double?
     private(set) var avgReview: Double?
-    private(set) var creator: String
     private(set) var comments: [Comment]
     private(set) var type: String
+    private(set) var childItems: [MediaItem]
+    private(set) var parentId: Int?
     private(set) var genres: [String]
     
-    init(id: Int, title: String, imageName: String?, blurb: String, recommendedAge: Int?, myReview: Int?, avgReview: Double?, creator: String, comments: [Comment], type: String) {
-        self.id = id
-        self.title = title
-        self.imageName = imageName
-        self.blurb = blurb
-        self.recommendedAge = recommendedAge
-        self.myReview = myReview
-        self.avgReview = avgReview
-        self.creator = creator
-        self.comments = comments
-        self.type = type
-        self.genres = []
-    }
-    
-    static func parseGenericMediaItem(mediaItemDictionary: NSDictionary) -> GenericMediaItem {
-        let id = mediaItemDictionary["id"] as! Int
-        let title = mediaItemDictionary["title"] as! String
-        let imageName = mediaItemDictionary["image"] as? String
-        let blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
-        let creator = mediaItemDictionary["creator"] as? String ?? "Not Specified"
-        let type = mediaItemDictionary["type"] as! String
-        var comments = [Comment]()
+    init(mediaItemDictionary: NSDictionary) {
+        id = mediaItemDictionary["id"] as! Int
+        title = mediaItemDictionary["title"] as! String
+        imageName = mediaItemDictionary["image"] as? String
+        blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
+        type = mediaItemDictionary["type"] as! String
+        parentId = mediaItemDictionary["parent_id"] as? Int
+        genres = mediaItemDictionary["genres"] as? [String] ?? []
+        childItems = [MediaItem]()
+        if let childItemsArray = mediaItemDictionary["child_items"] as? NSArray {
+            for item in childItemsArray {
+                let mediaItemDictionary = item as! NSDictionary
+                let child = parseMediaItem(mediaItemDictionary)
+                childItems.append(child)
+            }
+        }
+        comments = [Comment]()
         if let commentsArray = mediaItemDictionary["comments"] as? NSArray {
             comments = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
         } else {
             comments = []
         }
-        return GenericMediaItem(id: id, title: title, imageName: imageName, blurb: blurb, recommendedAge: nil, myReview: nil, avgReview: nil, creator: creator, comments: comments, type: type)
     }
-    
+
     func getAverageReviewString() -> String {
         if avgReview == nil {
             return "None"
@@ -418,16 +364,16 @@ class MediaItemList : AnyObject {
 func parseMediaItem(mediaItemDictionary: NSDictionary) -> MediaItem {
     switch mediaItemDictionary["type"] as! String {
     case "TV":
-        return TelevisionShow.parseTvShow(mediaItemDictionary)
+        return TelevisionShow(mediaItemDictionary: mediaItemDictionary)
     case "Movie":
-        return Movie.parseMovie(mediaItemDictionary)
+        return Movie(mediaItemDictionary: mediaItemDictionary)
     case "Book":
-        return Book.parseBook(mediaItemDictionary)
+        return Book(mediaItemDictionary: mediaItemDictionary)
     case "Game":
-        return Game.parseGame(mediaItemDictionary)
+        return Game(mediaItemDictionary: mediaItemDictionary)
     case "Music":
-        return Music.parseMusic(mediaItemDictionary)
+        return Music(mediaItemDictionary: mediaItemDictionary)
     default:
-        return GenericMediaItem.parseGenericMediaItem(mediaItemDictionary)
+        return GenericMediaItem(mediaItemDictionary: mediaItemDictionary)
     }
 }

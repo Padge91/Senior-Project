@@ -52,6 +52,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                         if let response = jsonResponse["response"] as? NSDictionary {
                             dispatch_async(dispatch_get_main_queue()) {
                                 let itemToView = parseMediaItem(response)
+                                print(itemToView)
                                 self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
                             }
                         }
@@ -95,7 +96,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                         if let successArray = responseObject["response"] as? NSArray {
                             for element in successArray {
                                 if element is NSDictionary {
-                                    newSearchResults.append(GenericMediaItem.parseGenericMediaItem(element as! NSDictionary))
+                                    newSearchResults.append(GenericMediaItem(mediaItemDictionary: element as! NSDictionary))
                                 }
                             }
                         }

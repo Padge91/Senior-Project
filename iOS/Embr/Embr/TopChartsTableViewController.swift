@@ -24,7 +24,7 @@ class TopChartsTableViewController: UITableViewController {
                                 let name = chart["name"] as! String
                                 let objects = chart["objects"] as! NSArray
                                 for object in objects {
-                                    let mediaItem = GenericMediaItem.parseGenericMediaItem(object as! NSDictionary)
+                                    let mediaItem = GenericMediaItem(mediaItemDictionary: object as! NSDictionary)
                                     var chart = self.charts[name]
                                     if chart == nil {
                                         self.charts[name] = [mediaItem]
