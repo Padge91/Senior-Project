@@ -54,12 +54,13 @@ public class Search extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Bundle search_bundle = getIntent().getExtras();
-        unpackBundle(search_bundle);
-        super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         sessionID = settings.getString("sessionID", "");
         loggedIn_status = settings.getString("LoggedIn", "");
+        userID = settings.getInt("userID", -1);
+        Bundle item_bundle = getIntent().getExtras();
+        unpackBundle(item_bundle);
+        super.onCreate(savedInstanceState);
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.search_layout);
@@ -75,6 +76,7 @@ public class Search extends AppCompatActivity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("sessionID", sessionID);
             editor.putString("LoggedIn", loggedIn_status);
+            editor.putInt("userID", userID);
             editor.apply();
         }
     }
@@ -83,7 +85,7 @@ public class Search extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        if (!isLoggedIn) {
+        if (!loggedIn_status.equalsIgnoreCase("true")) {
             menu.getItem(4).setTitle("Login");
             menu.getItem(3).setVisible(false);
             menu.getItem(2).setVisible(false);
@@ -127,8 +129,18 @@ public class Search extends AppCompatActivity {
             Intent intent = new Intent(this, RecommendedItems.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -143,25 +155,23 @@ public class Search extends AppCompatActivity {
     }
 
     public void unpackBundle(Bundle bundle) {
-        try {
-            loggedIn_status = bundle.getString("LoggedIn");
-        } catch (Exception e) {
-        }
-        try {
-            sessionID = bundle.getString("sessionID");
-        } catch (Exception e) {
-        }
-        try {
-            userID = bundle.getInt("userID");
-        } catch (Exception e) {
-        }
-        try {
-            isFromLogin = bundle.getBoolean("isFromLogin");
-        } catch (Exception e) {
-        }
-        try {
-            username = bundle.getString("username");
-        } catch (Exception e) {
+        if (!sessionID.isEmpty()) {
+            try {
+                loggedIn_status = bundle.getString("LoggedIn");
+            } catch (Exception e) {
+            }
+            try {
+                sessionID = bundle.getString("sessionID");
+            } catch (Exception e) {
+            }
+            try {
+                userID = bundle.getInt("userID");
+            } catch (Exception e) {
+            }
+            try {
+                username = bundle.getString("username");
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -196,20 +206,39 @@ public class Search extends AppCompatActivity {
     }
 
     public void openItemViewActivity(int itemID, String itemName) {
-        Intent intent = new Intent(this, ItemView.class);
-        intent.putExtra("LoggedIn", loggedIn_status);
-        intent.putExtra("sessionID", sessionID);
-        intent.putExtra("userID", userID);
-        intent.putExtra("username", username);
-        intent.putExtra("itemID", itemID);
-        intent.putExtra("itemName", itemName);
-        startActivity(intent);
+        if(!sessionID.isEmpty()) {
+            Intent intent = new Intent(this, ItemView.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
+            intent.putExtra("itemID", itemID);
+            intent.putExtra("itemName", itemName);
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(this, ItemView.class);
+            intent.putExtra("sessionID", "invalid");
+            startActivity(intent);
+        }
     }
 
     public ArrayList<String> appendStrings(ArrayList<String> arrayList, String[] stringArray) {
         for (int count = 0; count < stringArray.length; count++)
             arrayList.add(stringArray[count]);
         return arrayList;
+    }
+
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                    Toast.makeText(Search.this, "No Response", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void getData(String s) {

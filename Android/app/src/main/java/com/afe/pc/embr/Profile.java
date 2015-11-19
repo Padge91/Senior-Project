@@ -42,9 +42,6 @@ public class Profile extends AppCompatActivity {
         Bundle item_bundle = getIntent().getExtras();
         unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        sessionID = settings.getString("sessionID", "");
-        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.profile_layout);
         setTitle(username);
 
@@ -87,18 +84,6 @@ public class Profile extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
-        super.onStop();
-        if (loggedIn_status.equals("true")) {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("sessionID", sessionID);
-            editor.putString("LoggedIn", loggedIn_status);
-            editor.apply();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
@@ -123,8 +108,18 @@ public class Profile extends AppCompatActivity {
             Intent intent = new Intent(this, FriendsList.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -147,6 +142,16 @@ public class Profile extends AppCompatActivity {
             username = bundle.getString("username");
         } catch (Exception e) {
         }
+    }
+
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+
+            }
+        });
     }
 
     public void populate_listview(final String[] values, final ListView listView) {

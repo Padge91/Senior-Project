@@ -1,14 +1,19 @@
 package com.afe.pc.embr;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,24 +51,9 @@ public class LibraryView extends AppCompatActivity {
         Bundle search_bundle = getIntent().getExtras();
         unpackBundle(search_bundle);
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        sessionID = settings.getString("sessionID", "");
-        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.library_view_layout);
         setTitle(libraryName);
         getItems();
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if (loggedIn_status.equals("true")) {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("sessionID", sessionID);
-            editor.putString("LoggedIn", loggedIn_status);
-            editor.apply();
-        }
     }
 
     @Override
@@ -92,8 +82,18 @@ public class LibraryView extends AppCompatActivity {
             Intent intent = new Intent(this, RecommendedItems.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -126,6 +126,16 @@ public class LibraryView extends AppCompatActivity {
         }
     }
 
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+
+            }
+        });
+    }
+
     public void populate_listview(final ArrayList<String> values, final ArrayList<Integer> ids, final ListView listView) {
 
         // Define a new Adapter
@@ -142,6 +152,15 @@ public class LibraryView extends AppCompatActivity {
                 int id = ids.get(position);
                 String itemName = values.get(position);
                 openItemViewActivity(id, itemName);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long notUsed) {
+                int id = ids.get(position);
+                String itemName = values.get(position);
+                removeItemDialogBox(itemName, id);
+                return true;
             }
         });
     }
@@ -165,6 +184,7 @@ public class LibraryView extends AppCompatActivity {
                     Toast.makeText(LibraryView.this, "No Response", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
+                        clearAll();
                         JSONArray jsonArray = response.getJSONArray("response");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             item_names.add(jsonArray.getJSONObject(i).getString("title"));
@@ -176,5 +196,44 @@ public class LibraryView extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void removeItem(int id) {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/RemoveItemFromLibrary.py?session=" + sessionID + "&library_id=" + libraryID + "&item_id=" + id, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                    Toast.makeText(LibraryView.this, "No Response", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    getItems();
+            }
+        });
+    }
+
+    public void removeItemDialogBox(String itemName, final int itemID) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.remove_item_layout, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setMessage("Are you sure you want to remove " + itemName + " from " + libraryName + "?");
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                removeItem(itemID);
+            }
+        });
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public void clearAll() {
+        item_names.clear();
+        item_ids.clear();
     }
 }

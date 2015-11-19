@@ -51,24 +51,9 @@ public class LibraryList extends AppCompatActivity {
         Bundle library_bundle = getIntent().getExtras();
         unpackBundle(library_bundle);
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        sessionID = settings.getString("sessionID", "");
-        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.library_list_layout);
         setTitle("Libraries");
         getLibraries();
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if (loggedIn_status.equals("true")) {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("sessionID", sessionID);
-            editor.putString("LoggedIn", loggedIn_status);
-            editor.apply();
-        }
     }
 
     @Override
@@ -138,8 +123,18 @@ public class LibraryList extends AppCompatActivity {
             Intent intent = new Intent(this, RecommendedItems.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -150,6 +145,16 @@ public class LibraryList extends AppCompatActivity {
         try { sessionID = bundle.getString("sessionID"); } catch (Exception e) {}
         try { userID = bundle.getInt("userID"); } catch (Exception e) {}
         try { username = bundle.getString("username"); } catch (Exception e) {}
+    }
+
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+
+            }
+        });
     }
 
     public void populate_listview(final ArrayList<String> values, final ArrayList<Integer> ids, final ListView listView) {

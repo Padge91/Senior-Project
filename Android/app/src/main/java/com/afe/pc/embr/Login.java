@@ -1,6 +1,7 @@
 package com.afe.pc.embr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 
 import org.json.JSONException;
@@ -19,14 +21,18 @@ import utilities.HttpResult;
 
 public class Login extends AppCompatActivity implements Button.OnClickListener {
 
-    Button loginButton, skipLoginButton, signUpButton;
+    public static final String PREFS_NAME = "MyPrefsFile";
+    Button loginButton, signUpButton;
     EditText username, password;
     String usernameEntry, passwordEntry;
+    private boolean logoutAttempt = false;
     private String sessionID = "";
     private int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle item_bundle = getIntent().getExtras();
+        unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         username = (EditText) findViewById(R.id.login_username_editText);
@@ -40,6 +46,18 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("sessionID", "");
+        editor.putString("LoggedIn", "");
+        editor.putInt("userID", -1);
+        editor.apply();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
@@ -48,6 +66,14 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (logoutAttempt)
+            return;
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -65,6 +91,13 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
         }
     }
 
+    public void unpackBundle(Bundle bundle) {
+        try {
+            logoutAttempt = bundle.getBoolean("logoutAttempt");
+        } catch (Exception e) {
+        }
+    }
+
     public void verifyLogin(String username, String password) {
         HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Login.py?username=" + username + "&password=" + password, Request.Method.GET, null, new HttpResult() {
 
@@ -73,8 +106,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                 try {
                     if (response.getString("success").equals("false")) {
                         Toast.makeText(Login.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         try {
                             sessionID = response.getString("response");
                             getUserID();
@@ -97,7 +129,7 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
                 } else {
                     try {
                         userID = response.getInt("response");
-                        openSearchActivity("Login");
+                        openSearchActivity();
                     } catch (Exception e) {
                     }
                 }
@@ -105,20 +137,22 @@ public class Login extends AppCompatActivity implements Button.OnClickListener {
         });
     }
 
-    public void openSearchActivity(String loginStatus) {
-        switch (loginStatus) {
-            case "Login":
-                if (!sessionID.isEmpty()) {
-                    Intent intent = new Intent(this, Search.class);
-                    intent.putExtra("LoggedIn", "true");
-                    intent.putExtra("sessionID", sessionID);
-                    intent.putExtra("userID", userID);
-                    intent.putExtra("isFromLogin", true);
-                    intent.putExtra("username", username.getText().toString());
-                    startActivity(intent);
-                    finish();
-                }
-                break;
+    public void openSearchActivity() {
+        if (!sessionID.isEmpty()) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", sessionID);
+            editor.putString("LoggedIn", "true");
+            editor.putInt("userID", userID);
+            editor.apply();
+            Intent intent = new Intent(this, Search.class);
+            intent.putExtra("LoggedIn", "true");
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("isFromLogin", true);
+            intent.putExtra("username", username.getText().toString());
+            startActivity(intent);
+            finish();
         }
     }
 }

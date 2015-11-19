@@ -7,6 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.Request;
+
+import org.json.JSONObject;
+
+import utilities.HttpConnect;
+import utilities.HttpResult;
+
 import static utilities.Activity.putExtraForMenuItem;
 
 public class FriendsList extends AppCompatActivity {
@@ -22,22 +29,7 @@ public class FriendsList extends AppCompatActivity {
         Bundle item_bundle = getIntent().getExtras();
         unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        sessionID = settings.getString("sessionID", "");
-        loggedIn_status = settings.getString("LoggedIn", "");
         setContentView(R.layout.friends_list_layout);
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if (loggedIn_status.equals("true")) {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("sessionID", sessionID);
-            editor.putString("LoggedIn", loggedIn_status);
-            editor.apply();
-        }
     }
 
     @Override
@@ -65,8 +57,18 @@ public class FriendsList extends AppCompatActivity {
             Intent intent = new Intent(this, FriendsList.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -91,4 +93,13 @@ public class FriendsList extends AppCompatActivity {
         }
     }
 
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+
+            }
+        });
+    }
 }

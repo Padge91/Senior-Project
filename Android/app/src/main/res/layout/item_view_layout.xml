@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".ItemView">
+    tools:context=".ItemView"
+    android:gravity="center" >
 
     // Cover Picture
 
@@ -208,7 +209,10 @@
         android:layout_alignRight="@+id/relativeLayout"
         android:layout_below="@+id/itemView_coverPicture_imageView"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@+id/itemView_myReview_textView" />
+        android:layout_toRightOf="@+id/itemView_myReview_textView"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:isIndicator="false" />
 
     <View style="@style/horizontalDivider"
         android:id="@+id/listView_divider"

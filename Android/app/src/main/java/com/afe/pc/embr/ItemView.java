@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class ItemView extends AppCompatActivity {
     private String itemName = "";
     private String parent_type = "item";
     private long parent_id;
+    private int userRating = 0;
 
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
@@ -82,6 +84,7 @@ public class ItemView extends AppCompatActivity {
     TextView averageScoreView;
     TextView descriptionView;
     ImageView imageView;
+    RatingBar ratingBar;
 
     TextView commentView;
     ListView commentsList;
@@ -94,9 +97,6 @@ public class ItemView extends AppCompatActivity {
         Bundle item_bundle = getIntent().getExtras();
         unpackBundle(item_bundle);
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        sessionID = settings.getString("sessionID", "");
-        loggedIn_status = settings.getString("LoggedIn", "");
         if (loggedIn_status.equalsIgnoreCase("true") && !sessionID.isEmpty())
             isLoggedIn = true;
         setContentView(R.layout.item_view_layout);
@@ -108,10 +108,10 @@ public class ItemView extends AppCompatActivity {
         averageScoreView = (TextView) findViewById(R.id.itemView_allReviews_textView);
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         getData();
         getLibraries();
 
-        // Comments list view
         listView = (ListView) findViewById(R.id.itemView_comments_listView);
 
         // PopUp for the add to libraries button
@@ -152,18 +152,36 @@ public class ItemView extends AppCompatActivity {
                     addCommentDialogBox();
             }
         });
-    }
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if (loggedIn_status.equals("true")) {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("sessionID", sessionID);
-            editor.putString("LoggedIn", loggedIn_status);
-            editor.apply();
-        }
+        RatingBar.OnRatingBarChangeListener ratingBarChangeListener = new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                int tempRating = (int) rating;
+                switch(tempRating) {
+                    case 1:
+                        userRating = 1;
+                        submitRating();
+                        break;
+                    case 2:
+                        userRating = 2;
+                        submitRating();
+                        break;
+                    case 3:
+                        userRating = 3;
+                        submitRating();
+                        break;
+                    case 4:
+                        userRating = 4;
+                        submitRating();
+                        break;
+                    case 5:
+                        userRating = 5;
+                        submitRating();
+                        break;
+                }
+            }
+        };
+        ratingBar.setOnRatingBarChangeListener(ratingBarChangeListener);
     }
 
     @Override
@@ -197,8 +215,18 @@ public class ItemView extends AppCompatActivity {
             Intent intent = new Intent(this, RecommendedItems.class);
             putExtraForMenuItem(item, loggedIn_status, sessionID, userID, username, intent);
             startActivity(intent);
-        } else if (s.equals("Login") || s.equals("Logout")) {
+        } else if (s.equals("Login")) {
             Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        } else if (s.equals("Logout")) {
+            logout();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("sessionID", "");
+            editor.putString("LoggedIn", "");
+            editor.apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("logoutAttempt", true);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -229,6 +257,16 @@ public class ItemView extends AppCompatActivity {
             username = bundle.getString("username");
         } catch (Exception e) {
         }
+    }
+
+    public void logout() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/Logout.py?session=" + sessionID, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+
+            }
+        });
     }
 
     public void populate_listview(final ArrayList<Comment> comments, final ListView listView) {
@@ -440,6 +478,7 @@ public class ItemView extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    ratingBar.setRating((float) userRating);
                     parent_type = "item";
                 }
             }
@@ -491,6 +530,32 @@ public class ItemView extends AppCompatActivity {
         });
     }
 
+    public void submitRating() {
+        HttpConnect.requestJson("http://52.88.5.108/cgi-bin/SubmitReview.py?session=" + sessionID + "&item_id=" + Long.toString(itemID) + "&score=" + userRating, Request.Method.GET, null, new HttpResult() {
+
+            @Override
+            public void onCallback(JSONObject response, boolean success) {
+                if (!success) {
+                } else {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("response");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Library library = new Library();
+                            library.setId(jsonArray.getJSONObject(i).getInt("id"));
+                            library.setUser_id(jsonArray.getJSONObject(i).getInt("user_id"));
+                            library.setName(jsonArray.getJSONObject(i).getString("name"));
+                            libraries_list.add(library);
+                            library_keys.put(library.getName(), library.getId());
+                        }
+                        setLibrary_names();
+                        setLibrary_ids();
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        });
+    }
+
     public void addToLibrary() {
         HttpConnect.requestJson("http://52.88.5.108/cgi-bin/AddItemToLibrary.py?session=" + sessionID + "&library_id=" +
                 libraryID + "&item_id=" + itemID, Request.Method.GET, null, new HttpResult() {
@@ -523,6 +588,7 @@ public class ItemView extends AppCompatActivity {
 
         try {
             item.setUser_score(response.optInt("user_score", -1));
+            userRating = item.getUser_score();
             item.setItem_rating(response.optString("rating", "rating"));
             JSONArray item_genres = response.getJSONArray("genres");
             String[] item_temp_genres = new String[item_genres.length()];
