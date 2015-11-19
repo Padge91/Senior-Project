@@ -3,14 +3,19 @@ import UIKit
 public class CreateCommentViewController : UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     var mediaItem: MediaItem?
+    var parentComment: Comment?
     private let placeholderText = "Write a comment..."
     @IBOutlet weak var mediaItemTitle: UILabel!
     @IBOutlet weak var body: UITextView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        assert(mediaItem != nil)
-        mediaItemTitle.text = mediaItem!.title
+        if mediaItem != nil {
+            mediaItemTitle.text = mediaItem!.title
+        } else {
+            let truncateIndex = parentComment!.body.startIndex.advancedBy(10)
+            mediaItemTitle.text = parentComment!.body.substringToIndex(truncateIndex)
+        }
         setupBody()
         setupNavigationBar()
     }
@@ -27,8 +32,16 @@ public class CreateCommentViewController : UIViewController, UITextFieldDelegate
     }
     
     func submitComment() {
-        assert(mediaItem != nil)
-        CommentsDataSource.insertComment(CommentParentType.Item, parentId: mediaItem!.id, body: body.text)
+        var parentType: CommentParentType
+        var parentId: Int
+        if mediaItem != nil {
+            parentType = CommentParentType.Item
+            parentId = mediaItem!.id
+        } else {
+            parentType = CommentParentType.Comment
+            parentId = parentComment!.id
+        }
+        CommentsDataSource.insertComment(parentType, parentId: parentId, body: body.text)
         navigationController?.popToRootViewControllerAnimated(true)
     }
     

@@ -80,6 +80,7 @@
                     <connections>
                         <segue destination="aSC-40-bIC" kind="show" identifier="segueToMenu" id="xKf-sY-U05"/>
                         <segue destination="ybs-Fx-sIL" kind="show" identifier="segueToProfile" id="nSz-Xv-8Ao"/>
+                        <segue destination="ceU-Vv-Qdj" kind="show" identifier="segueToAddComment" id="Tzv-3M-AfW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ciK-so-3K5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -725,9 +726,10 @@
         <image name="Logo" width="220" height="107"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J36-J7-SSk"/>
-        <segue reference="SjV-Ox-er9"/>
         <segue reference="kvR-ZX-q6Z"/>
-        <segue reference="KtP-O6-lkm"/>
+        <segue reference="SjV-Ox-er9"/>
+        <segue reference="xKf-sY-U05"/>
+        <segue reference="Tzv-3M-AfW"/>
+        <segue reference="nSz-Xv-8Ao"/>
     </inferredMetricsTieBreakers>
 </document>

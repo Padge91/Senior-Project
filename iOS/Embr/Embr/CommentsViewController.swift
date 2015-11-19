@@ -3,6 +3,7 @@ import UIKit
 class CommentsViewController: UITableViewController {
     let menuSegueIdentifier = "segueToMenu"
     let profileSegueIdentifier = "segueToProfile"
+    let createCommentSegueIdentifier = "segueToAddComment"
     var comments = [Comment]()
     
     override func viewDidLoad() {
@@ -43,6 +44,15 @@ class CommentsViewController: UITableViewController {
                 let comment = self.comments[indexPath.row]
                 self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
             })
+            if SessionModel.getSession() != SessionModel.noSession {
+                let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                    let comment = self.comments[indexPath.row]
+                    self.performSegueWithIdentifier(self.createCommentSegueIdentifier, sender: comment)
+                })
+                moreAction.addAction(replyAction)
+            } else {
+                moreAction.message = "Log in to reply to comments"
+            }
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
             moreAction.addAction(viewUserAction)
             moreAction.addAction(cancelAction)
@@ -54,11 +64,13 @@ class CommentsViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == profileSegueIdentifier {
-            if let destination = segue.destinationViewController as? ProfileViewController {
-                if let user = sender as? User? {
-                    destination.user = user
-                }
+            let destination = segue.destinationViewController as! ProfileViewController
+            if let user = sender as? User? {
+                destination.user = user
             }
+        } else if segue.identifier == createCommentSegueIdentifier && sender is Comment {
+            let destination = segue.destinationViewController as! CreateCommentViewController
+            destination.parentComment = sender as? Comment
         }
     }
     
