@@ -55,7 +55,7 @@ class LibraryViewController: UITableViewController {
                     if jsonResponse["success"] as! Bool {
                         if let response = jsonResponse["response"] as? NSDictionary {
                             dispatch_async(dispatch_get_main_queue()) {
-                                let itemToView = GenericMediaItem(mediaItemDictionary: response)
+                                let itemToView = parseMediaItem(response)
                                 self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
                             }
                         }

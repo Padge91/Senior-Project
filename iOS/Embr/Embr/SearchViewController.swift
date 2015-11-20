@@ -2,6 +2,7 @@ import UIKit
 
 class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
     
+    private let errorHeader = "Search View Controller Error:\n"
     private let itemDetailSegueIdentifier = "segueToItemDetails"
     private let menuSegueIdentifier = "segueToMenu"
     private let librariesSegueIdentifier = "segueToLibraries"
@@ -23,10 +24,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         toolbarItems = [librariesButton, profileButton, topChartsButton]
     }
     
-    func goToMenu() {
-        performSegueWithIdentifier(menuSegueIdentifier, sender: nil)
-    }
-    
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -39,42 +36,23 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         searchResultsTableView.tableHeaderView = searchController.searchBar
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let itemToView = self.searchResults[indexPath.row]
-        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
+    func goToMenu() {
+        performSegueWithIdentifier(menuSegueIdentifier, sender: nil)
     }
     
-    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
-        if data != nil {
-            do {
-                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
-                    if jsonResponse["success"] as! Bool {
-                        if let response = jsonResponse["response"] as? NSDictionary {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                let itemToView = parseMediaItem(response)
-                                print(itemToView)
-                                self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
-                            }
-                        }
-                    }
-                }
-            } catch {}
+    func attemptToOpenProfile() {
+        if SessionModel.getSession() != SessionModel.noSession {
+            goToProfile()
+        } else {
+            displayLoginAlert(self, completionHandler: loginCompletionHandler)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if sender is MediaItem && segue.identifier == itemDetailSegueIdentifier {
-            let destination = segue.destinationViewController as! ItemDetailsViewController
-            destination.setMediaItem(sender as! MediaItem)
-        } else if segue.identifier == librariesSegueIdentifier && sender is NSArray {
-            let destination = segue.destinationViewController as! LibrariesListTableViewController
-            let libraries = parseLibraryList(librariesArray: sender as! NSArray)
-            destination.librariesList = libraries
-        } else if segue.identifier == profileSegueIdentifier && sender is User {
-            let user = sender as! User
-            if let destination = segue.destinationViewController as? ProfileViewController {
-                destination.user = user
-            }
+    func attemptToOpenLibraries() {
+        if SessionModel.getSession() != SessionModel.noSession {
+            goToLibraries()
+        } else {
+            displayLoginAlert(self, completionHandler: loginCompletionHandler)
         }
     }
     
@@ -82,38 +60,59 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         performSegueWithIdentifier(topChartsSegueIdentifier, sender: nil)
     }
     
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        self.searchResultsTableView.reloadData()
-        ItemDataSource.getItemsBySearchCriteria(self.searchController.searchBar.text!, completionHandler: getSearchResultsCompletionHandler)
-    }
-    
-    func getSearchResultsCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
-        var newSearchResults = [MediaItem]()
-        if data != nil {
-            do {
-                if let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
-                    if responseObject["success"] as! Bool {
-                        if let successArray = responseObject["response"] as? NSArray {
-                            for element in successArray {
-                                if element is NSDictionary {
-                                    newSearchResults.append(GenericMediaItem(mediaItemDictionary: element as! NSDictionary))
-                                }
-                            }
-                        }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let id = segue.identifier {
+            switch id {
+            case itemDetailSegueIdentifier:
+                if let destination = segue.destinationViewController as? ItemDetailsViewController {
+                    if let mediaItem = sender as? MediaItem {
+                        destination.setMediaItem(mediaItem)
+                    } else {
+                        printError(errorHeader, errorMessage: "Item detail sender invalid")
                     }
+                } else {
+                    printError(errorHeader, errorMessage: "Item detail destination invalid")
                 }
-            } catch {}
-            if newSearchResults.count > 0 {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.searchResults = newSearchResults
-                    self.searchResultsTableView.reloadData()
+            case librariesSegueIdentifier:
+                if let destination = segue.destinationViewController as? LibrariesListTableViewController {
+                    if let librariesArray = sender as? NSArray {
+                        let libraries = parseLibraryList(librariesArray: librariesArray)
+                        destination.librariesList = libraries
+                    } else {
+                        printError(errorHeader, errorMessage: "Libraries sender invalid")
+                    }
+                } else {
+                    printError(errorHeader, errorMessage: "Libraries destination invalid")
                 }
+            case profileSegueIdentifier:
+                if let user = sender as? User {
+                    if let destination = segue.destinationViewController as? ProfileViewController {
+                        destination.user = user
+                    } else {
+                        printError(errorHeader, errorMessage: "Profile destination invalid")
+                    }
+                } else {
+                    printError(errorHeader, errorMessage: "Profile sender invalid")
+                }
+            default:
+                break
             }
+        } else {
+            printError(errorHeader, errorMessage: "Segue identifier is invalid")
         }
     }
-
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        self.searchResultsTableView.reloadData()
+        if let searchCriteria = self.searchController.searchBar.text {
+            ItemDataSource.getItemsBySearchCriteria(searchCriteria, completionHandler: getSearchResultsCompletionHandler)
+        } else {
+            printError(errorHeader, errorMessage: "Error: Search criteria is nil")
+        }
+    }
+    
+    func goToProfile() {
+        UserDataSource.getUserId(getUserIdCompletionHandler)
     }
     
     func goToLibraries() {
@@ -160,28 +159,6 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         }
     }
     
-    func displayLoginAlert() {
-        let alert = UIAlertController(title: "Login", message: "Login to view your libraries:", preferredStyle: .Alert)
-        alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in textfield.placeholder = "Username"})
-        alert.addTextFieldWithConfigurationHandler({(textfield: UITextField) in
-            textfield.secureTextEntry = true
-            textfield.placeholder = "Password"
-        })
-        let loginAction = UIAlertAction(title: "Login", style: .Default, handler: {(action: UIAlertAction) in
-            if let username = alert.textFields![0].text, password = alert.textFields![1].text {
-                UserDataSource.attemptLogin(username, password: password, completionHandler: self.loginCompletionHandler)
-            }
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alert.addAction(loginAction)
-        alert.addAction(cancelAction)
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    func goToProfile() {
-        UserDataSource.getUserId(getUserIdCompletionHandler)
-    }
-    
     func getUserIdCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
         if data != nil {
             do {
@@ -208,35 +185,23 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             } catch {}
         }
     }
-
     
-    func attemptToOpenProfile() {
-        if SessionModel.getSession() != SessionModel.noSession {
-            goToProfile()
+    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if let response = jsonResponse["response"] as? NSDictionary {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                let itemToView = parseMediaItem(response)
+                                self.performSegueWithIdentifier(self.itemDetailSegueIdentifier, sender: itemToView)
+                            }
+                        }
+                    }
+                }
+            } catch {}
         } else {
-            displayLoginAlert()
-        }
-    }
-    
-    func attemptToOpenLibraries() {
-        if SessionModel.getSession() != SessionModel.noSession {
-            goToLibraries()
-        } else {
-            displayLoginAlert()
-        }
-    }
-    
-    private func alertError(errorMessage error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        dispatch_async(dispatch_get_main_queue()){
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    private func succesfulLogin(sessionId session: String) {
-        dispatch_async(dispatch_get_main_queue()) {
-            SessionModel.storeSession(sessionId: session)
+            printError(errorHeader, errorMessage: "getItemCompletionHandler: no data")
         }
     }
     
@@ -249,13 +214,39 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                         succesfulLogin(sessionId: session)
                     }
                 } else if jsonResponse["response"] != nil {
-                    alertError(errorMessage: "Invalid login")
+                    alertError(self, errorMessage: "Invalid login")
                 }
             } catch {
-                alertError(errorMessage: "Invalid response")
+                alertError(self, errorMessage: "Invalid response")
             }
         }
     }
+    
+    func getSearchResultsCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        var newSearchResults = [MediaItem]()
+        if data != nil {
+            do {
+                if let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if responseObject["success"] as! Bool {
+                        if let successArray = responseObject["response"] as? NSArray {
+                            for element in successArray {
+                                if element is NSDictionary {
+                                    newSearchResults.append(MediaItem(mediaItemDictionary: element as! NSDictionary))
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {}
+            if newSearchResults.count > 0 {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.searchResults = newSearchResults
+                    self.searchResultsTableView.reloadData()
+                }
+            }
+        }
+    }
+
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "cellId"
@@ -269,6 +260,15 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         cell!.textLabel!.text = mediaItem.title
         
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let itemToView = self.searchResults[indexPath.row]
+        ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
     }
     
 }

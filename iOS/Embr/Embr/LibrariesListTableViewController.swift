@@ -62,7 +62,7 @@ class LibrariesListTableViewController: UITableViewController {
             let destination = segue.destinationViewController as! LibraryViewController
             var library = [MediaItem]()
             for element in sender as! NSArray {
-                let mediaItem = GenericMediaItem(mediaItemDictionary: element as! NSDictionary)
+                let mediaItem = parseMediaItem(element as! NSDictionary)
                 library.append(mediaItem)
             }
             destination.library = library

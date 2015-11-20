@@ -10,7 +10,7 @@ import UIKit
 
 class TopChartsTableViewController: UITableViewController {
     
-    var charts = [String: [GenericMediaItem]]()
+    var charts = [String: [MediaItem]]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ class TopChartsTableViewController: UITableViewController {
                                 let name = chart["name"] as! String
                                 let objects = chart["objects"] as! NSArray
                                 for object in objects {
-                                    let mediaItem = GenericMediaItem(mediaItemDictionary: object as! NSDictionary)
+                                    let mediaItem = parseMediaItem(object as! NSDictionary)
                                     var chart = self.charts[name]
                                     if chart == nil {
                                         self.charts[name] = [mediaItem]

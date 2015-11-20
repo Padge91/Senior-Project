@@ -27,6 +27,7 @@
 		665399D91BAC97B30055899B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665399D81BAC97B30055899B /* SearchViewController.swift */; };
 		665AC88C1BC5B92D00589860 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665AC88B1BC5B92D00589860 /* SignUpViewController.swift */; };
 		666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666796971BB6BD2A00643098 /* ItemDataSource.swift */; };
+		667AEB011BFF8ACC009F0C88 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667AEB001BFF8ACC009F0C88 /* Utilities.swift */; };
 		66873A0E1BA9CED600A71432 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */; };
 		668D74B61BF6A86300499A40 /* FriendsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668D74B51BF6A86300499A40 /* FriendsListTableViewController.swift */; };
 		66AC95F01BFA80CE00F3BF23 /* TopChartsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC95EF1BFA80CE00F3BF23 /* TopChartsTableViewController.swift */; };
@@ -72,6 +73,7 @@
 		665399D81BAC97B30055899B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		665AC88B1BC5B92D00589860 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		666796971BB6BD2A00643098 /* ItemDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDataSource.swift; sourceTree = "<group>"; };
+		667AEB001BFF8ACC009F0C88 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		66873A0D1BA9CED600A71432 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
 		668D74B51BF6A86300499A40 /* FriendsListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListTableViewController.swift; sourceTree = "<group>"; };
 		66AC95EF1BFA80CE00F3BF23 /* TopChartsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopChartsTableViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				6609A8A21BCFBF4800219D19 /* LibrariesDataSource.swift */,
 				6648825C1BD1AF3A004E41D0 /* Library.swift */,
 				66AC95F11BFA810E00F3BF23 /* TopChartsModel.swift */,
+				667AEB001BFF8ACC009F0C88 /* Utilities.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				666796981BB6BD2A00643098 /* ItemDataSource.swift in Sources */,
 				66E5BCFF1BF4F19B00E91DA2 /* ProfileViewController.swift in Sources */,
 				664882631BD26FB3004E41D0 /* LibrariesListTableViewController.swift in Sources */,
+				667AEB011BFF8ACC009F0C88 /* Utilities.swift in Sources */,
 				6648825D1BD1AF3A004E41D0 /* Library.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

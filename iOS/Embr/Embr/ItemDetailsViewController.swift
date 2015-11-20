@@ -6,8 +6,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let commentsSegueIdentifier = "segueToComments"
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let menuSegueIdentifier = "segueToMenu"
-    private let sectionHeadings = ["Reviews", "Blurb", "Comments"]
-    private let reviewsSection = 0, blurbSection = 1, commentsSection = 2
+    private let sectionHeadings = ["Reviews", "Blurb", "More", "Comments"]
+    private let reviewsSection = 0, blurbSection = 1, commentsSection = 3, moreSection = 2
     
     private var mediaItem: MediaItem? = nil
     private var itemDetails = [String: [AnyObject]]()
@@ -69,13 +69,34 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func loadTopAttribute() {
         assert(mediaItem != nil)
+        if mediaItem is Movie {
+            topAttributeLabel.text = (mediaItem as! Movie).director
+        } else if mediaItem is Book {
+            topAttributeLabel.text = (mediaItem as! Book).authors
+        } else if mediaItem is Game {
+            topAttributeLabel.text = (mediaItem as! Game).studio
+        } else if mediaItem is TelevisionShow {
+            topAttributeLabel.text = (mediaItem as! TelevisionShow).director
+        } else if mediaItem is Music {
+            topAttributeLabel.text = (mediaItem as! Music).artist
+        } else {
+            topAttributeLabel.hidden = true
+        }
     }
     
     private func loadBottomAttribute() {
         assert(mediaItem != nil)
         if mediaItem is Movie {
             bottomAttributeLabel.text = (mediaItem as! Movie).cast
-        } else {
+        } else if mediaItem is Book {
+            bottomAttributeLabel.text = "Page Count: \((mediaItem as! Book).numPages)"
+        } else if mediaItem is Game {
+            bottomAttributeLabel.text = (mediaItem as! Game).rating
+        } else if mediaItem is TelevisionShow {
+            bottomAttributeLabel.text = (mediaItem as! TelevisionShow).channel
+        } else if mediaItem is Music {
+            bottomAttributeLabel.text = (mediaItem as! Music).recordingCompany
+        }else {
             bottomAttributeLabel.hidden = true
         }
     }
@@ -98,9 +119,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         mediaItem = item
         itemDetails = [
             sectionHeadings[reviewsSection]: [
-                "Average Embr User Review: \(mediaItem!.getAverageReviewString())",
+                "Average Embr User Review: \(item.getAverageReviewString())",
             ],
-            sectionHeadings[blurbSection]: [item.blurb],
+            sectionHeadings[blurbSection]: [item.blurb!],
+            sectionHeadings[moreSection]: item.childItems,
             sectionHeadings[commentsSection]: item.comments
         ]
     }
@@ -119,6 +141,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 cell!.textLabel!.text = sectionDetail as? String
             } else if sectionDetail is Comment {
                 cell!.textLabel!.text = (sectionDetail as! Comment).toString()
+            } else if sectionDetail is MediaItem {
+                cell!.textLabel!.text = (sectionDetail as! MediaItem).title
             }
             cell!.textLabel!.lineBreakMode = NSLineBreakMode.ByWordWrapping
             cell!.textLabel!.numberOfLines = 0
@@ -128,7 +152,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 2 {
+        if indexPath.section == commentsSection {
             performSegueWithIdentifier(commentsSegueIdentifier, sender: indexPath)
         }
     }
@@ -155,7 +179,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBAction func reviewItem(sender: UIButton) {
         if SessionModel.getSession() != SessionModel.noSession {
-            // Update UI
             let index = reviewCollection.indexOf(sender)
             for i in 0...4 {
                 let star = reviewCollection[i]
@@ -166,7 +189,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 }
             }
             
-            // Update DB
             ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                 if data != nil {
                     let message = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
