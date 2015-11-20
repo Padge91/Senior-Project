@@ -31,5 +31,6 @@
     <color name="ui_background">#eeeeee</color>
     <color name="poll_list_item">#eeeeee</color>
 
+    <color name="star_color">#fa5502</color>
 
 </resources>

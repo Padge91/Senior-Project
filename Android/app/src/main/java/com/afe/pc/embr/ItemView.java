@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,6 +112,8 @@ public class ItemView extends AppCompatActivity {
         descriptionView = (TextView) findViewById(R.id.itemView_description_textView);
         imageView = (ImageView) findViewById(R.id.itemView_coverPicture_imageView);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.star_color), PorterDuff.Mode.SRC_ATOP);
         getData();
         getLibraries();
 
