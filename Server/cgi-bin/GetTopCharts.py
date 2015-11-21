@@ -23,7 +23,12 @@ def main():
 
         success_response(results)
     except Exception as e:
-        failure_response(e.message)
+        try:
+            orm = ChartsORM()
+            results = orm.get_nosession_charts()
+            success_response(results)
+        except Exception as e2:
+            failure_response(e2.message)
 
 
 if __name__ == "__main__":

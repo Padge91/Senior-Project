@@ -36,7 +36,7 @@ def json_request(form, required_params):
     for param in required_params:
         if param not in response:
             raise Exception(param +" is required")
-        response[param] = response[param]
+        response[param] = response[param].replace("'","''")
 
     return response
 
@@ -71,7 +71,7 @@ def get_required_parameters(request, required_params):
             raise Exception(param +" is required")
 
         if not alrdy:
-            response[param] = form[param].value
+            response[param] = form[param].value.replace("'","''")
         else:
             response[param] = form[param]
 

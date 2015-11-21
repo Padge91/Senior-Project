@@ -75,3 +75,14 @@ class FriendsORM(object):
         users = self.convert_rows_to_users(results)
 
         return users;
+
+    def is_my_friend(self, form):
+        user = get_user_id_from_session(form)
+        friend = form["user_id"]
+
+        query = "select user_id, friend_id from user_friends where user_id = {0} and friend_id = {1}".format(user, friend)
+        results = select_query(query)
+        if len(results) > 0:
+            return True
+        else:
+            return False

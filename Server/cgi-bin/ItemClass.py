@@ -7,7 +7,7 @@ class SimpleItem(object):
         self.id = row[0]
         self.title = row[1]
         self.description = row[2]
-        self.image = "http://52.88.5.108/notfound.png"
+        self.image = "http://localhost/notfound.png"
         self.type = row[3]
 
     def jsonify(self):
@@ -19,7 +19,7 @@ class FullItem(object):
         self.title = strip_tags(html_unescape(row[1]))
         self.description = strip_tags(html_unescape(row[2]))
         self.type = row[3]
-        self.image = "http://52.88.5.108/notfound.png"
+        self.image = "http://localhost/notfound.png"
         self.comments = list()
         self.genres = list()
         self.average_score = None

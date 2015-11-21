@@ -1,18 +1,19 @@
 #!/usr/bin/python
 __author__ = 'nicholaspadgett'
 
+
 import cgi
 
 from Utilities import *
-from ItemORM import *
+from FriendsORM import *
 
-required_params = ["id", "session"]
+required_params = ["session", "user_id"]
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = ItemORM()
-        response = orm.get_full_item(form)
+        orm = FriendsORM()
+        response = orm.is_my_friend(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)
