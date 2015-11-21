@@ -2,10 +2,12 @@ import UIKit
 
 class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    private let errorHeader = "Item Details View Controller"
     private let librariesSegueIdentifier = "segueToLibraries"
     private let commentsSegueIdentifier = "segueToComments"
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let menuSegueIdentifier = "segueToMenu"
+    private let moreInfoSegueIdentifier = "segueToMoreInfo"
     private let sectionHeadings = ["Reviews", "Blurb", "More", "Comments"]
     private let reviewsSection = 0, blurbSection = 1, commentsSection = 3, moreSection = 2
     
@@ -65,6 +67,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 }
             }
         }
+    }
+    
+    @IBAction func goToMoreInfo(sender: UIButton) {
+        performSegueWithIdentifier(moreInfoSegueIdentifier, sender: nil)
     }
     
     private func loadTopAttribute() {
@@ -174,6 +180,12 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
+        } else if segue.identifier == moreInfoSegueIdentifier {
+            if let destination = segue.destinationViewController as? ItemMoreInfoTableViewController {
+                destination.mediaItem = self.mediaItem!
+            } else {
+                printError(errorHeader, errorMessage: "More Info destination invalid")
+            }
         }
     }
     
