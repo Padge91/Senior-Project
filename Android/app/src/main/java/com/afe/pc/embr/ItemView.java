@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
@@ -14,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -162,28 +160,31 @@ public class ItemView extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 int tempRating = (int) rating;
-                switch(tempRating) {
-                    case 1:
-                        userRating = 1;
-                        submitRating();
-                        break;
-                    case 2:
-                        userRating = 2;
-                        submitRating();
-                        break;
-                    case 3:
-                        userRating = 3;
-                        submitRating();
-                        break;
-                    case 4:
-                        userRating = 4;
-                        submitRating();
-                        break;
-                    case 5:
-                        userRating = 5;
-                        submitRating();
-                        break;
-                }
+                if (!isLoggedIn)
+                    Toast.makeText(ItemView.this, "Please login to use this feature", Toast.LENGTH_SHORT).show();
+                else
+                    switch (tempRating) {
+                        case 1:
+                            userRating = 1;
+                            submitRating();
+                            break;
+                        case 2:
+                            userRating = 2;
+                            submitRating();
+                            break;
+                        case 3:
+                            userRating = 3;
+                            submitRating();
+                            break;
+                        case 4:
+                            userRating = 4;
+                            submitRating();
+                            break;
+                        case 5:
+                            userRating = 5;
+                            submitRating();
+                            break;
+                    }
             }
         };
         ratingBar.setOnRatingBarChangeListener(ratingBarChangeListener);
@@ -377,8 +378,8 @@ public class ItemView extends AppCompatActivity {
                                 Book book = new Book();
                                 setItemDetails(response, book);
                                 book.setPublish_date(response.optString("publishDate", "publishDate"));
-                                book.setNumber_of_pages(response.optInt("pages", -1));
-                                book.setAuthor(response.optString("author", "author"));
+                                book.setNumber_of_pages(response.optInt("numPages", -1));
+                                book.setAuthor(response.optString("authors", "author"));
                                 book.setPublisher(response.optString("publisher", "publisher"));
                                 book.setEdition(response.optString("edition", "edition"));
                                 setItemLayout(book);
@@ -439,7 +440,7 @@ public class ItemView extends AppCompatActivity {
                                 Music music = new Music();
                                 setItemDetails(response, music);
                                 music.setRelease_date(response.optString("releaseDate", "releaseDate"));
-                                music.setRecording_company(response.optString("recording_company", "recording_company"));
+                                music.setRecording_company(response.optString("recordingCompany", "recording_company"));
                                 music.setArtist(response.optString("artist", "artist"));
                                 music.setLength(response.optString("length", "length"));
                                 setItemLayout(music);
@@ -540,23 +541,7 @@ public class ItemView extends AppCompatActivity {
 
             @Override
             public void onCallback(JSONObject response, boolean success) {
-                if (!success) {
-                } else {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("response");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            Library library = new Library();
-                            library.setId(jsonArray.getJSONObject(i).getInt("id"));
-                            library.setUser_id(jsonArray.getJSONObject(i).getInt("user_id"));
-                            library.setName(jsonArray.getJSONObject(i).getString("name"));
-                            libraries_list.add(library);
-                            library_keys.put(library.getName(), library.getId());
-                        }
-                        setLibrary_names();
-                        setLibrary_ids();
-                    } catch (Exception e) {
-                    }
-                }
+                getData();
             }
         });
     }
@@ -605,11 +590,17 @@ public class ItemView extends AppCompatActivity {
             item.setTitle(response.optString("title", "title"));
             item.setImage_URL(response.optString("image", "image.png"));
             item.setParent_id(response.optInt("parent_id", -1));
-//            JSONArray item_child_items = response.getJSONArray("child_items");
-//            long[] item_temp_child_items = new long[item_child_items.length()];
-//            for (int i = 0; i < item_child_items.length(); i++)
-//                item_temp_child_items[i] = item_child_items.getInt(i);
-//            item.setChild_items(item_temp_child_items);
+            JSONArray item_child_items = response.getJSONArray("child_items");
+            if (item_child_items.length() > 0) {
+                long[] item_temp_child_items_ids = new long[item_child_items.length()];
+                String[] item_temp_child_items_names = new String[item_child_items.length()];
+                for (int i = 0; i < item_child_items.length(); i++) {
+                    item_temp_child_items_ids[i] = item_child_items.getJSONObject(i).getLong("id");
+                    item_temp_child_items_names[i] = item_child_items.getJSONObject(i).getString("title");
+                }
+                item.setChild_items_ids(item_temp_child_items_ids);
+                item.setChild_items_names(item_temp_child_items_names);
+            }
             item.setMedia_type(response.optString("type", "type"));
             item.setItem_id(response.optLong("id", -1));
             ArrayList<Comment> comments_array = new ArrayList<>();

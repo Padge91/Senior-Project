@@ -15,7 +15,8 @@ public class Item {
     private String title;
     private String image_URL;
     private int parent_id;
-    private long[] child_items;
+    private long[] child_items_ids;
+    private String[] child_items_names;
     private String media_type;
     private long item_id;
     private ArrayList<Comment> comments = new ArrayList<>();
@@ -24,14 +25,10 @@ public class Item {
 
     }
 
-    public Item(long item_id, String title) {
-        this.item_id = item_id;
-        this.title = title;
-    }
-
     public Item(int user_score, String item_rating, String[] genres, double average_score,
                 String description, String title, String image_URL, int parent_id,
-                long[] child_items, String media_type, long item_id, ArrayList<Comment> comments) {
+                long[] child_items_ids, String[] child_items_names, String media_type,
+                long item_id, ArrayList<Comment> comments) {
 
         this.user_score = user_score;
         this.item_rating = item_rating;
@@ -41,7 +38,8 @@ public class Item {
         this.title = title;
         this.image_URL = image_URL;
         this.parent_id = parent_id;
-        this.child_items = child_items;
+        this.child_items_ids = child_items_ids;
+        this.child_items_names = child_items_names;
         this.media_type = media_type;
         this.item_id = item_id;
         this.comments = comments;
@@ -128,12 +126,20 @@ public class Item {
         this.parent_id = parent_id;
     }
 
-    public long[] getChild_items() {
-        return child_items;
+    public long[] getChild_items_ids() {
+        return child_items_ids;
     }
 
-    public void setChild_items(long[] child_items) {
-        this.child_items = child_items;
+    public void setChild_items_ids(long[] child_items_ids) {
+        this.child_items_ids = child_items_ids;
+    }
+
+    public String[] getChild_items_names() {
+        return child_items_names;
+    }
+
+    public void setChild_items_names(String[] child_items_names) {
+        this.child_items_names = child_items_names;
     }
 
     public String getMedia_type() {

@@ -30,7 +30,8 @@
         android:layout_marginLeft="15dp"
         android:layout_toEndOf="@+id/itemView_coverPicture_imageView"
         android:layout_toRightOf="@+id/itemView_coverPicture_imageView"
-        android:textColor="#010101" />
+        android:textColor="#010101"
+        android:layout_marginRight="10dp" />
 
     // Author
 
@@ -42,7 +43,8 @@
         android:layout_alignStart="@+id/itemView_1_textView"
         android:layout_below="@+id/itemView_1_textView"
         android:layout_marginBottom="10dp"
-        android:textColor="#010101" />
+        android:textColor="#010101"
+        android:layout_marginRight="10dp" />
 
     // My Review
 
@@ -54,7 +56,8 @@
         android:layout_alignLeft="@+id/itemView_2_textView"
         android:layout_alignStart="@+id/itemView_2_textView"
         android:layout_marginBottom="10dp"
-        android:textColor="#010101" />
+        android:textColor="#010101"
+        android:layout_marginRight="10dp" />
 
     <TextView
         android:id="@+id/itemView_myReview_textView"

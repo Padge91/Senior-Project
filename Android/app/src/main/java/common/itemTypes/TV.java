@@ -24,12 +24,12 @@ public class TV extends Item {
 
     public TV(int user_score, String item_rating, String[] genres, double average_score,
               String description, String title, String image_URL, int parent_id,
-              long[] child_items, String media_type, long item_id, ArrayList<Comment> comments,
+              long[] child_items_ids, String[] child_items_names, String media_type, long item_id, ArrayList<Comment> comments,
               String air_date, String directors, String runtime, String[] actors, String writers,
               String channel, String rating) {
 
         super(user_score, item_rating, genres, average_score, description, title, image_URL,
-                parent_id, child_items, media_type, item_id, comments);
+                parent_id, child_items_ids, child_items_names, media_type, item_id, comments);
 
         this.air_date = air_date;
         this.directors = directors;

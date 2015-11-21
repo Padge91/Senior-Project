@@ -24,12 +24,12 @@ public class Game extends Item {
 
     public Game(int user_score, String item_rating, String[] genres, double average_score,
                 String description, String title, String image_URL, int parent_id,
-                long[] child_items, String media_type, long item_id, ArrayList<Comment> comments,
+                long[] child_items_ids, String[] child_items_names, String media_type, long item_id, ArrayList<Comment> comments,
                 String publisher, String developer_studio, String release_date, String rating,
                 int average_length_of_play, boolean is_multiplayer, boolean is_singleplayer) {
 
         super(user_score, item_rating, genres, average_score, description, title, image_URL,
-                parent_id, child_items, media_type, item_id, comments);
+                parent_id, child_items_ids, child_items_names, media_type, item_id, comments);
 
         this.publisher = publisher;
         this.developer_studio = developer_studio;

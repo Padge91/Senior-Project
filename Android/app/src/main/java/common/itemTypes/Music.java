@@ -21,11 +21,11 @@ public class Music extends Item {
 
     public Music(int user_score, String item_rating, String[] genres, double average_score,
                  String description, String title, String image_URL, int parent_id,
-                 long[] child_items, String media_type, long item_id, ArrayList<Comment> comments,
+                 long[] child_items_ids, String[] child_items_names, String media_type, long item_id, ArrayList<Comment> comments,
                  String release_date, String recording_company, String artist, String length) {
 
         super(user_score, item_rating, genres, average_score, description, title, image_URL,
-                parent_id, child_items, media_type, item_id, comments);
+                parent_id, child_items_ids, child_items_names, media_type, item_id, comments);
 
         this.release_date = release_date;
         this.recording_company = recording_company;

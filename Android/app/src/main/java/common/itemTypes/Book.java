@@ -22,12 +22,12 @@ public class Book extends Item {
 
     public Book(int user_score, String item_rating, String[] genres, double average_score,
                 String description, String title, String image_URL, int parent_id,
-                long[] child_items, String media_type, long item_id, ArrayList<Comment> comments,
+                long[] child_items_ids, String[] child_items_names, String media_type, long item_id, ArrayList<Comment> comments,
                 String publish_date, int number_of_pages, String author, String publisher,
                 String edition) {
 
         super(user_score, item_rating, genres, average_score, description, title, image_URL,
-                parent_id, child_items, media_type, item_id, comments);
+                parent_id, child_items_ids, child_items_names, media_type, item_id, comments);
 
         this.publish_date = publish_date;
         this.number_of_pages = number_of_pages;
