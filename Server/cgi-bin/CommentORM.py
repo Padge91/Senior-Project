@@ -35,6 +35,16 @@ class CommentORM(object):
             comment.user_review = self.add_user_review_to_comment(comment.user_id, comment.item_id)
             comment.comment_rating = self.add_rating_to_comment(comment.id)
             comment.child_comments = self.get_child_comments(comment.id, item_id)
+            comment.parent_id = self.get_parent_comment(comment.id)
+
+    def get_parent_comment(self, comment_id):
+        query = "select parent_id from comment_parents where child_id={0}".format(comment_id)
+        response = select_query(query)
+
+        if len(response)  < 1:
+            return None
+        else:
+            return response[0][0]
 
     def get_child_comments(self, comment_id, item_id):
         response_objects = []
@@ -53,6 +63,8 @@ class CommentORM(object):
 
 
     def add_user_review_to_comment(self, user_id, item_id):
+        if item_id is None:
+            return None
         query = "select review_value from item_reviews where item_id={0} and user_id={1}".format(item_id, user_id)
         rows = select_query(query)
 
@@ -192,3 +204,13 @@ class CommentORM(object):
             insert_query(query)
 
         return True
+
+    def get_replies(self, user_id, list):
+        objects = []
+
+        query = "select id, user_id, create_date, content from comments where id in (select child_id from comment_parents where parent_id in (select id from comments where user_id={0}))".format(user_id)
+        results = select_query(query)
+
+        objects = self.convert_rows_to_FullComment(results)
+        self.build_comment_objects(objects,None)
+        list += objects

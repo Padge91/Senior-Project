@@ -13,6 +13,7 @@ class FullComment(object):
         self.user_review = None
         self.comment_rating = None
         self.child_comments = list()
+        self.parent_id = None
 
     def jsonify(self):
         obj = dict()
@@ -24,6 +25,7 @@ class FullComment(object):
         obj["user_name"] = self.user_name
         obj["user_review"] = self.user_review
         obj["comment_rating"] = self.comment_rating
+        obj["parent_id"] = self.parent_id
 
         if self.child_comments is not None:
             obj["child_comments"] = [object.jsonify() for object in self.child_comments]

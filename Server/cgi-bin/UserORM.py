@@ -2,6 +2,7 @@ __author__ = 'nicholaspadgett'
 
 from userUtils import *
 from UserClass import *
+from CommentORM import *
 
 class UserORM(object):
 
@@ -68,3 +69,12 @@ class UserORM(object):
         results = select_query(query)
         user = User(results[0])
         return user
+
+    def get_updates(self, form):
+        user_id = get_user_id_from_session(form)
+        updates = []
+
+        #get comment replies, order by date
+        orm = CommentORM()
+        orm.get_replies(user_id, updates)
+        return updates
