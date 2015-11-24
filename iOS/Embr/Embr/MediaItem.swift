@@ -40,6 +40,13 @@ class MediaItem {
         }
     }
     
+    func getAverageFriendReviewString() -> String {
+        if avgFriendReview == nil {
+            return "None"
+        }
+        return "\(avgFriendReview!)"
+    }
+    
     func getAverageReviewString() -> String {
         if avgReview == nil {
             return "None"
