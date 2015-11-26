@@ -29,6 +29,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                             if userId != self.user!.id {
                                 dispatch_async(dispatch_get_main_queue()) {
                                     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
+                                    self.updates.hidden = true
                                     self.isMe = false
                                 }
                             } else {
