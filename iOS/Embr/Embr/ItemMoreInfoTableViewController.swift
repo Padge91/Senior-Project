@@ -12,8 +12,8 @@ class ItemMoreInfoTableViewController: UITableViewController {
     
     var mediaItem: MediaItem?
     var headers = [String]()
-    var itemInfo = [String: [String]]()
-    private let basicHeader = 0, specialHeader = 1, genresHeader = 2
+    var itemInfo = [String: [AnyObject]]()
+    private let basicHeader = 0, specialHeader = 1, genresHeader = 2, moreHeader = 3
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +21,7 @@ class ItemMoreInfoTableViewController: UITableViewController {
         headers.append("Basic Information")
         addSpecialHeader()
         headers.append("Genres")
+        headers.append("More")
         setupItemInfo()
         self.tableView.estimatedRowHeight = 100.0
     }
@@ -72,9 +73,9 @@ class ItemMoreInfoTableViewController: UITableViewController {
             let game = self.mediaItem as! Game
             self.itemInfo[headers[specialHeader]]?.append("Studio: \(game.studio!)")
             self.itemInfo[headers[specialHeader]]?.append("Publisher: \(game.publisher!)")
-            self.itemInfo[headers[specialHeader]]?.append("Rating: \(game.rating)")
-            self.itemInfo[headers[specialHeader]]?.append("Multiplayer: \(game.multiplayer)")
-            self.itemInfo[headers[specialHeader]]?.append("Singleplayer: \(game.singleplayer)")
+            self.itemInfo[headers[specialHeader]]?.append("Rating: \(game.rating ?? "NA")")
+            self.itemInfo[headers[specialHeader]]?.append("Multiplayer: \(game.multiplayer ? "✔︎":"✗")")
+            self.itemInfo[headers[specialHeader]]?.append("Singleplayer: \(game.singleplayer ? "✔︎":"✗")")
             self.itemInfo[headers[specialHeader]]?.append("Release Date: \(game.releaseDate!)")
             self.itemInfo[headers[specialHeader]]?.append("Game Length: \(game.length!)")
         } else if self.mediaItem is TelevisionShow {
@@ -100,6 +101,9 @@ class ItemMoreInfoTableViewController: UITableViewController {
         
         // Setup genres
         self.itemInfo[self.headers[genresHeader]] = self.mediaItem!.genres
+        
+        // Setup More
+        self.itemInfo[self.headers[moreHeader]] = self.mediaItem!.childItems
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -123,7 +127,11 @@ class ItemMoreInfoTableViewController: UITableViewController {
         let header = self.headers[indexPath.section]
         if let sectionInfo = self.itemInfo[header] {
             let rowInfo = sectionInfo[indexPath.row]
-            cell!.textLabel!.text = rowInfo
+            if let info = rowInfo as? String {
+                cell!.textLabel!.text = info
+            } else if let item = rowInfo as? MediaItem {
+                cell!.textLabel!.text = item.title
+            }
         }
         
         cell!.textLabel!.lineBreakMode = NSLineBreakMode.ByWordWrapping

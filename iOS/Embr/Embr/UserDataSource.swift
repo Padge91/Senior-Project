@@ -45,4 +45,8 @@ class UserDataSource {
             "password=\(password)&" +
             "passwordConfirm=\(confirmPassword)", completionHandler: completionHandler)
     }
+    
+    static func getUpdates(completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/GetUpdatesFeed.py", params: ["session": SessionModel.getSession()], completionHandler: completionHandler)
+    }
 }

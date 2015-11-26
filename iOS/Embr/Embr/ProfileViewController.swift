@@ -1,12 +1,13 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     private let librariesSegueIdentifier = "segueToLibraries"
     private let friendsSegueIdentifier = "segueToFriends"
     
     var user: User?
     var isMe = false
+    var feed = [Comment]()
 
     @IBOutlet weak var updates: UITableView!
     @IBOutlet weak var username: UILabel!
@@ -16,6 +17,9 @@ class ProfileViewController: UIViewController {
         if user != nil {
             self.username.text = user!.username
             self.email.text = user!.email
+            updates.estimatedRowHeight = 100.0
+            updates.rowHeight = UITableViewAutomaticDimension
+            
             SessionModel.getUserIdFromSession { (data, response, error) -> Void in
                 if data != nil {
                     do {
@@ -34,6 +38,23 @@ class ProfileViewController: UIViewController {
                     } catch {}
                 }
             }
+            
+            updates.delegate = self
+            updates.dataSource = self
+            UserDataSource.getUpdates({ (data, response, error) -> Void in
+                if data != nil {
+                    do {
+                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                        if jsonResponse["success"] as! Bool {
+                            let commentsArray = jsonResponse["response"] as! [NSDictionary]
+                            self.feed = Comment.parseJsonComments(commentsOnItem: commentsArray, parentComment: nil)
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.updates.reloadData()
+                            }
+                        }
+                    } catch {}
+                }
+            })
         } else {
             navigationController!.popToRootViewControllerAnimated(true)
         }
@@ -59,7 +80,7 @@ class ProfileViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.feed.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -69,6 +90,13 @@ class ProfileViewController: UIViewController {
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reusableCellIdentifier)
         }
+        
+        let comment = self.feed[indexPath.row]
+        let update = "Your comment got a response!\n\(comment.author.username) said \"\(comment.body)\""
+        cell!.textLabel!.text = update
+        
+        cell!.textLabel!.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        cell!.textLabel!.numberOfLines = 0
         
         return cell!
     }

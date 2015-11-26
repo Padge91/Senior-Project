@@ -8,7 +8,8 @@ class MediaItem {
     private(set) var recommendedAge: Int? 
     private(set) var myReview: Int? 
     private(set) var avgFriendReview: Double? 
-    private(set) var avgReview: Double? 
+    private(set) var avgReview: Double?
+    private(set) var type: String?
     private(set) var comments: [Comment] 
     private(set) var genres: [String] 
     private(set) var childItems: [MediaItem] 
@@ -21,6 +22,7 @@ class MediaItem {
         blurb = mediaItemDictionary["description"] as? String ?? "Description of the item"
         myReview = mediaItemDictionary["user_score"] as? Int
         avgReview = mediaItemDictionary["average_score"] as? Double
+        type = mediaItemDictionary["type"] as? String ?? "None"
         parentId = mediaItemDictionary["parent_id"] as? Int
         genres = mediaItemDictionary["genres"] as? [String] ?? []
         childItems = [MediaItem]()

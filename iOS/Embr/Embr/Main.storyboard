@@ -700,10 +700,10 @@
         <image name="Logo" width="220" height="107"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Hl1-VX-9yS"/>
+        <segue reference="SjV-Ox-er9"/>
+        <segue reference="KtP-O6-lkm"/>
+        <segue reference="J36-J7-SSk"/>
         <segue reference="kvR-ZX-q6Z"/>
-        <segue reference="beZ-fF-TWw"/>
-        <segue reference="u4J-yZ-wqv"/>
-        <segue reference="nSz-Xv-8Ao"/>
+        <segue reference="Hl1-VX-9yS"/>
     </inferredMetricsTieBreakers>
 </document>

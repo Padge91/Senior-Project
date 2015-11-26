@@ -8,8 +8,9 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let menuSegueIdentifier = "segueToMenu"
     private let moreInfoSegueIdentifier = "segueToMoreInfo"
-    private let sectionHeadings = ["", "Reviews", "Blurb", "More", "Comments"]
-    private let detailsSection = 0, reviewsSection = 1, blurbSection = 2, moreSection = 3, commentsSection = 4
+    private let sectionHeadings = ["", "Reviews", "Blurb", "Comments"]
+    private let detailsSection = 0, reviewsSection = 1, blurbSection = 2, commentsSection = 3
+    private let detailsButton = "Details", addToLibraryButton = "Add to Library", addACommentButton = "Add a Comment"
     
     private var mediaItem: MediaItem? = nil
     private var itemDetails = [String: [AnyObject]]()
@@ -65,10 +66,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    @IBAction func goToMoreInfo(sender: UIButton) {
-        performSegueWithIdentifier(moreInfoSegueIdentifier, sender: nil)
-    }
-    
     private func loadMyReview() {
         assert(mediaItem != nil)
         if let review = mediaItem!.myReview {
@@ -87,16 +84,15 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         mediaItem = item
         itemDetails = [
             sectionHeadings[detailsSection]: [
-                "Details",
-                "Add to Library",
-                "Add a Comment"
+                detailsButton,
+                addToLibraryButton,
+                addACommentButton
             ],
             sectionHeadings[reviewsSection]: [
                 "Average Embr User Review: \(item.getAverageReviewString())",
                 "Average Friend Review: \(item.getAverageFriendReviewString())"
             ],
             sectionHeadings[blurbSection]: [item.blurb!],
-            sectionHeadings[moreSection]: item.childItems,
             sectionHeadings[commentsSection]: item.comments
         ]
     }
@@ -134,6 +130,27 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == commentsSection {
             performSegueWithIdentifier(commentsSegueIdentifier, sender: indexPath)
+        } else if indexPath.section == detailsSection {
+            if let button = tableView.cellForRowAtIndexPath(indexPath)!.textLabel!.text {
+                switch button {
+                case detailsButton:
+                    performSegueWithIdentifier(moreInfoSegueIdentifier, sender: nil)
+                case addToLibraryButton:
+                    if SessionModel.getSession() != SessionModel.noSession {
+                        addToLibrary()
+                    } else {
+                        promptUserLogin()
+                    }
+                case addACommentButton:
+                    if SessionModel.getSession() != SessionModel.noSession {
+                        performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
+                    } else {
+                        promptUserLogin()
+                    }
+                default:
+                    break
+                }
+            }
         }
     }
     
@@ -181,14 +198,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     print(message)
                 }
             })
-        } else {
-            promptUserLogin()
-        }
-    }
-    
-    @IBAction func attemptAddToLibrary(sender: UIButton) {
-        if SessionModel.getSession() != SessionModel.noSession {
-            addToLibrary()
         } else {
             promptUserLogin()
         }
@@ -244,14 +253,6 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     print(errorMsg)
                 }
             }
-        }
-    }
-    
-    @IBAction func commentOnItem(sender: UIButton) {
-        if SessionModel.getSession() != SessionModel.noSession {
-            performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
-        } else {
-            promptUserLogin()
         }
     }
     

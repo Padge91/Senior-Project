@@ -1,6 +1,6 @@
 import UIKit
 
-class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
+class SearchViewController : UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     private let errorHeader = "Search View Controller Error:\n"
     private let itemDetailSegueIdentifier = "segueToItemDetails"
@@ -8,7 +8,9 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private let librariesSegueIdentifier = "segueToLibraries"
     private let profileSegueIdentifier = "segueToProfile"
     private let topChartsSegueIdentifier = "segueToTopCharts"
-    private var searchResults = [MediaItem]()
+    private let scopeTitles = ["Book", "Movie", "TV", "Game", "Music", "Any"]
+    private var allSearchResults = [MediaItem]()
+    private var filteredSearchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var searchResultsTableView: UITableView!
     
@@ -28,6 +30,8 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.sizeToFit()
+        searchController.searchBar.scopeButtonTitles = scopeTitles
+        searchController.searchBar.delegate = self
     }
     
     private func setupSearchResultsTableView() {
@@ -240,13 +244,28 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             } catch {}
             if newSearchResults.count > 0 {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.searchResults = newSearchResults
+                    self.allSearchResults = newSearchResults
+                    self.filteredSearchResults = self.allSearchResults
                     self.searchResultsTableView.reloadData()
                 }
             }
         }
     }
 
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        let type = scopeTitles[selectedScope]
+        if type != "Any" {
+            self.filteredSearchResults = []
+            for result in self.allSearchResults {
+                if result.type == type {
+                    self.filteredSearchResults.append(result)
+                }
+            }
+        } else {
+            self.filteredSearchResults = self.allSearchResults
+        }
+        self.searchResultsTableView.reloadData()
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "cellId"
@@ -256,19 +275,19 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
         }
         
-        let mediaItem = searchResults[indexPath.row]
+        let mediaItem = self.filteredSearchResults[indexPath.row]
         cell!.textLabel!.text = mediaItem.title
         
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let itemToView = self.searchResults[indexPath.row]
+        let itemToView = self.filteredSearchResults[indexPath.row]
         ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return self.filteredSearchResults.count
     }
     
 }
