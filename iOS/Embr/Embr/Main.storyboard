@@ -405,6 +405,7 @@
                         <segue destination="ceU-Vv-Qdj" kind="show" identifier="segueToCommentCreator" id="Hl1-VX-9yS"/>
                         <segue destination="r0S-R0-FGJ" kind="show" identifier="segueToLibraries" id="u4J-yZ-wqv"/>
                         <segue destination="9DC-pB-yLs" kind="show" identifier="segueToMoreInfo" id="r2j-oj-OIY"/>
+                        <segue destination="ybs-Fx-sIL" kind="show" identifier="segueToProfile" id="DoY-3b-O5n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TYI-58-1Vr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -689,6 +690,7 @@
                         <outlet property="username" destination="gOZ-I0-7ap" id="aht-Jf-6gU"/>
                         <segue destination="r0S-R0-FGJ" kind="show" identifier="segueToLibraries" id="ZLG-dA-J7P"/>
                         <segue destination="3m7-ct-d0e" kind="show" identifier="segueToFriends" id="z0e-e5-82p"/>
+                        <segue destination="t4i-hn-Qek" kind="show" identifier="segueToComments" id="zqt-hh-2sT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X9o-c7-lfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -700,10 +702,11 @@
         <image name="Logo" width="220" height="107"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SjV-Ox-er9"/>
-        <segue reference="KtP-O6-lkm"/>
-        <segue reference="J36-J7-SSk"/>
+        <segue reference="ZLG-dA-J7P"/>
+        <segue reference="DoY-3b-O5n"/>
         <segue reference="kvR-ZX-q6Z"/>
+        <segue reference="beZ-fF-TWw"/>
         <segue reference="Hl1-VX-9yS"/>
+        <segue reference="zqt-hh-2sT"/>
     </inferredMetricsTieBreakers>
 </document>

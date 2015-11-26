@@ -6,6 +6,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let librariesSegueIdentifier = "segueToLibraries"
     private let commentsSegueIdentifier = "segueToComments"
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
+    private let profileSegueIdentifier = "segueToProfile"
     private let menuSegueIdentifier = "segueToMenu"
     private let moreInfoSegueIdentifier = "segueToMoreInfo"
     private let sectionHeadings = ["", "Reviews", "Blurb", "Comments"]
@@ -165,7 +166,11 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             destination.comments.appendContentsOf(selectedComment.children)
         } else if segue.identifier == commentCreatorSegueIdentifier {
             if let destination = segue.destinationViewController as? CreateCommentViewController {
-                destination.mediaItem = self.mediaItem!
+                if let parent = sender as? Comment {
+                    destination.parentComment = parent
+                } else {
+                    destination.mediaItem = self.mediaItem!
+                }
             }
         } else if segue.identifier == librariesSegueIdentifier && sender is NSArray {
             let destination = segue.destinationViewController as! LibrariesListTableViewController
@@ -369,5 +374,32 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         let sectionTitle = sectionHeadings[section]
         let sectionDetails = itemDetails[sectionTitle]
         return sectionDetails?.count ?? 0
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        if indexPath.section == commentsSection {
+            let moreAction = UITableViewRowAction(style: .Normal, title: "More") { (rowAction: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+                let moreAction = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+                let viewUserAction = UIAlertAction(title: "View User Profile", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                    let comment = self.mediaItem!.comments[indexPath.row]
+                    self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
+                })
+                if SessionModel.getSession() != SessionModel.noSession {
+                    let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                        let comment = self.mediaItem!.comments[indexPath.row]
+                        self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: comment)
+                    })
+                    moreAction.addAction(replyAction)
+                } else {
+                    moreAction.message = "Log in to reply to comments"
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                moreAction.addAction(viewUserAction)
+                moreAction.addAction(cancelAction)
+                self.presentViewController(moreAction, animated: true, completion: nil)
+            }
+            return [moreAction]
+        }
+        return nil
     }
 }

@@ -4,6 +4,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     private let librariesSegueIdentifier = "segueToLibraries"
     private let friendsSegueIdentifier = "segueToFriends"
+    private let commentsSegueIdentifier = "segueToComments"
     
     var user: User?
     var isMe = false
@@ -17,8 +18,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if user != nil {
             self.username.text = user!.username
             self.email.text = user!.email
-            updates.estimatedRowHeight = 100.0
-            updates.rowHeight = UITableViewAutomaticDimension
+            self.updates.estimatedRowHeight = 100.0
+            self.updates.rowHeight = UITableViewAutomaticDimension
+            self.updates.hidden = true
             
             SessionModel.getUserIdFromSession { (data, response, error) -> Void in
                 if data != nil {
@@ -29,10 +31,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                             if userId != self.user!.id {
                                 dispatch_async(dispatch_get_main_queue()) {
                                     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
-                                    self.updates.hidden = true
                                     self.isMe = false
                                 }
                             } else {
+                                self.updates.hidden = false
                                 self.isMe = true
                             }
                         }
@@ -205,6 +207,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     destination.isMe = isMe
                 }
             }
+        } else if segue.identifier == commentsSegueIdentifier && sender is Comment {
+            if let destination = segue.destinationViewController as? CommentsViewController {
+                destination.comments.removeAll()
+                let selectedComment = sender as! Comment
+                destination.comments.append(selectedComment)
+                destination.comments.appendContentsOf(selectedComment.children)
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let comment = self.feed[indexPath.row]
+        if let parent = comment.parent {
+            performSegueWithIdentifier(commentsSegueIdentifier, sender: parent)
         }
     }
 }

@@ -37,7 +37,6 @@ class Comment {
         for element in commentArray {
             if let commentInfo = element as? NSDictionary {
                 // Parse comment information
-                let parentComment = parent
                 let id = commentInfo["id"] as! Int
                 let content = commentInfo["content"] as! String
                 let rating = commentInfo["user_review"] as? Int
@@ -52,7 +51,7 @@ class Comment {
                 
                 // Parse child comments
                 if let childComments = commentInfo["child_comments"] as? NSArray {
-                    let children = parseJsonComments(commentsOnItem: childComments, parentComment: parentComment)
+                    let children = parseJsonComments(commentsOnItem: childComments, parentComment: comment)
                     for child in children {
                         comment.addChild(child)
                     }
