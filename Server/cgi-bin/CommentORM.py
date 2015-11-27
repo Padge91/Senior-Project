@@ -214,3 +214,14 @@ class CommentORM(object):
         objects = self.convert_rows_to_FullComment(results)
         self.build_comment_objects(objects,None)
         list += objects
+
+    def get_comment(self, form):
+        comment_id = form["comment_id"]
+        query = "select id, user_id, create_date, content from comments where id='{0}'".format(comment_id)
+        results = select_query(query)
+        if len(results) < 1:
+            raise Exception("Comment not found")
+
+        response_objects = self.convert_rows_to_FullComment(results)
+        self.build_comment_objects(response_objects, None)
+        return response_objects[0]
