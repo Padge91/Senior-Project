@@ -187,3 +187,18 @@ class LibraryORM(object):
         results = select_query(items_query)
         items = orm.convert_rows_to_SimpleItem(results)
         return items
+
+    def delete_library(self, form):
+        user_id = get_user_id_from_session(form)
+        library_id = form["library_id"]
+
+        user_owned_query = "select * from libraries where id={0} and user_id={1}".format(library_id, user_id)
+        results = select_query(user_owned_query)
+        if len(results) < 1:
+            raise Exception("Library does not exist or is not owned by you")
+
+        delete_query_1="delete from library_items where library_id={0}".format(library_id)
+        insert_query(delete_query_1)
+        delete_query_2="delete from libraries where id={0}".format(library_id)
+        insert_query(delete_query_2)
+        return True

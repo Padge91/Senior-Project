@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70218b46-7c4f-4455-ab46-feeb6fa4d264" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/cgi-bin/GetComment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/CommentORM.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/CommentORM.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Server/cgi-bin/DeleteLibrary.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/GetComment.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/GetComment.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py" afterPath="$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Senior-Project.iws" />
@@ -48,14 +49,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GetComment.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetComment.py">
+      <file leaf-file-name="DeleteLibrary.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/DeleteLibrary.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-              <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.25759578" vertical-offset="0" max-vertical-offset="757">
+              <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
               <folding>
-                <element signature="e#84#94#0" expanded="true" />
+                <element signature="e#95#105#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LibraryORM.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2348" max-vertical-offset="3105">
+              <caret line="196" column="28" selection-start-line="196" selection-start-column="28" selection-end-line="196" selection-end-column="28" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,28 +74,8 @@
       <file leaf-file-name="db_create_tables.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="3345">
-              <caret line="80" column="38" selection-start-line="80" selection-start-column="38" selection-end-line="80" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommentORM.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/CommentORM.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48480844" vertical-offset="2678" max-vertical-offset="3435">
-              <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommentClass.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/cgi-bin/CommentClass.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="615">
-              <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="3345">
+              <caret line="115" column="32" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -98,7 +89,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Server/python/cgi-bin/VerifySession.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/ItemClass.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/GetItemInfo.py" />
         <option value="$PROJECT_DIR$/Server/python/cgi-bin/userUtils.py" />
@@ -124,7 +114,6 @@
         <option value="$PROJECT_DIR$/Server/cgi-bin/UserClass.py" />
         <option value="$PROJECT_DIR$/Server/sql/db_create_tables.sql" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/SearchItemsInLibrary.py" />
-        <option value="$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/ChartsClass.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/UpdatePassword.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/UpdateEmail.py" />
@@ -147,8 +136,10 @@
         <option value="$PROJECT_DIR$/Server/cgi-bin/GetUpdatesFeed.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/CommentClass.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/UserORM.py" />
-        <option value="$PROJECT_DIR$/Server/cgi-bin/GetComment.py" />
         <option value="$PROJECT_DIR$/Server/cgi-bin/CommentORM.py" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/GetComment.py" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py" />
+        <option value="$PROJECT_DIR$/Server/cgi-bin/DeleteLibrary.py" />
       </list>
     </option>
   </component>
@@ -552,13 +543,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/AddItemToLibrary.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.110456556" vertical-offset="0" max-vertical-offset="679">
-          <caret line="7" column="53" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/cgi-bin/SubmitReview.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
@@ -641,6 +625,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30927834" vertical-offset="0" max-vertical-offset="679">
           <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -662,13 +647,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22091311" vertical-offset="0" max-vertical-offset="679">
           <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2216" max-vertical-offset="2895">
-          <caret line="180" column="34" selection-start-line="180" selection-start-column="34" selection-end-line="180" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -894,14 +872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="3345">
-          <caret line="80" column="38" selection-start-line="80" selection-start-column="38" selection-end-line="80" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/cgi-bin/ChartsORM.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5944518" vertical-offset="0" max-vertical-offset="1845">
@@ -918,6 +888,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/CommentORM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48480844" vertical-offset="2678" max-vertical-offset="3435">
+          <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/sql/db_create_tables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="3345">
+          <caret line="115" column="32" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetComment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05944518" vertical-offset="0" max-vertical-offset="757">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="20" selection-end-column="10" />
+          <folding>
+            <element signature="e#84#94#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/cgi-bin/UpdateUsername.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
@@ -926,21 +922,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/GetComment.py">
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/LibraryORM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
-          <folding>
-            <element signature="e#84#94#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="2348" max-vertical-offset="3105">
+          <caret line="196" column="28" selection-start-line="196" selection-start-column="28" selection-end-line="196" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/CommentORM.py">
+    <entry file="file://$PROJECT_DIR$/Server/cgi-bin/DeleteLibrary.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48480844" vertical-offset="2678" max-vertical-offset="3435">
-          <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.25759578" vertical-offset="0" max-vertical-offset="757">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <folding>
+            <element signature="e#95#105#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

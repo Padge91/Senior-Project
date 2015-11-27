@@ -1,17 +1,18 @@
 #!/usr/bin/python
+
 __author__ = 'nicholaspadgett'
 
-required_params = ["comment_id"]
+required_params = ["session","library_id"]
 
 import cgi
 from Utilities import *
-from CommentORM import *
+from LibraryORM import *
 
 def main():
     try:
         form = get_required_parameters(cgi, required_params)
-        orm = CommentORM()
-        response = orm.get_comment(form)
+        orm = LibraryORM()
+        response = orm.delete_library(form)
         success_response(response)
     except Exception as e:
         failure_response(e.message)
