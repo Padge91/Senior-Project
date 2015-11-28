@@ -24,6 +24,10 @@ class Library : AnyObject {
     func addItemToLibrary(mediaItem: MediaItem) {
         items.append(mediaItem)
     }
+    
+    func removeItemAtIndex(index: Int) {
+        items.removeAtIndex(index)
+    }
 }
 
 func parseLibraryList(librariesArray libArray: NSArray) -> [Library] {

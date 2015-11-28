@@ -4,11 +4,15 @@ class LibrariesListTableViewController: UITableViewController {
 
     let librarySegueIdentifier = "segueToLibrary"
     var librariesList = [Library]()
+    var userId: Int?
     var isMe = false
     
     override func viewDidLoad() {
-        if isMe {
+        assert(self.userId != nil)
+        let userId = UserDataSource.getUserID()
+        if userId == self.userId {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "createLibrary")
+            self.isMe = true
         }
     }
     
@@ -38,8 +42,12 @@ class LibrariesListTableViewController: UITableViewController {
                     let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                     if jsonResponse["success"] as! Bool {
                         if let libraryItemsArray = jsonResponse["response"] as? NSArray {
+                            for element in libraryItemsArray {
+                                let mediaItem = parseMediaItem(element as! NSDictionary)
+                                library.addItemToLibrary(mediaItem)
+                            }
                             dispatch_async(dispatch_get_main_queue()) {
-                                self.performSegueWithIdentifier(self.librarySegueIdentifier, sender: libraryItemsArray)
+                                self.performSegueWithIdentifier(self.librarySegueIdentifier, sender: library)
                             }
                         } else {
                             print("Invalid response from GetLibraryItems.py\nResponse not NSArray")
@@ -58,14 +66,30 @@ class LibrariesListTableViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == librarySegueIdentifier && sender is NSArray {
-            let destination = segue.destinationViewController as! LibraryViewController
-            var library = [MediaItem]()
-            for element in sender as! NSArray {
-                let mediaItem = parseMediaItem(element as! NSDictionary)
-                library.append(mediaItem)
+        if segue.identifier == librarySegueIdentifier && sender is Library {
+            if let destination = segue.destinationViewController as? LibraryViewController {
+                if let lib = sender as? Library {
+                    destination.library = lib
+                    destination.userId = self.userId
+                }
             }
-            destination.library = library
+        }
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return UserDataSource.getUserID() == self.userId
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if isMe {
+            if editingStyle == UITableViewCellEditingStyle.Delete {
+                let lib = librariesList[indexPath.row]
+                librariesList.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                LibrariesDataSource.deleteLibrary(lib.id, completionHandler: { (data, response, error) -> Void in
+                    /* Do Nothing */
+                })
+            }
         }
     }
     

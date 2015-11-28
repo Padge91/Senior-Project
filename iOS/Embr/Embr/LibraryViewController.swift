@@ -2,19 +2,28 @@ import UIKit
 
 class LibraryViewController: UITableViewController {
     private let itemDetailSegueIdentifier = "segueToItemDetails"
-    var library = [MediaItem]()
+    var library: Library?
+    var userId: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(userId != nil)
         self.tableView.allowsMultipleSelectionDuringEditing = false        
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            library.removeAtIndex(indexPath.row)
+            let item = library!.items[indexPath.row]
+            library!.removeItemAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            
+            LibrariesDataSource.deleteItemFromLibrary(library!.id, itemId: item.id, completionHandler: { (data, response, error) -> Void in
+                /* Do Nothing */
+            })
         }
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return UserDataSource.getUserID() == self.userId
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -25,10 +34,10 @@ class LibraryViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellId)
         }
         
-        let mediaItem = library[indexPath.row]
-        cell!.textLabel!.text = mediaItem.title
+        let mediaItem = library?.items[indexPath.row]
+        cell!.textLabel!.text = mediaItem!.title
         //cell!.detailTextLabel?.text = mediaItem.creator
-        if let imageName = mediaItem.imageName {
+        if let imageName = mediaItem!.imageName {
             if let imageURL = NSURL(string: imageName) {
                 if let imageData = NSData(contentsOfURL: imageURL) {
                     cell!.imageView?.image = UIImage(data: imageData)
@@ -40,11 +49,11 @@ class LibraryViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return library.count
+        return library!.items.count
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let itemToView = self.library[indexPath.row]
+        let itemToView = self.library!.items[indexPath.row]
         ItemDataSource.getItem(itemToView.id, completionHandler: self.getItemCompletionHandler)
     }
     

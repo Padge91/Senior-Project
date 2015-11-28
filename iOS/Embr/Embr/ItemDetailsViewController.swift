@@ -8,6 +8,7 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let commentCreatorSegueIdentifier = "segueToCommentCreator"
     private let profileSegueIdentifier = "segueToProfile"
     private let menuSegueIdentifier = "segueToMenu"
+    private let topChartsSegueIdentifier = "segueToTopCharts"
     private let moreInfoSegueIdentifier = "segueToMoreInfo"
     private let sectionHeadings = ["", "Reviews", "Blurb", "Comments"]
     private let detailsSection = 0, reviewsSection = 1, blurbSection = 2, commentsSection = 3
@@ -46,9 +47,10 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private func setupNavigation() {
         let menuItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "goToMenu")
         let librariesItem = UIBarButtonItem(title: "My Libraries", style: .Plain, target: self, action: "attemptToOpenLibraries")
+        let profileButton = UIBarButtonItem(title: "Profile", style: .Plain, target: self, action: "attemptToOpenProfile")
+        let topChartsButton = UIBarButtonItem(title: "Top Charts", style: .Plain, target: self, action: "openTopCharts")
         navigationItem.rightBarButtonItem = menuItem
-        let librariesButton = librariesItem
-        toolbarItems = [librariesButton]
+        toolbarItems = [librariesItem, profileButton, topChartsButton]
     }
     
     private func loadTitle() {
@@ -64,6 +66,49 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                     coverImageView.image = UIImage(data: imageData)
                 }
             }
+        }
+    }
+    
+    func attemptToOpenProfile() {
+        if SessionModel.getSession() != SessionModel.noSession {
+            goToProfile()
+        } else {
+            displayLoginAlert(self, completionHandler: loginCompletionHandler)
+        }
+    }
+    
+    func goToProfile() {
+        UserDataSource.getUserId(getUserIdCompletionHandler)
+    }
+    
+    func openTopCharts() {
+        performSegueWithIdentifier(topChartsSegueIdentifier, sender: nil)
+    }
+    
+    func getUserIdCompletionHandler (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                if jsonResponse["success"] as! Bool {
+                    if let userId = jsonResponse["response"] as? Int {
+                        UserDataSource.getUser(userId, completionHandler: { (data, response, error) -> Void in
+                            if data != nil {
+                                do {
+                                    let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                                    if jsonResponse["success"] as! Bool {
+                                        if let userDict = jsonResponse["response"] as? NSDictionary {
+                                            let user = User.parseUser(userDict)
+                                            dispatch_async(dispatch_get_main_queue()) {
+                                                self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: user)
+                                            }
+                                        }
+                                    }
+                                } catch {}
+                            }
+                        })
+                    }
+                }
+            } catch {}
         }
     }
     
@@ -176,11 +221,24 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
+            destination.isMe = true
+            let userId = UserDataSource.getUserID()
+            destination.userId = userId
         } else if segue.identifier == moreInfoSegueIdentifier {
             if let destination = segue.destinationViewController as? ItemMoreInfoTableViewController {
                 destination.mediaItem = self.mediaItem!
             } else {
                 printError(errorHeader, errorMessage: "More Info destination invalid")
+            }
+        } else if segue.identifier == profileSegueIdentifier {
+            if let user = sender as? User {
+                if let destination = segue.destinationViewController as? ProfileViewController {
+                    destination.user = user
+                } else {
+                    printError(errorHeader, errorMessage: "Profile destination invalid")
+                }
+            } else {
+                printError(errorHeader, errorMessage: "Profile sender invalid")
             }
         }
     }
@@ -376,30 +434,35 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         return sectionDetails?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.section == commentsSection {
-            let moreAction = UITableViewRowAction(style: .Normal, title: "More") { (rowAction: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
-                let moreAction = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
-                let viewUserAction = UIAlertAction(title: "View User Profile", style: .Default, handler: { (action: UIAlertAction) -> Void in
-                    let comment = self.mediaItem!.comments[indexPath.row]
-                    self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
-                })
-                if SessionModel.getSession() != SessionModel.noSession {
-                    let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
-                        let comment = self.mediaItem!.comments[indexPath.row]
-                        self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: comment)
-                    })
-                    moreAction.addAction(replyAction)
-                } else {
-                    moreAction.message = "Log in to reply to comments"
-                }
-                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-                moreAction.addAction(viewUserAction)
-                moreAction.addAction(cancelAction)
-                self.presentViewController(moreAction, animated: true, completion: nil)
-            }
-            return [moreAction]
+            return true
+        } else {
+            return false
         }
-        return nil
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let moreAction = UITableViewRowAction(style: .Normal, title: "More") { (rowAction: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+            let moreAction = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let viewUserAction = UIAlertAction(title: "View User Profile", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                let comment = self.mediaItem!.comments[indexPath.row]
+                self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
+            })
+            if SessionModel.getSession() != SessionModel.noSession {
+                let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                    let comment = self.mediaItem!.comments[indexPath.row]
+                    self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: comment)
+                })
+                moreAction.addAction(replyAction)
+            } else {
+                moreAction.message = "Log in to reply to comments"
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            moreAction.addAction(viewUserAction)
+            moreAction.addAction(cancelAction)
+            self.presentViewController(moreAction, animated: true, completion: nil)
+        }
+        return [moreAction]
     }
 }

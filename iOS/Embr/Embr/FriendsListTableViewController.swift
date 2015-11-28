@@ -1,11 +1,3 @@
-//
-//  FriendsListTableViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 11/13/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class FriendsListTableViewController: UITableViewController {
@@ -14,10 +6,10 @@ class FriendsListTableViewController: UITableViewController {
     
     var friends = [User]()
     var user: User?
-    var isMe = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(user != nil)
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,7 +31,8 @@ class FriendsListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return isMe
+        let userId = UserDataSource.getUserID()
+        return user!.id == userId
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
@@ -55,10 +48,10 @@ class FriendsListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let user = friends[indexPath.row]
-        performSegueWithIdentifier(profileSegueIdentifier, sender: user)
+        let friend = friends[indexPath.row]
+        self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: friend)
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == profileSegueIdentifier && sender is User {
             let destination = segue.destinationViewController as! ProfileViewController

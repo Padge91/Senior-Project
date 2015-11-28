@@ -74,6 +74,7 @@ class TelevisionShow : MediaItem {
         director = mediaItemDictionary["director"] as? String ?? "No Director"
         writer = mediaItemDictionary["writer"] as? String ?? "No Writer"
         rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
+        runtime = mediaItemDictionary["length"] as? String ?? "NA"
     }
 }
 

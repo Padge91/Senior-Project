@@ -7,7 +7,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let commentsSegueIdentifier = "segueToComments"
     
     var user: User?
-    var isMe = false
     var feed = [Comment]()
 
     @IBOutlet weak var updates: UITableView!
@@ -16,30 +15,30 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         if user != nil {
-            self.username.text = user!.username
-            self.email.text = user!.email
+            self.username.text = self.user!.username
+            self.email.text = self.user!.email
             self.updates.estimatedRowHeight = 100.0
             self.updates.rowHeight = UITableViewAutomaticDimension
             self.updates.hidden = true
             
-            SessionModel.getUserIdFromSession { (data, response, error) -> Void in
-                if data != nil {
-                    do {
-                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                        if jsonResponse["success"] as! Bool {
-                            let userId = jsonResponse["response"] as! Int
-                            if userId != self.user!.id {
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
-                                    self.isMe = false
+            let userId = UserDataSource.getUserID()
+            if userId != self.user!.id {
+                UserDataSource.checkFriend(self.user!.id, completionHandler: { (data, response, error) -> Void in
+                    if data != nil {
+                        do {
+                            let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                            if jsonResponse["success"] as! Bool {
+                                if !(jsonResponse["response"] as! Bool) {
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friend", style: UIBarButtonItemStyle.Plain, target: self, action: "addFriend")
+                                    }
                                 }
-                            } else {
-                                self.updates.hidden = false
-                                self.isMe = true
                             }
-                        }
-                    } catch {}
-                }
+                        } catch {}
+                    }
+                })
+            } else {
+                self.updates.hidden = false
             }
             
             updates.delegate = self
@@ -197,15 +196,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let destination = segue.destinationViewController as! LibrariesListTableViewController
             let libraries = parseLibraryList(librariesArray: sender as! NSArray)
             destination.librariesList = libraries
-            destination.isMe = isMe
+            destination.userId = self.user!.id
         } else if segue.identifier == friendsSegueIdentifier && sender is NSArray {
             if let destination = segue.destinationViewController as? FriendsListTableViewController {
                 for friend in sender as! NSArray {
                     let friendDict = friend as! NSDictionary
                     let user = User.parseUser(friendDict)
                     destination.friends.append(user)
-                    destination.isMe = isMe
                 }
+                destination.user = self.user
             }
         } else if segue.identifier == commentsSegueIdentifier && sender is Comment {
             if let destination = segue.destinationViewController as? CommentsViewController {

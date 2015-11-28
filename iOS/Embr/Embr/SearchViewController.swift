@@ -8,7 +8,7 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
     private let librariesSegueIdentifier = "segueToLibraries"
     private let profileSegueIdentifier = "segueToProfile"
     private let topChartsSegueIdentifier = "segueToTopCharts"
-    private let scopeTitles = ["Book", "Movie", "TV", "Game", "Music", "Any"]
+    private let scopeTitles = ["Any", "Book", "Movie", "TV", "Game", "Music"]
     private var allSearchResults = [MediaItem]()
     private var filteredSearchResults = [MediaItem]()
     private var searchController = UISearchController(searchResultsController: nil)
@@ -82,6 +82,9 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
                     if let librariesArray = sender as? NSArray {
                         let libraries = parseLibraryList(librariesArray: librariesArray)
                         destination.librariesList = libraries
+                        destination.isMe = true
+                        let userId = UserDataSource.getUserID()
+                        destination.userId = userId
                     } else {
                         printError(errorHeader, errorMessage: "Libraries sender invalid")
                     }
@@ -245,15 +248,14 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             if newSearchResults.count > 0 {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.allSearchResults = newSearchResults
-                    self.filteredSearchResults = self.allSearchResults
-                    self.searchResultsTableView.reloadData()
+                    self.filterResults()
                 }
             }
         }
     }
-
-    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        let type = scopeTitles[selectedScope]
+    
+    func filterResults() {
+        let type = scopeTitles[self.searchController.searchBar.selectedScopeButtonIndex]
         if type != "Any" {
             self.filteredSearchResults = []
             for result in self.allSearchResults {
@@ -265,6 +267,10 @@ class SearchViewController : UIViewController, UISearchResultsUpdating, UITableV
             self.filteredSearchResults = self.allSearchResults
         }
         self.searchResultsTableView.reloadData()
+    }
+
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterResults()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

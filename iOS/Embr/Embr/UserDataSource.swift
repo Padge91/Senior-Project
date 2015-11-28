@@ -1,14 +1,26 @@
-//
-//  UserDataSource.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 10/5/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import Foundation
 
 class UserDataSource {
+    
+    private static let userDefaultUserIDKey = "userid"
+    
+    // Should ONLY be called from SessionModel
+    static func storeUserID(userId: Int) {
+        NSUserDefaults.standardUserDefaults().setObject(userId, forKey: userDefaultUserIDKey)
+    }
+    
+    static func getUserID() -> Int {
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey(userDefaultUserIDKey) as? Int {
+            return userId
+        } else {
+            return -1
+        }
+    }
+    
+    // Should ONLY be called from SessionModel
+    static func removeUserID() {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(userDefaultUserIDKey)
+    }
     
     static func attemptLogin(username: String, password: String, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
         EmbrConnection.get("/cgi-bin/Login.py", params: ["username": username, "password": password], completionHandler: completionHandler)
@@ -26,6 +38,10 @@ class UserDataSource {
         EmbrConnection.put("/cgi-bin/AddFriend.py", httpBody:
             "session=\(SessionModel.getSession())&" +
             "user_id=\(friend)", completionHandler: completionHandler)
+    }
+    
+    static func checkFriend(friendId: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+        EmbrConnection.get("/cgi-bin/IsMyFriend.py", params: ["session": SessionModel.getSession(), "user_id": "\(friendId)"], completionHandler: completionHandler)
     }
     
     static func getFriendsList(user: Int, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {

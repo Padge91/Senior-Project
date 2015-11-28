@@ -10,6 +10,8 @@ import UIKit
 
 class ItemMoreInfoTableViewController: UITableViewController {
     
+    private let errorHeader = "Item More Info Table View Controller"
+    private let itemDetailsSegueIdentifier = "segueToItemDetails"
     var mediaItem: MediaItem?
     var headers = [String]()
     var itemInfo = [String: [AnyObject]]()
@@ -87,7 +89,7 @@ class ItemMoreInfoTableViewController: UITableViewController {
                 "Channel: \(show.channel!)",
                 "Rating: \(show.rating!)",
                 "Air Date: \(show.airDate!)",
-                "Runtime: \(show.runtime!)"
+                "Length: \(show.runtime!)"
             ]
         } else if self.mediaItem is Music {
             let music = self.mediaItem as! Music
@@ -142,5 +144,48 @@ class ItemMoreInfoTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return self.headers[section]
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let title = headers[indexPath.section]
+        if title == "More" {
+            if let items = itemInfo[title] {
+                if let item = items[indexPath.row] as? MediaItem {
+                    ItemDataSource.getItem(item.id, completionHandler: self.getItemCompletionHandler)
+                }
+            }
+        }
+    }
+    
+    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if let response = jsonResponse["response"] as? NSDictionary {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                let itemToView = parseMediaItem(response)
+                                self.performSegueWithIdentifier(self.itemDetailsSegueIdentifier, sender: itemToView)
+                            }
+                        }
+                    }
+                }
+            } catch {}
+        } else {
+            printError(errorHeader, errorMessage: "getItemCompletionHandler: no data")
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        switch segue.identifier! {
+        case itemDetailsSegueIdentifier:
+            if let item = sender as? MediaItem {
+                if let destination = segue.destinationViewController as? ItemDetailsViewController {
+                    destination.setMediaItem(item)
+                }
+            }
+        default:
+            break
+        }
     }
 }

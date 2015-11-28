@@ -1,15 +1,9 @@
-//
-//  TopChartsTableViewController.swift
-//  Embr
-//
-//  Created by Alex Ronquillo on 11/16/15.
-//  Copyright © 2015 SeniorProject. All rights reserved.
-//
-
 import UIKit
 
 class TopChartsTableViewController: UITableViewController {
     
+    private let errorHeader = "Top Charts Table View Controller"
+    private let itemDetailsSegueIdentifier = "segueToItemDetails"
     var charts = [String: [MediaItem]]()
 
     override func viewDidLoad() {
@@ -22,19 +16,21 @@ class TopChartsTableViewController: UITableViewController {
                         if let chartsResponse = jsonResponse["response"] as? NSArray {
                             for chart in chartsResponse {
                                 let name = chart["name"] as! String
-                                let objects = chart["objects"] as! NSArray
+                                let objects = chart["objects"] as! [NSDictionary]
                                 for object in objects {
-                                    let mediaItem = MediaItem(mediaItemDictionary: object as! NSDictionary)
-                                    var chart = self.charts[name]
-                                    if chart == nil {
-                                        self.charts[name] = [mediaItem]
+                                    let mediaItem = MediaItem(mediaItemDictionary: object)
+                                    if self.charts[name] != nil {
+                                        self.charts[name]!.append(mediaItem)
                                     } else {
-                                        chart!.append(mediaItem)
+                                        self.charts[name] = [mediaItem]
                                     }
                                 }
                             }
                         }
                         print(self.charts)
+                        for key in self.charts.keys {
+                            print(key + " \(self.charts[key]!.count)")
+                        }
                         dispatch_async(dispatch_get_main_queue()) {
                             self.tableView.reloadData()
                         }
@@ -45,6 +41,19 @@ class TopChartsTableViewController: UITableViewController {
             }
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        switch segue.identifier! {
+        case itemDetailsSegueIdentifier:
+            if let item = sender as? MediaItem {
+                if let destination = segue.destinationViewController as? ItemDetailsViewController {
+                    destination.setMediaItem(item)
+                }
+            }
+        default:
+            break
+        }
+    }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.charts.keys.count
@@ -52,11 +61,39 @@ class TopChartsTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let title = Array(self.charts.keys)[section]
-        return self.charts[title]!.count
+        let count = self.charts[title]!.count
+        return count
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Array(self.charts.keys)[section]
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let title = Array(self.charts.keys)[indexPath.section]
+        if let chart = charts[title] {
+            let item = chart[indexPath.row]
+            ItemDataSource.getItem(item.id, completionHandler: self.getItemCompletionHandler)
+        }
+    }
+    
+    func getItemCompletionHandler(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void {
+        if data != nil {
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if let response = jsonResponse["response"] as? NSDictionary {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                let itemToView = parseMediaItem(response)
+                                self.performSegueWithIdentifier(self.itemDetailsSegueIdentifier, sender: itemToView)
+                            }
+                        }
+                    }
+                }
+            } catch {}
+        } else {
+            printError(errorHeader, errorMessage: "getItemCompletionHandler: no data")
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
