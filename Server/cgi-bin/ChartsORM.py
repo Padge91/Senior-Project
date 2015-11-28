@@ -60,35 +60,35 @@ class ChartsORM(object):
             table_query = "select director from movies where item_id={0}".format(item_id)
             creator_results = select_query(table_query)
             creator = creator_results[0][0]
-            creator_query = "select items.id, items.title, items.description, items.type from items, movies where movies.director like '%{0}%' order by rand() limit 10".format(creator)
+            creator_query = "select items.id, items.title, items.description, items.type from items, movies where movies.director like '%{0}%' and movies.item_id = items.id order by rand() limit 10".format(creator)
             response = select_query(creator_query)
             charts += self.instantiate_chart("Movies from {0}".format(creator), response)
         elif item_type == "Book":
             table_query = "select author from books where item_id={0}".format(item_id)
             creator_results = select_query(table_query)
             creator = creator_results[0][0]
-            creator_query = "select items.id, items.title, items.description, items.type from items, books where books.authors like '%{0}%' order by rand() limit 10".format(creator)
+            creator_query = "select items.id, items.title, items.description, items.type from items, books where books.authors like '%{0}%' and books.item_id = items.id order by rand() limit 10".format(creator)
             response = select_query(creator_query)
             charts += self.instantiate_chart("Books from {0}".format(creator), response)
         elif item_type == "Music":
             table_query = "select artist from music where item_id={0}".format(item_id)
             creator_results = select_query(table_query)
             creator = creator_results[0][0]
-            creator_query = "select items.id, items.title, items.description, items.type from items, music where music.artist like '%{0}%' order by rand() limit 10".format(creator)
+            creator_query = "select items.id, items.title, items.description, items.type from items, music where music.artist like '%{0}%' and music.item_id = items.id order by rand() limit 10".format(creator)
             response = select_query(creator_query)
             charts += self.instantiate_chart("Music from {0}".format(creator), response)
         elif item_type == "Game":
             table_query = "select studio from games where item_id={0}".format(item_id)
             creator_results = select_query(table_query)
             creator = creator_results[0][0]
-            creator_query = "select items.id, items.title, items.description, items.type from items, games where games.studio like '%{0}%' order by rand() limit 10".format(creator)
+            creator_query = "select items.id, items.title, items.description, items.type from items, games where games.studio like '%{0}%' and games.item_id = items.id order by rand() limit 10".format(creator)
             response = select_query(creator_query)
             charts += self.instantiate_chart("Games from {0}".format(creator), response)
         elif item_type == "TV":
             table_query = "select writer from television where item_id={0}".format(item_id)
             creator_results = select_query(table_query)
             creator = creator_results[0][0]
-            creator_query = "select items.id, items.title, items.description, items.type from items, television where television.writer like '%{0}%' order by rand() limit 10".format(creator)
+            creator_query = "select items.id, items.title, items.description, items.type from items, television where television.writer like '%{0}%' and television.item_id = items.id order by rand() limit 10".format(creator)
             response = select_query(creator_query)
             charts += self.instantiate_chart("TV from {0}".format(creator), response)
         else:
