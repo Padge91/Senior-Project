@@ -103,7 +103,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/listView_divider"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="6dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp">
@@ -136,7 +136,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:text="Reviews"
-                android:textSize="7pt" />
+                android:textSize="7pt"
+                android:layout_marginTop="16dp" />
 
             // Description header
 
@@ -200,6 +201,18 @@
                 android:layout_below="@+id/itemView_4_textView"
                 android:nestedScrollingEnabled="true"
                 android:longClickable="false" />
+
+            <Button
+                android:id="@+id/itemView_childItems_button"
+                android:layout_width="160dp"
+                android:layout_height="25dp"
+                android:text="child_items"
+                android:visibility="visible"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="27dp"
+                android:background="#ffa740" />
 
         </RelativeLayout>
     </ScrollView>

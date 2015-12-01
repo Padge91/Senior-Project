@@ -69,15 +69,23 @@ public class ItemView extends AppCompatActivity {
     private String parent_type = "item";
     private long parent_id;
     private int userRating = 0;
+    private int itemChildID = 0;
+    private boolean itemHasChildren = true;
+    private String itemChildName = "";
+    private String itemChildButtonText = "";
 
     private ArrayList<Library> libraries_list = new ArrayList<>();
     private ArrayList<String> library_names = new ArrayList<>();
     private ArrayList<Integer> library_ids = new ArrayList<>();
+    private ArrayList<String> child_item_names = new ArrayList<>();
+    private ArrayList<Long> child_item_ids = new ArrayList<>();
     private Map<String, Integer> library_keys = new HashMap<>();
+    private Map<String, Integer> child_item_keys = new HashMap<>();
 
     ListView listView;
     Button addToLibraryButton;
     Button addCommentButton;
+    Button childItemsButton;
     TextView view1;
     TextView view2;
     TextView view3;
@@ -153,6 +161,32 @@ public class ItemView extends AppCompatActivity {
                     Toast.makeText(ItemView.this, "Please login to use this feature", Toast.LENGTH_SHORT).show();
                 else
                     addCommentDialogBox();
+            }
+        });
+
+        childItemsButton = (Button) findViewById(R.id.itemView_childItems_button);
+        if (itemHasChildren)
+            childItemsButton.setText(itemChildButtonText);
+        else
+            childItemsButton.setVisibility(View.GONE);
+        childItemsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(ItemView.this, childItemsButton);
+                popup.getMenuInflater().inflate(R.menu.menu_child_items_button, popup.getMenu());
+                for (int i = 0; i < child_item_names.size(); i++)
+                    popup.getMenu().getItem(i).setTitle(child_item_names.get(i));
+                for (int i = child_item_names.size(); i < popup.getMenu().size(); i++)
+                    popup.getMenu().getItem(i).setVisible(false);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        itemChildName = item.toString();
+                        itemChildID = child_item_keys.get(itemChildName);
+                        openItemViewActivity(itemChildID, itemChildName);
+                        return true;
+                    }
+                });
+                popup.show();
             }
         });
 
@@ -306,6 +340,24 @@ public class ItemView extends AppCompatActivity {
         });
     }
 
+    public void openItemViewActivity(int itemID, String itemName) {
+        if(!sessionID.isEmpty()) {
+            Intent intent = new Intent(this, ItemView.class);
+            intent.putExtra("LoggedIn", loggedIn_status);
+            intent.putExtra("sessionID", sessionID);
+            intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
+            intent.putExtra("itemID", itemID);
+            intent.putExtra("itemName", itemName);
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(this, ItemView.class);
+            intent.putExtra("sessionID", "invalid");
+            startActivity(intent);
+        }
+    }
+
     public void openCommentLayout(Comment comment) {
         parent_type = "comment";
         parent_id = comment.getComment_id();
@@ -376,7 +428,7 @@ public class ItemView extends AppCompatActivity {
                         switch (item_type) {
                             case "Book":
                                 Book book = new Book();
-                                setItemDetails(response, book);
+                                setItemDetails(response, book, "book");
                                 book.setPublish_date(response.optString("publishDate", "publishDate"));
                                 book.setNumber_of_pages(response.optInt("numPages", -1));
                                 book.setAuthor(response.optString("authors", "author"));
@@ -396,7 +448,7 @@ public class ItemView extends AppCompatActivity {
                                 break;
                             case "Game":
                                 Game game = new Game();
-                                setItemDetails(response, game);
+                                setItemDetails(response, game, "game");
                                 game.setPublisher(response.optString("publisher", "publisher"));
                                 game.setDeveloper_studio(response.optString("studio", "studio"));
                                 game.setRelease_date(response.optString("releaseDate", "releaseDate"));
@@ -416,7 +468,7 @@ public class ItemView extends AppCompatActivity {
                                 break;
                             case "Movie":
                                 Movie movie = new Movie();
-                                setItemDetails(response, movie);
+                                setItemDetails(response, movie, "movie");
                                 movie.setRating(response.optString("rating", "rating"));
                                 movie.setRelease_date(response.optString("releaseDate", "releaseDate"));
                                 movie.setRuntime(response.optString("runtime", "runtime"));
@@ -438,7 +490,7 @@ public class ItemView extends AppCompatActivity {
                                 break;
                             case "Music":
                                 Music music = new Music();
-                                setItemDetails(response, music);
+                                setItemDetails(response, music, "music");
                                 music.setRelease_date(response.optString("releaseDate", "releaseDate"));
                                 music.setRecording_company(response.optString("recordingCompany", "recording_company"));
                                 music.setArtist(response.optString("artist", "artist"));
@@ -456,7 +508,7 @@ public class ItemView extends AppCompatActivity {
                                 break;
                             case "TV":
                                 TV tv = new TV();
-                                setItemDetails(response, tv);
+                                setItemDetails(response, tv, "tv");
                                 tv.setAir_date(response.optString("airDate", "airDate"));
                                 tv.setDirectors(response.optString("director", "director"));
                                 tv.setRuntime(response.optString("length", "length"));
@@ -574,7 +626,7 @@ public class ItemView extends AppCompatActivity {
             library_ids.add(libraries_list.get(i).getId());
     }
 
-    public void setItemDetails(JSONObject response, Item item) {
+    public void setItemDetails(JSONObject response, Item item, String type) {
 
         try {
             item.setUser_score(response.optInt("user_score", -1));
@@ -592,15 +644,41 @@ public class ItemView extends AppCompatActivity {
             item.setParent_id(response.optInt("parent_id", -1));
             JSONArray item_child_items = response.getJSONArray("child_items");
             if (item_child_items.length() > 0) {
+                itemHasChildren = true;
+                switch (type) {
+                    case "book":
+                        itemChildButtonText = "Chapters";
+                        break;
+                    case "movie":
+                        itemChildButtonText = "Chapters";
+                        break;
+                    case "music":
+                        itemChildButtonText = "Track List";
+                        break;
+                    case "game":
+                        itemChildButtonText = "Chapters";
+                        break;
+                    case "tv":
+                        itemChildButtonText = "Seasons";
+                        break;
+                    case "season":
+                        itemChildButtonText = "Episodes";
+                        break;
+                }
                 long[] item_temp_child_items_ids = new long[item_child_items.length()];
                 String[] item_temp_child_items_names = new String[item_child_items.length()];
                 for (int i = 0; i < item_child_items.length(); i++) {
                     item_temp_child_items_ids[i] = item_child_items.getJSONObject(i).getLong("id");
                     item_temp_child_items_names[i] = item_child_items.getJSONObject(i).getString("title");
+                    child_item_names.add(item_temp_child_items_names[i]);
+                    child_item_ids.add(item_temp_child_items_ids[i]);
+                    child_item_keys.put(item_temp_child_items_names[i], (int) item_temp_child_items_ids[i]);
                 }
                 item.setChild_items_ids(item_temp_child_items_ids);
                 item.setChild_items_names(item_temp_child_items_names);
             }
+            else
+                itemHasChildren = false;
             item.setMedia_type(response.optString("type", "type"));
             item.setItem_id(response.optLong("id", -1));
             ArrayList<Comment> comments_array = new ArrayList<>();
@@ -637,8 +715,8 @@ public class ItemView extends AppCompatActivity {
 
     public void setItemLayout(Item item) {
         populate_listview(item.getComments(), listView);
-        // done     : average score, description, title, image, comments, genres
-        // not done : user score, child items
+        // done     : average score, description, title, image, comments, genres, user score
+        // not done : child items
         averageScoreView.setText(item.getAverage_score());
         descriptionView.setText(item.getDescription());
         view1.setText(item.getTitle());

@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.afe.pc.embr.Search_for_Items">
+
+    <item
+        android:id="@+id/custom1"
+        android:title="" />
+    <item
+        android:id="@+id/custom2"
+        android:title="" />
+    <item
+        android:id="@+id/custom3"
+        android:title="" />
+    <item
+        android:id="@+id/custom4"
+        android:title="" />
+    <item
+        android:id="@+id/custom5"
+        android:title="" />
+    <item
+        android:id="@+id/custom6"
+        android:title="" />
+    <item
+        android:id="@+id/custom7"
+        android:title="" />
+    <item
+        android:id="@+id/custom8"
+        android:title="" />
+    <item
+        android:id="@+id/custom9"
+        android:title="" />
+    <item
+        android:id="@+id/custom10"
+        android:title="" />
+
+</menu>
