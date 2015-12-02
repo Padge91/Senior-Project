@@ -36,14 +36,15 @@ class LibrariesListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let library = librariesList[indexPath.row]
+        library.clearItems()
         LibrariesDataSource.getLibrary(library.id, completionHandler: {data, response, error in
             if data != nil {
                 do {
                     let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                     if jsonResponse["success"] as! Bool {
-                        if let libraryItemsArray = jsonResponse["response"] as? NSArray {
+                        if let libraryItemsArray = jsonResponse["response"] as? [NSDictionary] {
                             for element in libraryItemsArray {
-                                let mediaItem = parseMediaItem(element as! NSDictionary)
+                                let mediaItem = MediaItem(mediaItemDictionary: element)
                                 library.addItemToLibrary(mediaItem)
                             }
                             dispatch_async(dispatch_get_main_queue()) {

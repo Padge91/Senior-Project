@@ -13,8 +13,7 @@ public class CreateCommentViewController : UIViewController, UITextFieldDelegate
         if mediaItem != nil {
             mediaItemTitle.text = mediaItem!.title
         } else {
-            let truncateIndex = parentComment!.body.startIndex.advancedBy(10)
-            mediaItemTitle.text = parentComment!.body.substringToIndex(truncateIndex)
+            mediaItemTitle.text = "Response to \(parentComment!.author.username)"
         }
         setupBody()
         setupNavigationBar()

@@ -10,8 +10,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     private let menuSegueIdentifier = "segueToMenu"
     private let topChartsSegueIdentifier = "segueToTopCharts"
     private let moreInfoSegueIdentifier = "segueToMoreInfo"
-    private let sectionHeadings = ["", "Reviews", "Blurb", "Comments"]
-    private let detailsSection = 0, reviewsSection = 1, blurbSection = 2, commentsSection = 3
+    private let sectionHeadings = ["", "Reviews", "Blurb", "Comments", "Copyright"]
+    private let detailsSection = 0, reviewsSection = 1, blurbSection = 2, commentsSection = 3, copyrightSection = 4
     private let detailsButton = "Details", addToLibraryButton = "Add to Library", addACommentButton = "Add a Comment"
     
     private var mediaItem: MediaItem? = nil
@@ -70,11 +70,19 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func attemptToOpenProfile() {
-        if SessionModel.getSession() != SessionModel.noSession {
-            goToProfile()
-        } else {
-            displayLoginAlert(self, completionHandler: loginCompletionHandler)
-        }
+        SessionModel.validateSession(SessionModel.getSession(), completionHandler: { (data, response, error) -> Void in
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if jsonResponse["response"] as! Bool {
+                            self.goToProfile()
+                        } else {
+                            displayLoginAlert(self, completionHandler: self.loginCompletionHandler)
+                        }
+                    }
+                }
+            } catch {}
+        })
     }
     
     func goToProfile() {
@@ -139,7 +147,8 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 "Average Friend Review: \(item.getAverageFriendReviewString())"
             ],
             sectionHeadings[blurbSection]: [item.blurb!],
-            sectionHeadings[commentsSection]: item.comments
+            sectionHeadings[commentsSection]: item.comments,
+            sectionHeadings[copyrightSection]: [copyright]
         ]
     }
     
@@ -182,16 +191,24 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 case detailsButton:
                     performSegueWithIdentifier(moreInfoSegueIdentifier, sender: nil)
                 case addToLibraryButton:
-                    if SessionModel.getSession() != SessionModel.noSession {
-                        addToLibrary()
-                    } else {
-                        promptUserLogin()
-                    }
+                    SessionModel.validateSession(SessionModel.getSession(), completionHandler: { (data, response, error) -> Void in
+                        do {
+                            if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                                if jsonResponse["success"] as! Bool {
+                                    if jsonResponse["response"] as! Bool {
+                                        self.addToLibrary()
+                                    } else {
+                                        self.promptUserLogin()
+                                    }
+                                }
+                            }
+                        } catch {}
+                    })
                 case addACommentButton:
                     if SessionModel.getSession() != SessionModel.noSession {
-                        performSegueWithIdentifier(commentCreatorSegueIdentifier, sender: nil)
+                        self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: nil)
                     } else {
-                        promptUserLogin()
+                        self.promptUserLogin()
                     }
                 default:
                     break
@@ -244,26 +261,33 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @IBAction func reviewItem(sender: UIButton) {
-        if SessionModel.getSession() != SessionModel.noSession {
-            let index = reviewCollection.indexOf(sender)
-            for i in 0...4 {
-                let star = reviewCollection[i]
-                if i <= index {
-                    star.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
-                } else {
-                    star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        SessionModel.validateSession(SessionModel.getSession(), completionHandler: { (data, response, error) -> Void in
+            do {
+                if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                    if jsonResponse["success"] as! Bool {
+                        if jsonResponse["response"] as! Bool {
+                            let index = self.reviewCollection.indexOf(sender)
+                            for i in 0...4 {
+                                let star = self.reviewCollection[i]
+                                if i <= index {
+                                    star.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+                                } else {
+                                    star.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+                                }
+                            }
+                            
+                            ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+                                if data != nil {
+                                    let message = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
+                                }
+                            })
+                        } else {
+                            self.promptUserLogin()
+                        }
+                    }
                 }
-            }
-            
-            ItemDataSource.updateItemReview(self.mediaItem!, review: (index! + 1), completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-                if data != nil {
-                    let message = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
-                    print(message)
-                }
-            })
-        } else {
-            promptUserLogin()
-        }
+            } catch {}
+        })            
     }
     
     
@@ -449,15 +473,23 @@ class ItemDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 let comment = self.mediaItem!.comments[indexPath.row]
                 self.performSegueWithIdentifier(self.profileSegueIdentifier, sender: comment.author)
             })
-            if SessionModel.getSession() != SessionModel.noSession {
-                let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
-                    let comment = self.mediaItem!.comments[indexPath.row]
-                    self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: comment)
-                })
-                moreAction.addAction(replyAction)
-            } else {
-                moreAction.message = "Log in to reply to comments"
-            }
+            SessionModel.validateSession(SessionModel.getSession(), completionHandler: { (data, response, error) -> Void in
+                do {
+                    if let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                        if jsonResponse["success"] as! Bool {
+                            if jsonResponse["response"] as! Bool {
+                                let replyAction = UIAlertAction(title: "Reply", style: .Default, handler: { (action: UIAlertAction) -> Void in
+                                    let comment = self.mediaItem!.comments[indexPath.row]
+                                    self.performSegueWithIdentifier(self.commentCreatorSegueIdentifier, sender: comment)
+                                })
+                                moreAction.addAction(replyAction)
+                            } else {
+                                moreAction.message = "Log in to reply to comments"
+                            }
+                        }
+                    }
+                } catch {}
+            })
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
             moreAction.addAction(viewUserAction)
             moreAction.addAction(cancelAction)

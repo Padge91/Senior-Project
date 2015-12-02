@@ -130,8 +130,8 @@ class Game : MediaItem {
         releaseDate = mediaItemDictionary["releaseDate"] as? String ?? "No Release Date"
         rating = mediaItemDictionary["rating"] as? String ?? "No Rating"
         length = mediaItemDictionary["gameLength"] as? Int
-        multiplayer = mediaItemDictionary["multiplayer"] as! Bool
-        singleplayer = mediaItemDictionary["singleplayer"] as! Bool
+        multiplayer = mediaItemDictionary["multiplayer"] as? Bool ?? false
+        singleplayer = mediaItemDictionary["singleplayer"] as? Bool ?? false
     }
 }
 

@@ -1,5 +1,7 @@
 import UIKit
 
+let copyright = "The information and images are protected under the GNU free documentation license provided by wikipedia"
+
 func alertError(controller: UIViewController, errorMessage error: String) {
     let alert = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
     alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))

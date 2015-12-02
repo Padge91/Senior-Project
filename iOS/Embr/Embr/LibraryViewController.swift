@@ -36,7 +36,6 @@ class LibraryViewController: UITableViewController {
         
         let mediaItem = library?.items[indexPath.row]
         cell!.textLabel!.text = mediaItem!.title
-        //cell!.detailTextLabel?.text = mediaItem.creator
         if let imageName = mediaItem!.imageName {
             if let imageURL = NSURL(string: imageName) {
                 if let imageData = NSData(contentsOfURL: imageURL) {

@@ -15,7 +15,7 @@ class ItemMoreInfoTableViewController: UITableViewController {
     var mediaItem: MediaItem?
     var headers = [String]()
     var itemInfo = [String: [AnyObject]]()
-    private let basicHeader = 0, specialHeader = 1, genresHeader = 2, moreHeader = 3
+    private let basicHeader = 0, specialHeader = 1, genresHeader = 2, moreHeader = 3, copyrightHeader = 4
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +24,7 @@ class ItemMoreInfoTableViewController: UITableViewController {
         addSpecialHeader()
         headers.append("Genres")
         headers.append("More")
+        headers.append("Copyright")
         setupItemInfo()
         self.tableView.estimatedRowHeight = 100.0
     }
@@ -106,6 +107,9 @@ class ItemMoreInfoTableViewController: UITableViewController {
         
         // Setup More
         self.itemInfo[self.headers[moreHeader]] = self.mediaItem!.childItems
+        
+        // Setup Copyright
+        self.itemInfo[self.headers[copyrightHeader]] = [copyright]
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

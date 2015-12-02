@@ -28,6 +28,10 @@ class Library : AnyObject {
     func removeItemAtIndex(index: Int) {
         items.removeAtIndex(index)
     }
+    
+    func clearItems() {
+        items.removeAll()
+    }
 }
 
 func parseLibraryList(librariesArray libArray: NSArray) -> [Library] {
