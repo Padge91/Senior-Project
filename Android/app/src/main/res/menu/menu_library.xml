@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.afe.pc.embr.Library">
+
+    <item
+        android:id="@+id/Owned_Library"
+        android:title="@string/owned_library" />
+
+    <item
+        android:id="@+id/Wishlist_Library"
+        android:title="@string/wishlist_library" />
+
+    <item
+        android:id="@+id/Custom_Libraries"
+        android:title="@string/custom_library" />
+
+</menu>
